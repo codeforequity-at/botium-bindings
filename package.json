@@ -1,15 +1,15 @@
 {
   "name": "testmybot",
   "version": "0.1.0",
-  "description": "",
+  "description": "Continuous Testing for your Chatbots",
   "main": "lib/testmybot.js",
-  "author": "",
-  "license": "ISC",
+  "author": "Florian Treml",
+  "license": "MIT",
   "dependencies": {
     "async": "^2.1.5",
     "bluebird": "^3.5.0",
     "lodash": "^4.17.4",
     "request": "^2.80.0",
-	"testmybot-fbmock": "0.1.0"
+    "testmybot-fbmock": "0.1.0"
   }
 }
