@@ -11,5 +11,19 @@
     "lodash": "^4.17.4",
     "request": "^2.80.0",
     "testmybot-fbmock": "0.1.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeforequity-at/testmybot.git"
+  },
+  "keywords": [
+    "continuous",
+    "testing",
+    "chatbot"
+  ],
+  "bugs": {
+    "url": "https://github.com/codeforequity-at/testmybot/issues"
+  },
+  "homepage": "https://github.com/codeforequity-at/testmybot#readme"
 }
