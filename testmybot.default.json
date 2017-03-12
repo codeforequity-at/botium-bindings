@@ -1,0 +1,50 @@
+{
+  "testendpoint": "http://127.0.0.1:46199",
+  "defaultsaytimeout": 5000,
+  "docker": {
+    "dockerpath": "docker",
+    "networkname": "testmybot_network",
+    "debugoutput": false,
+    "container": {
+      "testmybot": {
+        "imagename": "testmybot",
+        "containername": "testmybot",
+        "networkalias": "testmybot",
+        "dockerfile": "./node_modules/testmybot/Dockerfile.testmybot",
+        "dockerdir": ".",
+        "hostmapping": {
+        },
+        "portmapping": {
+        },
+        "env": {
+          "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+        }
+      },
+      "testmybot-fbmock": {
+        "imagename": "testmybot-fbmock",
+        "containername": "testmybot-fbmock",
+        "networkalias": "graph.facebook.com",
+        "dockerfile": "./node_modules/testmybot-fbmock/Dockerfile",
+        "dockerdir": "./node_modules/testmybot-fbmock/",
+        "hostmapping": {
+        },
+        "portmapping": {
+          "46199": "46199"
+        },
+        "env": {
+          "TESTMYBOT_FACEBOOK_PUBLISHPORT": "46199",
+          "TESTMYBOT_FACEBOOK_PAGEID": "",
+          "TESTMYBOT_FACEBOOK_USERPROFILEIDDEFAULT": "",
+          "TESTMYBOT_FACEBOOK_USERPROFILELOCALE": "en_US",
+          "TESTMYBOT_FACEBOOK_SEQNOSTART": "",
+          "TESTMYBOT_FACEBOOK_SENDDELIVERY": true,
+          "TESTMYBOT_FACEBOOK_WEBHOOKURL": "",
+          "TESTMYBOT_FACEBOOK_WEBHOOKPORT": "",
+          "TESTMYBOT_FACEBOOK_WEBHOOKPATH": "",
+          "TESTMYBOT_FACEBOOK_WEBHOOKHOST": "testmybot",
+          "TESTMYBOT_FACEBOOK_WEBHOOKPROTOCOL": "http"
+        }
+      }
+    }
+  }
+}
