@@ -1,6 +1,6 @@
 {
   "name": "testmybot",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Continuous Testing for your Chatbots",
   "main": "lib/testmybot.js",
   "author": "Florian Treml",
@@ -10,7 +10,7 @@
     "bluebird": "^3.5.0",
     "lodash": "^4.17.4",
     "request": "^2.80.0",
-    "testmybot-fbmock": "0.1.1"
+    "testmybot-fbmock": "0.1.2"
   },
   "devDependencies": {},
   "repository": {
