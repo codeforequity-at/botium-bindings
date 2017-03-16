@@ -7,6 +7,8 @@ TestMyBot heavily relies on [Docker](https://www.docker.com/) to provide it’s 
 
 Therefore, please install [Docker](https://www.docker.com/) first on your development machines. 
 
+Of course, you need Node.js and npm installed and working.
+
 Current Requirements on your Chatbot:
 * Developed in Node.js (other languages supported, but with more configuration effort)
 * Developed with Facebook Messenger Platform
@@ -23,6 +25,15 @@ To install it to your chatbot project, type:
     $ npm install testmybot-fbmock --save-dev
 
 Please note that you have to install it in your local development directory (not in global registry with -g).
+
+## Quick Start
+
+Please check out one of the samples to get a quick overview.
+
+    $ git clone git clone https://github.com/codeforequity-at/testmybot-sample1.git
+    $ cd testmybot-sample1
+    $ npm install
+    $ ./node_modules/.bin/jasmine
 
 ## Basic Usage
 
