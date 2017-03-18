@@ -1,6 +1,7 @@
 {
   "testendpoint": "http://127.0.0.1:46199",
   "defaultsaytimeout": 5000,
+  "startupphase": 0,
   "docker": {
     "dockerpath": "docker",
     "networkname": "testmybot_network",
