@@ -12,7 +12,8 @@
     "lodash": "^4.17.4",
     "mkdirp": "^0.5.1",
     "request": "^2.80.0",
-	"tcp-port-used": "^0.1.2",
+    "socket.io-client": "^1.7.3",
+    "tcp-port-used": "^0.1.2",
     "testmybot-fbmock": "0.1.4"
   },
   "devDependencies": {},
