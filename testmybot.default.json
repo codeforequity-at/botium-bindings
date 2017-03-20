@@ -43,7 +43,8 @@
           "TESTMYBOT_FACEBOOK_WEBHOOKPORT": "",
           "TESTMYBOT_FACEBOOK_WEBHOOKPATH": "",
           "TESTMYBOT_FACEBOOK_WEBHOOKHOST": "testmybot",
-          "TESTMYBOT_FACEBOOK_WEBHOOKPROTOCOL": "http"
+          "TESTMYBOT_FACEBOOK_WEBHOOKPROTOCOL": "http",
+          "TESTMYBOT_FACEBOOK_DEMOMODE": false
         }
       }
     }
