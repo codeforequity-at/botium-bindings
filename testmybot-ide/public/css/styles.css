@@ -1,0 +1,65 @@
+html {
+  overflow-y: scroll;
+}
+
+body {
+	margin-top: 20px;
+}
+
+.testsuite-container {
+    border: 1px solid #ddd;
+}
+
+.testsuite-toolbar-row {
+    background-color: #f5f5f5;
+}
+
+.testcase-row div { 
+    padding: 0px;
+    overflow-y: scroll;
+	height: 500px;
+}
+.testcase-row .list-group-item { 
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.testcase-container {
+    border: 1px solid #ddd;
+}
+
+.testcase-toolbar-row {
+    background-color: #f5f5f5;
+}
+
+
+.chat-toolbar-row {
+    background-color: #f5f5f5;
+}
+
+.chat-toolbar {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.current-chat-area {
+    padding-top: 10px;
+    overflow-y: scroll;
+	height: 500px;
+}
+
+.current-chat-footer {
+}
+
+.message-structured-container {
+	background-color: #f5f5f5;
+	border: 1px solid black; 
+	border-radius: 10px;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.message-structured-container img {
+	max-height: 200px;
+	max-width: 400px;
+}

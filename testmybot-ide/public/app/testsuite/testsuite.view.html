@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4 testsuite-container">
+      <div class="row testsuite-toolbar-row">
+        <div class="col-sm-12">
+          <div class="btn-group chat-toolbar" role="group" aria-label="...">
+            <button id="chat-clear" class="btn btn-info" type="button" ng-click="vm.reload()" ng-disabled="vm.busy">
+              <i class="fa fa-refresh" aria-hidden="true"></i> Reload
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row testcase-row">
+        <i class="fa fa-spinner fa-spin fa-3x fa-fw" ng-show="vm.busy"></i>
+        <div class="col-md-12" ng-hide="vm.busy">
+          <a ui-sref="testsuite.capturechat" class="list-group-item">
+            <i class="fa fa-comments" aria-hidden="true"></i> New Conversation
+          </a>
+          <a ui-sref="testsuite.testcase({filename: testcase.filename})" class="list-group-item" ng-repeat="testcase in vm.testcases">
+            <i class="fa fa-file" aria-hidden="true"></i> {{ testcase.name }}
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8 testcase-container" ui-view>
+    </div>
+	</div>
+</div>

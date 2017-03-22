@@ -1,0 +1,26 @@
+<div class="row testcase-toolbar-row">
+  <div class="col-sm-12">
+    <h4><a href="#" editable-text="vm.testcase.name" e-required onaftersave="vm.onaftersave()" edit-disabled="!vm.testcase">{{ vm.testcase.name ? vm.testcase.name : 'no name' }}</a> / {{ vm.testcase.conversation.length }} Messages</h4>
+  </div>
+</div>
+<div class="row testcase-toolbar-row">
+  <div class="col-sm-12">
+    <p>{{ vm.testcase.filename }}</p>
+  </div>
+</div>
+<div class="row testcase-toolbar-row">
+  <div class="col-sm-12">
+    <p><a href="#" editable-textarea="vm.testcase.description" e-rows="7" e-cols="50" onaftersave="vm.onaftersave()"  edit-disabled="!vm.testcase">{{ vm.testcase.description ? vm.testcase.description : 'no description' }}</a></p>
+  </div>
+</div>
+
+<div class="row current-chat-area" id="current-chat-area">
+  <div class="col-md-12">
+    <ul class="media-list">
+      <li class="media" ng-repeat="msg in vm.testcase.conversation">
+        <display-chatbot-message msg="msg" />
+        <hr>
+      </li>
+    </ul>  
+  </div>
+</div>
