@@ -56,8 +56,7 @@
         var msg = data;
         if (data.messageText) {
           msg = data.messageText;
-        }
-        if (data.message) {
+        } else if (data.message) {
           msg = { message: data.message };
         }
         

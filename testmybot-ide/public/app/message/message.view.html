@@ -97,7 +97,7 @@
           <div class="btn-group">
             <p ng-if="0" ng-repeat-start="button in vm.structured.attachment.payload.buttons"></p>
               <a ng-if="button.type === 'web_url'" ng-href="{{ button.url }}" target="_blank" class="btn btn-default">{{button.title}}</a>
-              <a ng-if="button.type === 'postback'" class="btn btn-default">{{ button.title }} ("{{button.payload}}")</a>
+              <a ng-if="button.type === 'postback'" class="btn btn-default"  ng-click="vm.postback(button.title, button.payload)">{{ button.title }}</a>
             <p ng-if="0" ng-repeat-end></p>
           </div>
         </div>
