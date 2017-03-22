@@ -7,6 +7,14 @@ TestMyBot is a test automation framework for your chatbot project. It is unopini
 
 Your test cases are recorded by Capture & Replay tools and can be run against your Chatbot implementation automatically over and over again. It is meant to be included in your continuous integration pipeline, just as with your unit tests.
 
+## Blog Articles
+
+Here are links to some articles about TestMyBot:
+
+[Continuous Automated Testing for Your Chatbot With Open Source Tool “TestMyBot”](https://chatbotsmagazine.com/continuous-automated-testing-for-your-chatbot-with-open-source-tool-testmybot-53fd3757764e)
+
+[No More Excuse: Automated Testing of your Chatbot with “TestMyBot”](https://chatbotsmagazine.com/no-more-excuse-automated-testing-of-your-chatbot-with-testmybot-3c1ed98dd043)
+
 ## How does it work ?
 The key (and only) concept of this framework is to simulate ("mock out") the "real" Chatbot APIs (like the Facebook Messenger Platform API), hijacking them through docker networks. Your chatbot is transfered into a local docker container, the API mocks are possible by manipulating the DNS of the docker image. For example, any access to "graph.facebook.com" is redirected to another local docker container simulating the Facebook Messenger Platform API. 
 
