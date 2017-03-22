@@ -1,3 +1,6 @@
+[![npm version](https://badge.fury.io/js/testmybot.svg)](https://badge.fury.io/js/testmybot)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+
 Test My Bot
 ===========
 TestMyBot is a test automation framework for your chatbot project. It is unopinionated and completely agnostic about any involved development tools. Best of all, it’s free and open source.
