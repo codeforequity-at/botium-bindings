@@ -14,6 +14,8 @@ Your test cases are recorded by Capture & Replay tools and can be run against yo
 
 Here are links to some articles about TestMyBot:
 
+[Capture & Replay: Bringing Chatbot Code Quality To a New Level](https://chatbotsmagazine.com/capture-replay-bringing-chatbot-code-quality-to-a-new-level-c0312971311a)
+
 [Continuous Automated Testing for Your Chatbot With Open Source Tool “TestMyBot”](https://chatbotsmagazine.com/continuous-automated-testing-for-your-chatbot-with-open-source-tool-testmybot-53fd3757764e)
 
 [No More Excuse: Automated Testing of your Chatbot with “TestMyBot”](https://chatbotsmagazine.com/no-more-excuse-automated-testing-of-your-chatbot-with-testmybot-3c1ed98dd043)
@@ -26,7 +28,7 @@ TestMyBot injects your Chatbots behaviour into the test runner, and your test ca
 TestMyBot heavily relies on [Docker](https://www.docker.com/) to provide it’s outstanding capabilities in test automation.  
 
 ### Showcase: Your Chatbot as Node.js application with Facebook Messenger Platform API
-In "normal" operation mode, your Chatbot connects to the Facebook Messenger Platform API at http://graph.facebook.com and receives Callbacks from there on a [registered webhook](https://developers.facebook.com/docs/messenger-platform) - similar for Slack oder other platforms. So the architecturein the most simple scenario looks like this:
+In "normal" operation mode, your Chatbot connects to the Facebook Messenger Platform API at http://graph.facebook.com and receives Callbacks from there on a [registered webhook](https://developers.facebook.com/docs/messenger-platform) - similar for Slack oder other platforms. So the architecture in the most simple scenario looks like this:
 
 ![Architecture without Docker](docs/architecture_nodocker.png)
 
