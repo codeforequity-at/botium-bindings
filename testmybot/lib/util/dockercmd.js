@@ -198,7 +198,7 @@ function startContainer(filterCallback) {
       var cmdOptions = [];
       cmdOptions.push('run');
       cmdOptions.push('-d');
-      cmdOptions.push('--rm');
+      //cmdOptions.push('--rm');
       if (containerSpec.hostmapping) {
         _.forOwn(containerSpec.hostmapping, function(mappedto, hostname) {
           cmdOptions.push('--add-host=' + hostname + ':' + mappedto);
@@ -253,7 +253,8 @@ function stopContainer(ignoreErrors) {
     var stopTask = new Promise(function(stopContainerResolve, stopContainerReject) {
 
       var cmdOptions = [];
-      cmdOptions.push('stop');
+      cmdOptions.push('rm');
+      cmdOptions.push('-f');
       cmdOptions.push(containerSpec.containername);
       
       log.info('Running Docker Command: ' + config.docker.dockerpath + ' ' + _.join(cmdOptions, ' '));
