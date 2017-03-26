@@ -198,7 +198,6 @@ function startContainer(filterCallback) {
       var cmdOptions = [];
       cmdOptions.push('run');
       cmdOptions.push('-d');
-      //cmdOptions.push('--rm');
       if (containerSpec.hostmapping) {
         _.forOwn(containerSpec.hostmapping, function(mappedto, hostname) {
           cmdOptions.push('--add-host=' + hostname + ':' + mappedto);
