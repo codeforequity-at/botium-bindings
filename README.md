@@ -65,7 +65,7 @@ Please note that you have to install it in your local development directory (not
 
 Please check out one of the samples to get a quick overview.
 
-    $ git clone git clone https://github.com/codeforequity-at/testmybot-sample1.git
+    $ git clone https://github.com/codeforequity-at/testmybot-sample1.git
     $ cd testmybot-sample1
     $ npm install
     $ ./node_modules/.bin/jasmine
