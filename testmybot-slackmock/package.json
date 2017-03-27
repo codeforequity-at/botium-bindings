@@ -1,0 +1,30 @@
+{
+  "name": "testmybot-slackmock",
+  "version": "0.2.1",
+  "description": "Continuous Testing for your Chatbots - Slack Mocks",
+  "main": "index.js",
+  "author": "Florian Treml",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "lodash": "^4.17.4",
+    "request": "^2.81.0",
+    "socket.io": "^1.7.3",
+    "tcp-port-used": "^0.1.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeforequity-at/testmybot.git"
+  },
+  "keywords": [
+    "continuous",
+    "testing",
+    "chatbot"
+  ],
+  "bugs": {
+    "url": "https://github.com/codeforequity-at/testmybot/issues"
+  },
+  "homepage": "https://github.com/codeforequity-at/testmybot#readme"
+}

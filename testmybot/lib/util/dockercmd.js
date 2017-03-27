@@ -113,6 +113,10 @@ function setupContainer(configToSet) {
         var buildTasks = [];
         
         _.forOwn(config.docker.container, function(containerSpec) {
+          
+          if (!containerSpec.run)
+            return;
+          
           var buildTask = new Promise(function(buildContainerResolve, buildContainerReject) {
         
             var cmdOptions = [];
@@ -192,6 +196,8 @@ function startContainer(filterCallback) {
       if (!filterCallback(containerSpec))
         return;
     }
+    if (!containerSpec.run)
+      return;
     
     var startTask = new Promise(function(startContainerResolve, startContainerReject) {
 
@@ -221,7 +227,11 @@ function startContainer(filterCallback) {
       cmdOptions.push('--network');
       cmdOptions.push(config.docker.networkname);
       cmdOptions.push('--network-alias');
-      cmdOptions.push(containerSpec.networkalias);
+      if (_.isArray(containerSpec.networkalias)) {
+        cmdOptions.push(_.join(containerSpec.networkalias, ','));
+      } else {
+        cmdOptions.push(containerSpec.networkalias);
+      }
       cmdOptions.push(containerSpec.imagename);
 
       log.info('Running Docker Command: ' + config.docker.dockerpath + ' ' + _.join(cmdOptions, ' '));
@@ -249,6 +259,10 @@ function stopContainer(ignoreErrors) {
   var stopTasks = [];
   
   _.forOwn(config.docker.container, function(containerSpec) {
+    
+    if (!containerSpec.run)
+      return;
+    
     var stopTask = new Promise(function(stopContainerResolve, stopContainerReject) {
 
       var cmdOptions = [];

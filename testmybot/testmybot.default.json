@@ -8,6 +8,7 @@
     "debugoutput": false,
     "container": {
       "testmybot": {
+        "run": true,
         "imagename": "testmybot",
         "containername": "testmybot",
         "networkalias": "testmybot",
@@ -22,6 +23,7 @@
         }
       },
       "testmybot-fbmock": {
+        "run": false,
         "imagename": "testmybot-fbmock",
         "containername": "testmybot-fbmock",
         "networkalias": "graph.facebook.com",
@@ -46,7 +48,34 @@
           "TESTMYBOT_FACEBOOK_WEBHOOKPROTOCOL": "http",
           "TESTMYBOT_FACEBOOK_DEMOMODE": false
         }
-      }
+      },
+      "testmybot-slackmock": {
+        "run": false,
+        "imagename": "testmybot-slackmock",
+        "containername": "testmybot-slackmock",
+        "networkalias": [ "slack.com" ],
+        "dockerfile": "./node_modules/testmybot-slackmock/Dockerfile",
+        "dockerdir": "./node_modules/testmybot-slackmock/",
+        "hostmapping": {
+        },
+        "portmapping": {
+          "46199": "46199"
+        },
+        "env": {
+          "TESTMYBOT_SLACK_PUBLISHPORT": "46199",
+          "TESTMYBOT_SLACK_EVENTURL": "",
+          "TESTMYBOT_SLACK_EVENTPORT": "",
+          "TESTMYBOT_SLACK_EVENTPATH": "",
+          "TESTMYBOT_SLACK_EVENTHOST": "testmybot",
+          "TESTMYBOT_SLACK_EVENTPROTOCOL": "http",
+          "TESTMYBOT_SLACK_OAUTHURL": "",
+          "TESTMYBOT_SLACK_OAUTHPORT": "",
+          "TESTMYBOT_SLACK_OAUTHPATH": "",
+          "TESTMYBOT_SLACK_OAUTHHOST": "testmybot",
+          "TESTMYBOT_SLACK_OAUTHPROTOCOL": "http",
+          "TESTMYBOT_SLACK_DEMOMODE": false
+        }
+      }	  
     }
   }
 }
