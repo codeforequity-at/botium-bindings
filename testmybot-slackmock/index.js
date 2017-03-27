@@ -48,7 +48,7 @@ var channelIdMap = {};
 channelIdMap[pubChannelNameDefault] = pubChannelIdDefault;
 var channelNameMap = {};
 channelNameMap[pubChannelIdDefault] = pubChannelNameDefault;
-channelNameMap[dmChannelIdDefault] = 'Private';
+channelNameMap[dmChannelIdDefault] = '#private';
 
 var authToken = process.env.TESTMYBOT_AUTH_TOKEN;
 

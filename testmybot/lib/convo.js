@@ -91,7 +91,8 @@ function readConvo(filename) {
       };
       
       var currentLines = [];
-      var currentFrom = '';
+      var currentFrom = null;
+      var currentChannel = null;
       lines.forEach((line) => {
         line = line.trim();
         if (!line) {
@@ -100,6 +101,7 @@ function readConvo(filename) {
           if (currentFrom && currentLines) {
             convo.conversation.push({
               from: currentFrom,
+              channel: currentChannel,
               msg: parseMsg(currentLines)
             });
           } else if (!currentFrom && currentLines) {
@@ -109,6 +111,11 @@ function readConvo(filename) {
             }
           }
           currentFrom = line.substr(1);
+          currentChannel = null;
+          if (currentFrom.indexOf(' ') > 0) {
+            currentChannel = currentFrom.substr(currentFrom.indexOf(' ') + 1).trim();
+            currentFrom = currentFrom.substr(0, currentFrom.indexOf(' ')).trim();
+          }
           currentLines = [];
         } else {
           currentLines.push(line);
@@ -117,6 +124,7 @@ function readConvo(filename) {
       if (currentFrom && currentLines) {
         convo.conversation.push({
           from: currentFrom,
+          channel: currentChannel,
           msg: parseMsg(currentLines)
         });
       } else if (!currentFrom && currentLines) {

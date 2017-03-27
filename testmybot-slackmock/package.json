@@ -1,6 +1,6 @@
 {
   "name": "testmybot-slackmock",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Continuous Testing for your Chatbots - Slack Mocks",
   "main": "index.js",
   "author": "Florian Treml",

@@ -283,10 +283,10 @@ function setupTestSuite(testcaseCb, assertCb, failCb) {
               
               if (convomsg.from === 'me') {
                 log.debug(testcase.name + ': hears ' + convomsg.msg);
-                hears(convomsg.msg).then(convomsgDone).catch(convomsgDone);
+                hears(convomsg.msg, convomsg.channel).then(convomsgDone).catch(convomsgDone);
               } else if (convomsg.from === 'bot') {
-                log.debug(testcase.name + ': wait for says ');
-                says().then((saysmsg) => {
+                log.debug(testcase.name + ': wait for says (channel: ' + convomsg.channel + ')');
+                says(convomsg.channel).then((saysmsg) => {
                   if (saysmsg.messageText) {
                     log.debug(testcase.name + ': says ' + saysmsg.messageText);
                     assertCb(saysmsg.messageText, convomsg.msg);
