@@ -46,6 +46,7 @@ if (!pubChannelNameDefault)
 
 var channelIdMap = {};
 channelIdMap[pubChannelNameDefault] = pubChannelIdDefault;
+channelIdMap['#private'] = dmChannelIdDefault;
 var channelNameMap = {};
 channelNameMap[pubChannelIdDefault] = pubChannelNameDefault;
 channelNameMap[dmChannelIdDefault] = '#private';
@@ -197,6 +198,28 @@ if (!demomode) {
       message: req.body
     });
   });   
+
+  appMock.post('/api/reactions.add', function(req, res) {
+    console.log('/api/reactions.add: ' + JSON.stringify(req.body));
+    
+    var saysContent = {
+      orig: req.body,
+    };
+    
+    saysContent.messageText = req.body.name;
+    saysContent.message = req.body;
+    if (req.body.channel) {
+      if (channelNameMap[req.body.channel])
+        saysContent.channelId = channelNameMap[req.body.channel];
+      else
+        saysContent.channelId = req.body.channel;
+    }
+    broadcastBotSays(saysContent);    
+    
+    res.json({
+      ok: true
+    });
+  });    
   
   appMock.all('/incomingWebhook', function(req, res) {
 

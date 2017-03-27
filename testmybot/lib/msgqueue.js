@@ -12,29 +12,35 @@ function MsgQueue() {
 }
 
 MsgQueue.prototype.push = function(msg) {
-  if (this.listeners[msg.channelId] && this.listeners[msg.channelId].length > 0) {
-    this.listeners[msg.channelId].shift()(msg);
+  var key = msg.channelId;
+  if (!key) key = 'empty';
+  
+  if (this.listeners[key] && this.listeners[key].length > 0) {
+    this.listeners[key].shift()(msg);
   } else {
-    if (!this.queues[msg.channelId])
-      this.queues[msg.channelId] = [];
+    if (!this.queues[key])
+      this.queues[key] = [];
     
-    this.queues[msg.channelId].push(msg);
+    this.queues[key].push(msg);
   }
-  log.debug(JSON.stringify(this.queues));
-  log.debug(JSON.stringify(this.listeners));
+  //log.debug(JSON.stringify(this.queues));
+  //log.debug(JSON.stringify(this.listeners));
 };
 
 MsgQueue.prototype.registerListener = function(callback, channelId) {
-  if (this.queues[channelId] && this.queues[channelId].length > 0) {
-    callback(this.queues[channelId].shift());
+  var key = channelId;
+  if (!key) key = 'empty';
+  
+  if (this.queues[key] && this.queues[key].length > 0) {
+    callback(this.queues[key].shift());
   } else {
-    if (!this.listeners[channelId])
-      this.listeners[channelId] = [];
+    if (!this.listeners[key])
+      this.listeners[key] = [];
     
-    this.listeners[channelId].push(callback);
+    this.listeners[key].push(callback);
   }
-  log.debug(JSON.stringify(this.queues));
-  log.debug(JSON.stringify(this.listeners));
+  //log.debug(JSON.stringify(this.queues));
+  //log.debug(JSON.stringify(this.listeners));
 }
 
 module.exports = MsgQueue;

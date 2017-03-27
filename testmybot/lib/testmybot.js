@@ -14,8 +14,6 @@ const tcpPortUsed = require('tcp-port-used');
 const io = require('socket.io-client');
 const _ = require('lodash');
 
-var channelIdDefault = randomInt(1000000000, 9999999999);
-
 function randomInt(low, high) {
   return Math.floor(Math.random() * (high - low) + low);
 }
@@ -224,12 +222,10 @@ function afterEach() {
   });
 }
 
-function hears(msg, channelId) {
-  if (!channelId) channelId = channelIdDefault;
-  
+function hears(msg, from, channel) {
   return new Promise(function(hearsResolve, hearsReject) {
     if (socket) {
-      socket.emit('bothears', channelId, msg);
+      socket.emit('bothears', from, msg, channel);
       hearsResolve();
     } else {
       hearsReject('Socket not online');
@@ -237,9 +233,7 @@ function hears(msg, channelId) {
   });
 }
 
-function says(channelId, timeoutMillis) {
-  if (!channelId) channelId = channelIdDefault;
-  
+function says(channel, timeoutMillis) {
   return new Promise(function(saysResolve, saysReject) {
     
     if (!timeoutMillis) 
@@ -250,7 +244,7 @@ function says(channelId, timeoutMillis) {
         (msg) => {
           callback(null, msg);
         },
-        channelId);
+        channel);
     }, timeoutMillis);
       
     timeoutRequest(function(err, body) {
@@ -283,7 +277,7 @@ function setupTestSuite(testcaseCb, assertCb, failCb) {
               
               if (convomsg.from === 'me') {
                 log.debug(testcase.name + ': hears ' + convomsg.msg);
-                hears(convomsg.msg, convomsg.channel).then(convomsgDone).catch(convomsgDone);
+                hears(convomsg.msg, convomsg.from, convomsg.channel).then(convomsgDone).catch(convomsgDone);
               } else if (convomsg.from === 'bot') {
                 log.debug(testcase.name + ': wait for says (channel: ' + convomsg.channel + ')');
                 says(convomsg.channel).then((saysmsg) => {

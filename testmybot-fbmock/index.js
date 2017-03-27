@@ -10,8 +10,6 @@ const url = require('url');
 const tcpPortUsed = require('tcp-port-used');
 const _ = require('lodash');
 
-const msgqueue = require('./msgqueue');
-
 var publishPort = process.env.TESTMYBOT_FACEBOOK_PUBLISHPORT;
 if (publishPort)
   publishPort = parseInt(publishPort);
@@ -86,11 +84,7 @@ if (!demomode) {
       if (req.body.sender_action) {
         saysContent.messageText = req.body.sender_action;
       }
-      if (req.body.recipient && req.body.recipient.id) {
-        saysContent.channelId = req.body.recipient.id;
-      }
       broadcastBotSays(saysContent);
-      msgqueue.push(saysContent);
     }
     
     var ts = getTs();
@@ -185,7 +179,7 @@ appTest.get('/', function (req, res) {
   }
 });
 
-function hears(msg, channelId) {
+function hears(msg, from, channel) {
 
   if (demomode) {
     replyDemo(msg);
@@ -220,7 +214,7 @@ function hears(msg, channelId) {
     msgContainer.entry[0].messaging.forEach(function(msg) {
 
       if (!msg.sender) msg.sender = {};
-      if (!msg.sender.id) msg.sender.id = channelId;
+      if (!msg.sender.id) msg.sender.id = from;
       
       if (!msg.recipient) msg.recipient = {};
       if (!msg.recipient.id) msg.recipient.id = pageid;
@@ -254,8 +248,8 @@ var serverTest = http.createServer(appTest).listen(publishPort, '0.0.0.0', funct
 
 var io = require('socket.io')(serverTest);
 io.on('connection', function (socket) {
-	socket.on('bothears', function (from, msg) {
-		console.log('received message from', from, 'msg', JSON.stringify(msg));
+	socket.on('bothears', function (from, msg, channel) {
+		console.log('received message from', from, 'msg', JSON.stringify(msg), 'channel', channel);
 		hears(msg, from);
 	});
 });
