@@ -17,9 +17,44 @@ else
   publishPort = 46199;
 
 var userIdDefault = 'U' + randomInt(1000000000, 9999999999);
+var userNameDefault = process.env.TESTMYBOT_SLACK_USERNAME;
+if (!userNameDefault)
+  userNameDefault = 'TestmybotUser';
+
+var userIdMap = {};
+userIdMap['me'] = userIdDefault;
+userIdMap[userNameDefault] = userIdDefault;
+var userNameMap = {};
+userNameMap[userIdDefault] = 'me';
+
 var botIdDefault = 'B' + randomInt(1000000000, 9999999999);
+var botNameDefault = process.env.TESTMYBOT_SLACK_BOTNAME;
+if (!botNameDefault)
+  botNameDefault = 'testmybot';
+
 var teamIdDefault = 'T' + randomInt(1000000000, 9999999999);
+var teamNameDefault = process.env.TESTMYBOT_SLACK_TEAMNAME;
+if (!teamNameDefault)
+  teamNameDefault = 'TestmybotTeam';
+
 var dmChannelIdDefault = 'D' + randomInt(1000000000, 9999999999);
+
+var pubChannelIdDefault = 'C' + randomInt(1000000000, 9999999999);
+var pubChannelNameDefault = process.env.TESTMYBOT_SLACK_CHANNELNAME;
+if (!pubChannelNameDefault)
+  pubChannelNameDefault = '#general';
+
+var channelIdMap = {};
+channelIdMap[pubChannelNameDefault] = pubChannelIdDefault;
+var channelNameMap = {};
+channelNameMap[pubChannelIdDefault] = pubChannelNameDefault;
+channelNameMap[dmChannelIdDefault] = 'Private';
+
+var authToken = process.env.TESTMYBOT_AUTH_TOKEN;
+
+var apiAppId = process.env.TESTMYBOT_APPID;
+if (!apiAppId)
+  apiAppId = 'AXXXXXXXXX';
 
 var accessToken = 'xoxp-XXXXXXXX-XXXXXXXX-XXXXX';
 var accessTokenBot = 'xoxb-XXXXXXXXXXXX-TTTTTTTTTTTTTT';
@@ -65,53 +100,6 @@ if (!demomode) {
   var appMock = express();
   appMock.use(bodyParser.json());
   appMock.use(bodyParser.urlencoded({ extended: true }));
-
-  appMock.all('*/me/messages*', function (req, res) {
-    if (req.body) {
-      
-      var saysContent = {
-        orig: req.body,
-      };
-      
-      if (req.body.message && req.body.message.text && !req.body.message.quick_replies) {
-        saysContent.messageText = req.body.message.text;
-      }
-      if (req.body.message) {
-        saysContent.message = req.body.message;
-      }
-      if (req.body.sender_action) {
-        saysContent.messageText = req.body.sender_action;
-      }
-      if (req.body.recipient && req.body.recipient.id) {
-        saysContent.channelId = req.body.recipient.id;
-      }
-      broadcastBotSays(saysContent);
-    }
-    
-    var ts = getTs();
-
-    var response = {
-      recipient_id: userIdDefault,
-      message_id: 'mid.' + randomInt(1000000000, 9999999999)
-    };
-
-    if (req.body && req.body.recipient && req.body.recipient.id) {
-      response.recipient_id = req.body.recipient.id;
-    }
-    
-    res.json(response);
-    
-    if (senddelivery) {
-      hears({
-        delivery: {
-            mids:[
-               response.message_id
-            ],									
-            watermark: ts
-        }
-      }, response.recipient_id);
-    }
-  });
   
   appMock.post('/api/oauth.access', function(req, res) {
     console.log('/api/oauth.access: ' + JSON.stringify(req.body));
@@ -123,7 +111,7 @@ if (!demomode) {
       team_id: teamIdDefault,
       incoming_webhook: {
         url: 'http://slack.com/incomingWebhook',
-        channel: '#channel-it-will-post-to',
+        channel: pubChannelNameDefault,
         configuration_url: 'http://slack.com/incomingWebhook'
       },
       bot: {
@@ -136,14 +124,25 @@ if (!demomode) {
   appMock.post('/api/auth.test', function(req, res) {
     console.log('/api/auth.test: ' + JSON.stringify(req.body));
     
-    res.json({
-      ok: true,
-      url: 'https://myteam.slack.com/',
-      team: 'TestmybotTeam',
-      user: 'TestmybotUser',
-      team_id: teamIdDefault,
-      user_id: userIdDefault
-    });
+    if (req.body.token === accessTokenBot) {
+      res.json({
+        ok: true,
+        url: 'https://myteam.slack.com/',
+        team: teamNameDefault,
+        user: botNameDefault,
+        team_id: teamIdDefault,
+        user_id: botIdDefault
+      });
+    } else {
+      res.json({
+        ok: true,
+        url: 'https://myteam.slack.com/',
+        team: teamNameDefault,
+        user: userNameDefault,
+        team_id: teamIdDefault,
+        user_id: userIdDefault
+      });
+    }
   });  
 
   appMock.post('/api/im.open', function(req, res) {
@@ -155,6 +154,21 @@ if (!demomode) {
         id: dmChannelIdDefault
       }
     });
+  });
+  
+  appMock.post('/api/channels.list', function(req, res) {
+    res.json({
+      ok: true,
+      channels: [
+        {
+          id: pubChannelIdDefault,
+          name: pubChannelNameDefault,
+          created: getTs(),
+          creator: userIdDefault,
+          is_archived: false,
+        }
+      ]
+    });    
   });
   
   appMock.post('/api/chat.postMessage', function(req, res) {
@@ -169,15 +183,18 @@ if (!demomode) {
     }
     saysContent.message = req.body;
     if (req.body.channel) {
-      saysContent.channelId = req.body.channel;
+      if (channelNameMap[req.body.channel])
+        saysContent.channelId = channelNameMap[req.body.channel];
+      else
+        saysContent.channelId = req.body.channel;
     }
     broadcastBotSays(saysContent);    
     
     res.json({
       ok: true,
       ts: getTs(),
-      channel: dmChannelIdDefault,
-      message: { }
+      channel: req.body.channel,
+      message: req.body
     });
   });   
   
@@ -189,7 +206,9 @@ if (!demomode) {
   appMock.all('*', function(req, res) {
     console.log('*: ' + req.body);
     
-    res.status(200).end();
+    res.json({
+      ok: true
+    });
   });
 
   var httpsOptions = {
@@ -244,29 +263,39 @@ appTest.get('/', function (req, res) {
   }
 });
 
-function hears(msg, channelId) {
+function hears(msg, from, channel) {
 
   if (demomode) {
     replyDemo(msg);
     
   } else {
 
-    if (!channelId) 
-      channelId = dmChannelIdDefault;
+    if (channel) {
+      if (channelIdMap[channel]) {
+        channel = channelIdMap[channel];
+      }
+    }
+    if (!channel)
+      channel = dmChannelIdDefault;
+  
+    if (from) {
+      if (userIdMap[from]) {
+        from = userIdMap[from];
+      }
+    }
+    if (!from)
+      from = userIdDefault;
   
   
     var ts = getTs();
     
     var eventContainer = {
-      token: 'XXYYZZ',
+      token: authToken,
       team_id: teamIdDefault,
-      api_app_id: 'AXXXXXXXXX',
+      api_app_id: apiAppId,
       type: 'event_callback',
       authed_users: [
-        userIdDefault
-      ],
-      authed_teams: [
-        teamIdDefault
+        from
       ],
       event_id: ts
     };
@@ -278,10 +307,14 @@ function hears(msg, channelId) {
       };
     } else if (_.isPlainObject(msg)) {
       eventContainer.event = msg;
-    }  
+    }
+    
+    if (eventContainer.event.text) {
+      eventContainer.event.text = eventContainer.event.text.replace('@' + botNameDefault, '<@' + botIdDefault + '|' + botNameDefault + '>');
+    }
 
-    if (!eventContainer.event.user) eventContainer.event.user = userIdDefault;
-    if (!eventContainer.event.channel) eventContainer.event.channel = dmChannelIdDefault;
+    if (!eventContainer.event.user) eventContainer.event.user = from;
+    if (!eventContainer.event.channel) eventContainer.event.channel = channel;
     if (!eventContainer.event.ts) eventContainer.event.ts = ts;
 
     callWebhook(eventContainer);
@@ -299,9 +332,9 @@ var serverTest = http.createServer(appTest).listen(publishPort, '0.0.0.0', funct
 
 var io = require('socket.io')(serverTest);
 io.on('connection', function (socket) {
-	socket.on('bothears', function (from, msg) {
-		console.log('received message from', from, 'msg', JSON.stringify(msg));
-		hears(msg, from);
+	socket.on('bothears', function (from, msg, channel) {
+		console.log('received message from', from, 'msg', JSON.stringify(msg), 'channel', channel);
+		hears(msg, from, channel);
 	});
 });
 

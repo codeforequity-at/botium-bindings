@@ -11,7 +11,7 @@ docker build -t testmybot -f ./node_modules/testmybot/Dockerfile.testmybot .
 docker run -it -e NODE_TLS_REJECT_UNAUTHORIZED=0 --name testmybot --network testmybot_network --network-alias testmybot testmybot
 docker rm -f testmybot
 
-docker build -t testmybot-slackmock -f ./node_modules/testmybot-slackmock/Dock
+docker build -t testmybot-slackmock -f ./node_modules/testmybot-slackmock/Dockerfile node_modules/testmybot-slackmock
 docker run -it -p 46199:46199 -e TESTMYBOT_SLACK_PUBLISHPORT=46199 -e TESTMYBOT_SLACK_OAUTHURL=http://testmybot:3000/oauth -e TESTMYBOT_SLACK_EVENTURL= -e TESTMYBOT_SLACK_EVENTPORT=3000 -e TESTMYBOT_SLACK_EVENTPATH=slack/receive -e TESTMYBOT_SLACK_EVENTHOST=testmybot -e TESTMYBOT_SLACK_EVENTPROTOCOL=http -e TESTMYBOT_SLACK_DEMOMODE=false --name testmybot-slackmock --network testmybot_network --network-alias slack.com testmybot-slackmock
 docker rm -f testmybot-slackmock
 */
@@ -38,5 +38,11 @@ var rl = readline.createInterface({
 
 rl.on('line', function(line){
   if (!line) return;
-  socket.emit('bothears', 'me', line);
+  var channel = null;
+  if (line.startsWith('#')) {
+    channel = line.substr(0, line.indexOf(' '));
+    line = line.substr(line.indexOf(' ') + 1);
+  }
+  
+  socket.emit('bothears', 'me', line, channel);
 });
