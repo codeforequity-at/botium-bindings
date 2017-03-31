@@ -80,6 +80,10 @@ Please check out one of the samples to get a quick overview.
     $ cd testmybot-sample1
     $ npm install
     $ ./node_modules/.bin/jasmine
+    
+[Botkit Facebook Sample](https://github.com/codeforequity-at/testmybot-sample)
+[Custom Facebook Sample](https://github.com/codeforequity-at/testmybot-sample1)
+[Botkit Slack Sample](https://github.com/codeforequity-at/botkit-starter-slack)
 
 Basic Usage
 ===========
