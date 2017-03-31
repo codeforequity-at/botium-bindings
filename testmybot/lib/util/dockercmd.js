@@ -161,28 +161,80 @@ function setupContainer(configToSet) {
 function teardownContainer(ignoreErrors) {
   return new Promise(function(teardownResolve, teardownReject) {
     
-    var cmdOptions = [];
-    cmdOptions.push('network');
-    cmdOptions.push('rm');
-    cmdOptions.push(config.docker.networkname);
+    async.series([
+    
+      function(removeImagesDone) {
+        var removeTasks = [];
+        
+        _.forOwn(config.docker.container, function(containerSpec) {
+          
+          if (!containerSpec.run)
+            return;
+          
+          var removeTask = new Promise(function(removeImageResolve, removeImageReject) {
+        
+            var cmdOptions = [];
+            cmdOptions.push('rmi');
+            cmdOptions.push(containerSpec.imagename);
 
-    log.debug('Running Docker Command: ' + config.docker.dockerpath + ' ' + _.join(cmdOptions, ' '));
+            log.info('Running Docker Command: ' + config.docker.dockerpath + ' ' + _.join(cmdOptions, ' '));
 
-    var dockerProcess = child_process.spawn(config.docker.dockerpath, cmdOptions, getChildProcessOptions());
-    dockerProcess.on('close', function(code) {
-      log.info('docker network rm exited with code ' + code);
+            var dockerProcess = child_process.spawn(config.docker.dockerpath, cmdOptions, getChildProcessOptions());
+            dockerProcess.on('close', function(code) {
+              log.info('docker rmi ' + containerSpec.imagename + ' exited with code ' + code);
+              
+              if (code === 0 || ignoreErrors)
+                removeImageResolve();
+              else
+                removeImageReject('docker rmi ' + containerSpec.imagename + ' returned error code ' + code);
+            });
+            dockerProcess.on('error', function(err) {
+              if (ignoreErrors)
+                removeImageResolve();
+              else
+                removeImageReject('docker rmi ' + containerSpec.imagename + ' error '+ + err);
+            });
+          });
+          removeTasks.push(removeTask);
+        });
+        
+        Promise.all(removeTasks).then(() => removeImagesDone()).catch((err) => removeImagesDone(err));
+      },    
+    
+      function(networkTeardownDown) {
+        var cmdOptions = [];
+        cmdOptions.push('network');
+        cmdOptions.push('rm');
+        cmdOptions.push(config.docker.networkname);
+
+        log.debug('Running Docker Command: ' + config.docker.dockerpath + ' ' + _.join(cmdOptions, ' '));
+
+        var dockerProcess = child_process.spawn(config.docker.dockerpath, cmdOptions, getChildProcessOptions());
+        dockerProcess.on('close', function(code) {
+          log.info('docker network rm exited with code ' + code);
+          
+          if (code === 0 || ignoreErrors)
+            networkTeardownDown();
+          else
+            networkTeardownDown('docker network rm returned error code ' + code);
+        });
+        dockerProcess.on('error', function(err) {
+          if (ignoreErrors)
+            networkTeardownDown();
+          else
+            networkTeardownDown('docker network rm error '+ + err);
+        });
+      },
       
-      if (code === 0 || ignoreErrors)
-        teardownResolve();
+    ],
+    
+    function(err) {
+      if (err)
+        teardownReject(err);
       else
-        teardownReject('docker network rm returned error code ' + code);
-    });
-    dockerProcess.on('error', function(err) {
-      if (ignoreErrors)
         teardownResolve();
-      else
-        teardownReject('docker network rm error '+ + err);
-    });
+    });      
+        
   });
 }
 
