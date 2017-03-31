@@ -12,7 +12,7 @@ function MsgQueue() {
 }
 
 MsgQueue.prototype.push = function(msg) {
-  var key = msg.channelId;
+  var key = msg.channel;
   if (!key) key = 'empty';
   
   if (this.listeners[key] && this.listeners[key].length > 0) {
@@ -27,8 +27,8 @@ MsgQueue.prototype.push = function(msg) {
   //log.debug(JSON.stringify(this.listeners));
 };
 
-MsgQueue.prototype.registerListener = function(callback, channelId) {
-  var key = channelId;
+MsgQueue.prototype.registerListener = function(callback, channel) {
+  var key = channel;
   if (!key) key = 'empty';
   
   if (this.queues[key] && this.queues[key].length > 0) {

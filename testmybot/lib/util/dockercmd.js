@@ -164,41 +164,46 @@ function teardownContainer(ignoreErrors) {
     async.series([
     
       function(removeImagesDone) {
-        var removeTasks = [];
-        
-        _.forOwn(config.docker.container, function(containerSpec) {
-          
-          if (!containerSpec.run)
-            return;
-          
-          var removeTask = new Promise(function(removeImageResolve, removeImageReject) {
-        
-            var cmdOptions = [];
-            cmdOptions.push('rmi');
-            cmdOptions.push(containerSpec.imagename);
+				if (config.docker.removeimages) {
+				
+					var removeTasks = [];
+					
+					_.forOwn(config.docker.container, function(containerSpec) {
+						
+						if (!containerSpec.run)
+							return;
+						
+						var removeTask = new Promise(function(removeImageResolve, removeImageReject) {
+					
+							var cmdOptions = [];
+							cmdOptions.push('rmi');
+							cmdOptions.push(containerSpec.imagename);
 
-            log.info('Running Docker Command: ' + config.docker.dockerpath + ' ' + _.join(cmdOptions, ' '));
+							log.info('Running Docker Command: ' + config.docker.dockerpath + ' ' + _.join(cmdOptions, ' '));
 
-            var dockerProcess = child_process.spawn(config.docker.dockerpath, cmdOptions, getChildProcessOptions());
-            dockerProcess.on('close', function(code) {
-              log.info('docker rmi ' + containerSpec.imagename + ' exited with code ' + code);
-              
-              if (code === 0 || ignoreErrors)
-                removeImageResolve();
-              else
-                removeImageReject('docker rmi ' + containerSpec.imagename + ' returned error code ' + code);
-            });
-            dockerProcess.on('error', function(err) {
-              if (ignoreErrors)
-                removeImageResolve();
-              else
-                removeImageReject('docker rmi ' + containerSpec.imagename + ' error '+ + err);
-            });
-          });
-          removeTasks.push(removeTask);
-        });
-        
-        Promise.all(removeTasks).then(() => removeImagesDone()).catch((err) => removeImagesDone(err));
+							var dockerProcess = child_process.spawn(config.docker.dockerpath, cmdOptions, getChildProcessOptions());
+							dockerProcess.on('close', function(code) {
+								log.info('docker rmi ' + containerSpec.imagename + ' exited with code ' + code);
+								
+								if (code === 0 || ignoreErrors)
+									removeImageResolve();
+								else
+									removeImageReject('docker rmi ' + containerSpec.imagename + ' returned error code ' + code);
+							});
+							dockerProcess.on('error', function(err) {
+								if (ignoreErrors)
+									removeImageResolve();
+								else
+									removeImageReject('docker rmi ' + containerSpec.imagename + ' error '+ + err);
+							});
+						});
+						removeTasks.push(removeTask);
+					});
+					
+					Promise.all(removeTasks).then(() => removeImagesDone()).catch((err) => removeImagesDone(err));
+				} else {
+					removeImagesDone();
+				}
       },    
     
       function(networkTeardownDown) {

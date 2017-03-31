@@ -283,9 +283,13 @@ function setupTestSuite(testcaseCb, assertCb, failCb) {
                 says(convomsg.channel).then((saysmsg) => {
                   if (saysmsg.messageText) {
                     log.debug(testcase.name + ': says ' + saysmsg.messageText);
-                    assertCb(saysmsg.messageText, convomsg.msg);
+
+										var response = saysmsg.messageText.split(/\r?\n/).map((line) => line.trim()).join(' ').trim();
+										var tomatch = convomsg.msg.split(/\r?\n/).map((line) => line.trim()).join(' ').trim();
+                    assertCb(response, tomatch);
                   } else {
                     log.debug(testcase.name + ': says ' + JSON.stringify(saysmsg));
+
                     compareObject(assertCb, failCb, saysmsg, convomsg.msg);
                   }
                   convomsgDone();

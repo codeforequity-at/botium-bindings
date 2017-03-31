@@ -31,12 +31,12 @@ testmybot.beforeAll(configToSet).then((config) => {
 		if (data) {
 		
 			if (data.messageText) {
-				console.log(chalk.blue('BOT SAYS: ' + data.messageText));
-				conversation.push({ from: 'bot', msg: data.messageText });
+				console.log(chalk.blue('BOT SAYS ' + (data.channel ? '(' + data.channel + '): ' : ': ') + data.messageText));
+				conversation.push({ from: 'bot', msg: data.messageText, channel: data.channel });
 			} else {
-				console.log(chalk.blue('BOT SAYS: '));
+				console.log(chalk.blue('BOT SAYS ' + (data.channel ? '(' + data.channel + '): ' : ': ')));
 				console.log(chalk.blue(JSON.stringify(data.message, null, 2)));
-				conversation.push({ from: 'bot', msg: JSON.stringify(data.message, null, 2) });
+				conversation.push({ from: 'bot', msg: JSON.stringify(data.message, null, 2), channel: data.channel });
 			}
 		}
 	});
@@ -81,7 +81,13 @@ testmybot.beforeAll(configToSet).then((config) => {
 				(err) => {
 					console.log(chalk.red(err));
 				});
-					
+		} else if (line.startsWith('#')) {
+      var channel = line.substr(0, line.indexOf(' '));
+      var text = line.substr(line.indexOf(' ') + 1);
+
+			socket.emit('bothears', 'me', text, channel);
+			conversation.push({ from: 'me', msg: text, channel: channel });
+      
 		} else {
 			socket.emit('bothears', 'me', line);
 			conversation.push({ from: 'me', msg: line });

@@ -185,9 +185,9 @@ if (!demomode) {
     saysContent.message = req.body;
     if (req.body.channel) {
       if (channelNameMap[req.body.channel])
-        saysContent.channelId = channelNameMap[req.body.channel];
+        saysContent.channel = channelNameMap[req.body.channel];
       else
-        saysContent.channelId = req.body.channel;
+        saysContent.channel = req.body.channel;
     }
     broadcastBotSays(saysContent);    
     
@@ -206,13 +206,13 @@ if (!demomode) {
       orig: req.body,
     };
     
-    saysContent.messageText = req.body.name;
+    saysContent.messageText = ':' + req.body.name + ':';
     saysContent.message = req.body;
     if (req.body.channel) {
       if (channelNameMap[req.body.channel])
-        saysContent.channelId = channelNameMap[req.body.channel];
+        saysContent.channel = channelNameMap[req.body.channel];
       else
-        saysContent.channelId = req.body.channel;
+        saysContent.channel = req.body.channel;
     }
     broadcastBotSays(saysContent);    
     

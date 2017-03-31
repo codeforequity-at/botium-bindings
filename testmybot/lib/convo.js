@@ -175,7 +175,11 @@ function writeConvo(convo, errorIfExists) {
         contents += EOL;
         
 				convo.conversation.forEach(function (set) {
-					contents += '#' + set.from + EOL;
+					contents += '#' + set.from;
+          if (set.channel) {
+            contents += ' ' + set.channel;
+          }
+          contents += EOL;
           
           if (_.isString(set.msg)) {
             contents += set.msg + EOL + EOL;

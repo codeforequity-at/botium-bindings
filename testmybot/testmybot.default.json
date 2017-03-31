@@ -5,7 +5,7 @@
   "docker": {
     "dockerpath": "docker",
     "networkname": "testmybot_network",
-    "debugoutput": false,
+    "removeimages": false,
     "container": {
       "testmybot": {
         "run": true,
