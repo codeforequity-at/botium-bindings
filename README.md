@@ -56,10 +56,8 @@ Current Requirements on your Chatbot:
 * Structured messages supported
 
 ### Special considerations for Slack API
-* Private channel (#private) and public channel (#general) supported
-* Direct mention of your bot with @testmybot
-* Only Web API and Events API supported
-* No Slash commands, no RTM API
+
+See [README-Slack.md](https://github.com/codeforequity-at/testmybot/blob/master/README-Slack.md)
 
 ## Installation
 Usually, you won't install this project on it's own, but you will include it in your Chatbot projects.
@@ -67,8 +65,6 @@ Usually, you won't install this project on it's own, but you will include it in 
 To install it to your chatbot project, type:
 
     $ npm install testmybot --save-dev
-    $ npm install testmybot-fbmock --save-dev
-    $ npm install testmybot-slackmock --save-dev
 
 Please note that you have to install it in your local development directory (not in global registry with -g).
 
@@ -88,16 +84,13 @@ Please check out one of the samples to get a quick overview.
 Basic Usage
 ===========
 
-You can find some sample chatbot projects with rudimentary tests [here](https://github.com/codeforequity-at/botkit-starter-facebook) and [here](https://github.com/codeforequity-at/testmybot-sample1). 
-
 With [Jasmine](https://jasmine.github.io/), the setup looks like this:
 
     $ npm install testmybot --save-dev
-    $ npm install testmybot-fbmock --save-dev
     $ npm install jasmine --save-dev
     $ ./node_modules/.bin/jasmine init
 	
-Add a file named "testmybot.json" to your project directory. A very basic configuration, which is always required:
+Add a file named "testmybot.json" to your project directory. A very basic configuration for a Facebook Chatbot looks like this::
 
     {
       "docker": {
@@ -167,8 +160,8 @@ Take special care for:
 * Setup and Teardown has high timeouts, because buildling, running and stopping Docker containers can take some time. Especially on first run, it will take very long. Afterwards, the Docker cache speeds up things.
 * TestMyBot uses [Bluebird](http://bluebirdjs.com) Promises
 * The test API is rather simple
- * bot.hears: send a text (or structured content) to your chatbot
- * bot.says: receive a text (or structured content) from your chatbot
+  * bot.hears: send a text (or structured content) to your chatbot
+  * bot.says: receive a text (or structured content) from your chatbot
 
 In your package.json, define a script for TestMyBot names _start_testmybot_, which is run in the Docker container.
 
@@ -181,7 +174,7 @@ In your package.json, define a script for TestMyBot names _start_testmybot_, whi
 You can hand over environment variables to your chatbot here. 
 And finally, run your tests with Jasmine:
 
-    $ ./node_modules/.bin/jasmine init
+    $ ./node_modules/.bin/jasmine
 
 You will see some output from Docker, and in the end, your Jasmine tests should succeed (of course).
 
