@@ -16,6 +16,7 @@ Here you find a quick introduction how to test your Slack Chatbot with TestMyBot
 * im.open
 * auth.test
 * oauth.access
+- [ ] Interactive Messages
 - [ ] Incoming / Outgoing Webhooks
 - [ ] Slack RTM
 - [ ] Slash Commands
