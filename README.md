@@ -52,23 +52,15 @@ Current Requirements on your Chatbot:
 * Request verification has to be disabled (for Botkit: validate_requests should be set to false)
 
 ### Special considerations for Facebook Messenger Platform
-* Only 1:1 conversations supported
-* Structured messages supported
+
+See [README-Facebook.md](https://github.com/codeforequity-at/testmybot/blob/master/README-Facebook.md)
 
 ### Special considerations for Slack API
 
 See [README-Slack.md](https://github.com/codeforequity-at/testmybot/blob/master/README-Slack.md)
 
-## Installation
-Usually, you won't install this project on it's own, but you will include it in your Chatbot projects.
-
-To install it to your chatbot project, type:
-
-    $ npm install testmybot --save-dev
-
-Please note that you have to install it in your local development directory (not in global registry with -g).
-
-## Quick Start
+Quick Start
+===========
 
 Please check out one of the samples to get a quick overview.
 
@@ -81,8 +73,16 @@ Please check out one of the samples to get a quick overview.
 * [Custom Facebook Sample](https://github.com/codeforequity-at/testmybot-sample1)
 * [Botkit Slack Sample](https://github.com/codeforequity-at/botkit-starter-slack)
 
-Basic Usage
-===========
+Installation and Basic Usage
+============================
+
+Usually, you won't install this project on it's own, but you will include it in your Chatbot projects.
+
+To install it to your chatbot project, type:
+
+    $ npm install testmybot --save-dev
+
+Please note that you have to install it in your local development directory (not in global registry with -g).
 
 With [Jasmine](https://jasmine.github.io/), the setup looks like this:
 
@@ -90,7 +90,7 @@ With [Jasmine](https://jasmine.github.io/), the setup looks like this:
     $ npm install jasmine --save-dev
     $ ./node_modules/.bin/jasmine init
 	
-Add a file named "testmybot.json" to your project directory. A very basic configuration for a Facebook Chatbot looks like this::
+Add a file named "testmybot.json" to your project directory. A very basic configuration for a Facebook Chatbot looks like this:
 
     {
       "docker": {
@@ -303,20 +303,9 @@ There are three steps for buildling the configuration:
 * ./testmybot.default
 * "config" Parameter to "beforeAll" method
 
-The subsequent steps are overwriting the configuration parameters from the previous steps. The .json-files are converted into a plain object in Node.js. Here are some settings which you may have to adapt in your environment (but in most cases, the defaults will work fine).
+The subsequent steps are overwriting the configuration parameters from the previous steps. The .json-files are converted into a plain object in Node.js.
 
-Parameter  | Default Value | Description
-------------- | ------------- | -------------
-testendpoint  | http://127.0.0.1:46199 | The TestMyBot Facebook Mocker is running on this endpoint. For older Docker installations on Windows or Mac OS (running with docker-machine), you have to change the IP to match the IP address of the Docker VM (_$docker-machine ip default_)
-defaultsaytimeout  | 5000 | Timeout (in milliseconds) for the says-method to wait for your chatbot to answer
-docker.dockerpath | "docker" | Path to your Docker executable
-docker.container.testmybot | | Docker configuration for the container which will run your chatbot. If your chatbot is not running on Node.js you can define another Dockerfile and Dockerdir here (see _./node_modules/testmybot/testmybot.default.json_ as a reference)
-docker.container.testmybot-fbmock | | Docker configuration for the TestMyBot Facebook Mocker
-docker.container.testmybot-fbmock.env | | Environment variables for the Docker container. You have to adapt TESTMYBOT_FACEBOOK_WEBHOOKPORT and TESTMYBOT_FACEBOOK_WEBHOOKPATH here (see Basic Usage section) to match your chatbot.
-docker.container.testmybot-slackmock | | Docker configuration for the TestMyBot Slack Mocker
-docker.container.testmybot-slackmock.env | | Environment variables for the Docker container. You have to adapt TESTMYBOT_SLACK_EVENTPORT, TESTMYBOT_SLACK_EVENTPATH, TESTMYBOT_SLACK_OAUTHPORT and TESTMYBOT_SLACK_OAUTHPATH here (see Basic Usage section) to match your chatbot.
-
-Please see _./node_modules/testmybot/testmybot.default.json_ for reference values.
+Please see [_./node_modules/testmybot/testmybot.default.json_](https://github.com/codeforequity-at/testmybot/blob/master/testmybot/testmybot.default.json) for information what settings you have to override in your project configuration.
 
 API
 ===
@@ -369,7 +358,6 @@ Work is ongoing
 - [x] Define Test Cases with TestMyBot API calls
 - [x] Define Test Cases by conversation transcripts
 - [ ] Run your Tests in _live environment_ with _real_ Endpoints
-
 
 
 License
