@@ -46,10 +46,20 @@ Of course, you need Node.js and npm installed and working.
 
 Current Requirements on your Chatbot:
 * Developed in Node.js (other languages supported, but with more configuration effort)
-* Developed with Facebook Messenger Platform
-* Facebook Webhook has to listen on all interfaces (listen to 0.0.0.0)
+* Developed with Facebook Messenger Platform or Slack API
+* Webhook has to listen on all interfaces (listen to 0.0.0.0)
 * Accept self-signed SSL certificates (for Node.js, NODE_TLS_REJECT_UNAUTHORIZED environment variable is set to 0 automatically by TestMyBot)
 * Request verification has to be disabled (for Botkit: validate_requests should be set to false)
+
+### Special considerations for Facebook Messenger Platform
+* Only 1:1 conversations supported
+* Structured messages supported
+
+### Special considerations for Slack API
+* Private channel (#private) and public channel (#general) supported
+* Direct mention of your bot with @testmybot
+* Only Web API and Events API supported
+* No Slash commands, no RTM API
 
 ## Installation
 Usually, you won't install this project on it's own, but you will include it in your Chatbot projects.
@@ -58,6 +68,7 @@ To install it to your chatbot project, type:
 
     $ npm install testmybot --save-dev
     $ npm install testmybot-fbmock --save-dev
+    $ npm install testmybot-slackmock --save-dev
 
 Please note that you have to install it in your local development directory (not in global registry with -g).
 
@@ -69,6 +80,10 @@ Please check out one of the samples to get a quick overview.
     $ cd testmybot-sample1
     $ npm install
     $ ./node_modules/.bin/jasmine
+    
+* [Botkit Facebook Sample](https://github.com/codeforequity-at/testmybot-sample)
+* [Custom Facebook Sample](https://github.com/codeforequity-at/testmybot-sample1)
+* [Botkit Slack Sample](https://github.com/codeforequity-at/botkit-starter-slack)
 
 Basic Usage
 ===========
@@ -88,6 +103,7 @@ Add a file named "testmybot.json" to your project directory. A very basic config
       "docker": {
         "container": {
           "testmybot-fbmock": {
+	    "run": true,
             "env": {
               "TESTMYBOT_FACEBOOK_WEBHOOKPORT": 5000,
               "TESTMYBOT_FACEBOOK_WEBHOOKPATH": "webhook"
@@ -201,8 +217,10 @@ The semantics are simple:
 * The first line is the name of the test case
 * The second line up to the first line starting with # is an optional description text
 * A line starting with #me will send the following text to your Chatbot
+  * Anything following will be the channel to send to - for example: #me #private will send the message to the private channel (Slack only)
 * A line starting with #bot will expect your Chatbot to answer accordingly
-
+  * Anything following will be the channel to listen to - for example: #bot #general will wait for a message on the #general-channel (Slack only)
+  
 That's it. 
 
 ## Structured Messages
@@ -302,27 +320,30 @@ docker.dockerpath | "docker" | Path to your Docker executable
 docker.container.testmybot | | Docker configuration for the container which will run your chatbot. If your chatbot is not running on Node.js you can define another Dockerfile and Dockerdir here (see _./node_modules/testmybot/testmybot.default.json_ as a reference)
 docker.container.testmybot-fbmock | | Docker configuration for the TestMyBot Facebook Mocker
 docker.container.testmybot-fbmock.env | | Environment variables for the Docker container. You have to adapt TESTMYBOT_FACEBOOK_WEBHOOKPORT and TESTMYBOT_FACEBOOK_WEBHOOKPATH here (see Basic Usage section) to match your chatbot.
+docker.container.testmybot-slackmock | | Docker configuration for the TestMyBot Slack Mocker
+docker.container.testmybot-slackmock.env | | Environment variables for the Docker container. You have to adapt TESTMYBOT_SLACK_EVENTPORT, TESTMYBOT_SLACK_EVENTPATH, TESTMYBOT_SLACK_OAUTHPORT and TESTMYBOT_SLACK_OAUTHPATH here (see Basic Usage section) to match your chatbot.
 
 Please see _./node_modules/testmybot/testmybot.default.json_ for reference values.
 
 API
 ===
 * testmybot.beforeAll(config) - builds Docker networking and containers from your configuration
- * config (optional) - you can pass an optional configuration argument (merged into other configuration)
- * returns a bluebird Promise
+  * config (optional) - you can pass an optional configuration argument (merged into other configuration)
+  * returns a bluebird Promise
 * testmybot.afterAll() - removes Docker networking and containers
- * returns a bluebird Promise
+  * returns a bluebird Promise
 * testmybot.beforeEach() - starts Docker containers and waits until online
- * returns a bluebird Promise
+  * returns a bluebird Promise
 * testmybot.afterEach() - stops Docker containers
- * returns a bluebird Promise
-* testmybot.hears(msg, channelId) - send a text (or structured content) to your chatbot
- * msg - text or structured content
- * channelId (optional) - the channel to send your message to (in Facebook: "sender"/"recipient" or user profile id). You can mock parallel conversations with multiple users
-* testmybot.says(channelId, timeoutMillis) - receive a text (or structured content) from your chatbot
- * channelId (optional) - receive for this channel (or user profile id)
- * timeoutMillis (optional) - timeout when not receiving anything (default: 5000)
- * returns a bluebird Promise, which resolves to the the received message. 
+  * returns a bluebird Promise
+* testmybot.hears(msg, from, channel) - send a text (or structured content) to your chatbot
+  * msg - text or structured content
+  * from - sender of the message
+  * channel (optional) - the channel to send your message to (Slack only). You can mock parallel conversations with multiple users
+* testmybot.says(channel, timeoutMillis) - receive a text (or structured content) from your chatbot
+  * channel (optional) - receive for this channel (Slack only)
+  * timeoutMillis (optional) - timeout when not receiving anything (default: 5000)
+  * returns a bluebird Promise, which resolves to the the received message. 
  
 Here is an example for a received message. It contains (for brevity) the message text (if applicable), the full original message (in "orig") and the message body (in "message). For structured messages, there is no messageText.
 
@@ -339,15 +360,15 @@ Here is an example for a received message. It contains (for brevity) the message
           "message": {
               "text": "Text received, echo: hello"
           },
-          "channelId": 4440090943
+          "channel": "#private"
       }
 
 Outlook
 =======
-There is a long way to go for this library.
+Work is ongoing
 
 - [x] Support Facebook Chatbots
-- [ ] Support Slack Chatbots
+- [x] Support Slack Chatbots
 - [ ] Support Wechat Chatbots
 - [x] Support Node.js Chatbots
 - [ ] Support Microsoft Bot Framework Chatbots
