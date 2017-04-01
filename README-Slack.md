@@ -60,7 +60,7 @@ You can hand over environment variables to your chatbot here.
 
 ## Preparing your test cases
 
-Now it's time to define your test cases. Please follow the guide in the section "How to Compose Test Cases" in the [project description](https://github.com/codeforequity-at/testmybot/blob/master/README.md).
+Now it's time to define your test cases. Please follow the guide in the section "How to Compose Test Cases" in the [project description](https://github.com/codeforequity-at/testmybot/blob/master/README.md#how-to-compose-test-cases).
 
 ## Running your test cases
 
