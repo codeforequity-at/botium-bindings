@@ -5,6 +5,7 @@ const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
 const opn = require('opn');
+const url = require('url');
 const testmybot = require('testmybot');
 const convo = require('testmybot/lib/convo');
 
@@ -46,7 +47,9 @@ router.route('/startdocker')
     
     testmybot.beforeAll(configToSet)
     .then((config) => {
-      testendpoint = config.testendpoint;
+      testendpoint = config.testendpoint_ide;
+      if (!testendpoint) testendpoint = config.testendpoint;
+      
       return testmybot.beforeEach();
     }).then(function() {
       res.json({ success: true, testendpoint: testendpoint });
@@ -124,7 +127,7 @@ server.listen(idePort, function(err) {
   }
   else {
     console.log('TestMyBot IDE listening on port ' + idePort);
-    opn('http://127.0.0.1:' + idePort);
+    opn('http://127.0.0.1:' + idePort).catch((err) => console.log('Starting browser not possible (' + err + '), please connect manually'));
   }
 });
 

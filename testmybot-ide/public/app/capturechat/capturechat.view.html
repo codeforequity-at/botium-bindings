@@ -49,10 +49,13 @@
   <div class="panel-footer">
     <form ng-submit="vm.send()">
       <div class="input-group">
-        <input type="text" class="form-control" ng-model="vm.sendtext" ng-disabled="vm.busy">
+        <input type="text" class="form-control" ng-model="vm.sendtext" ng-disabled="vm.busy" placeholder="Enter text to send">
         <span class="input-group-btn">
           <button class="btn btn-primary" ng-click="vm.send()" ng-disabled="!vm.sendtext || vm.busy">Send</button>
         </span>
+      </div>
+      <div class="input-group">
+        <input type="text" class="form-control" ng-model="vm.sendchannel" ng-disabled="vm.busy" placeholder="Enter channel">
       </div>
     </form>
   </div>

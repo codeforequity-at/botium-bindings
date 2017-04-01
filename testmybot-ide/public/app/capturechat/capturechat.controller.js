@@ -10,6 +10,7 @@
     vm.busy = false;
     
     vm.sendtext = '';
+    vm.sendchannel = '';
     
     vm.messages = [];
     
@@ -27,11 +28,12 @@
       if (!vm.sendtext) return;
       if (!vm.ChatSocket) return;
       
-      vm.ChatSocket.emit('bothears', 'me', vm.sendtext);
+      vm.ChatSocket.emit('bothears', 'me', vm.sendtext, vm.sendchannel);
       
       vm.messages.push({
         msg: vm.sendtext,
-        from: 'me'
+        from: 'me',
+        channel: vm.sendchannel
       });
       vm.scrollChatBottom();
       
@@ -42,10 +44,11 @@
       if (!msg) return;
       if (!vm.ChatSocket) return;
 
-      vm.ChatSocket.emit('bothears', 'me', msg);
+      vm.ChatSocket.emit('bothears', 'me', msg, vm.sendchannel);
       vm.messages.push({
         msg: msg,
-        from: 'me'
+        from: 'me',
+        channel: vm.sendchannel
       });
       vm.scrollChatBottom();
     });
@@ -63,7 +66,8 @@
         $scope.$apply(function() {
           vm.messages.push({
             msg: msg,
-            from: 'bot'
+            from: 'bot',
+            channel: data.channel
           });
         });
         vm.scrollChatBottom();

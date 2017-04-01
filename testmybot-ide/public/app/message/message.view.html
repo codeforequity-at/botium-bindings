@@ -6,7 +6,10 @@
       <i class="fa fa-android fa-2x" aria-hidden="true" ng-if="vm.msg.from === 'bot'"></i>
     </a>
     <div class="media-body">
-      <span ng-if="vm.text" ng-class="{ 'text-left': vm.msg.from === 'me', 'text-right': vm.msg.from === 'bot' }">{{ vm.text }}</span>
+      <div ng-if="vm.msg.channel" ng-class="{ 'text-left': vm.msg.from === 'me', 'text-right': vm.msg.from === 'bot' }">{{ vm.msg.channel }}</div>
+	
+	
+      <div ng-if="vm.text" ng-class="{ 'text-left': vm.msg.from === 'me', 'text-right': vm.msg.from === 'bot' }">{{ vm.text }}</div>
 
       <div ng-if="vm.structured && vm.structured.text">
         <div class="message-structured-container">
