@@ -83,7 +83,6 @@ function beforeEach() {
           fbapiStopListener = null;
         }
         fbapiStopListener = fbapi.listen((err, event) => {
-          console.log(JSON.stringify(event, null, 2));
           if (err) {
             log.error('fbapi Error: ' + err);
           } else if (event.type === 'message') {
