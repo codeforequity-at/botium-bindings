@@ -3,6 +3,12 @@
 	"testendpoint_ide": "",
   "defaultsaytimeout": 5000,
   "startupphase": 0,
+  "containermode": "docker",
+  "fbdirect": {
+    "pageid": "",
+    "fbuser": "",
+    "fbpassword": ""
+  },
   "docker": {
     "dockerpath": "docker",
     "networkname": "testmybot_network",

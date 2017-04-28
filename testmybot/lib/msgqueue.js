@@ -9,9 +9,19 @@ function MsgQueue() {
   }
   this.queues = { };
   this.listeners = { };
+  this.pushListener = null;
 }
 
+MsgQueue.prototype.clear = function() {
+  this.queues = { };
+  this.listeners = { };
+};
+
 MsgQueue.prototype.push = function(msg) {
+  if (this.pushListener) {
+    this.pushListener(msg);
+  }
+  
   var key = msg.channel;
   if (!key) key = 'empty';
   
@@ -25,6 +35,10 @@ MsgQueue.prototype.push = function(msg) {
   }
   //log.debug(JSON.stringify(this.queues));
   //log.debug(JSON.stringify(this.listeners));
+};
+
+MsgQueue.prototype.registerPushListener = function(callback) {
+  this.pushListener = callback;
 };
 
 MsgQueue.prototype.registerListener = function(callback, channel) {

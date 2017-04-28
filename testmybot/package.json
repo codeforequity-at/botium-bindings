@@ -8,6 +8,7 @@
   "dependencies": {
     "async": "^2.1.5",
     "bluebird": "^3.5.0",
+    "facebook-chat-api": "^1.3.0",
     "is-json": "^2.0.1",
     "lodash": "^4.17.4",
     "mkdirp": "^0.5.1",

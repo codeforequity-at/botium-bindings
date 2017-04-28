@@ -1,27 +1,17 @@
 'use strict';
 
-const docker = require('./util/dockercmd');
 const log = require('./util/log');
 const readConfig = require('./readconfig');
-const convo = require('./convo');
 const MsgQueue = require('./msgqueue');
 const testbuilder = require('./testbuilder');
 
-const request = require('request');
 const Promise = require('bluebird');
 const async = require('async');
-const url = require('url');
-const tcpPortUsed = require('tcp-port-used');
-const io = require('socket.io-client');
 const _ = require('lodash');
 
-function randomInt(low, high) {
-  return Math.floor(Math.random() * (high - low) + low);
-}
-
 var config = { };
-var socket = null;
-var msgqueue = null;
+var container = null;
+var msgqueue = new MsgQueue();
 
 function beforeAll(configToSet) {
   return new Promise(function(beforeAllResolve, beforeAllReject) {
@@ -37,15 +27,19 @@ function beforeAll(configToSet) {
         });
       },
       
-      function(dockerImageReady) {
+      function(containerReady) {
         log.debug(JSON.stringify(config, null, 2));
-        docker.setupContainer(config).then(function() {
-          dockerImageReady();
-        }).catch(function(err) {
-          dockerImageReady(err);
-        });
-      }
+        try {
+          container = require('./testmybot-' + config.containermode);
+          containerReady();
+        } catch (err) {
+          containerReady(err);
+        }
+      },
       
+      function(containerBeforeAllReady) {
+        container.beforeAll(config, msgqueue).then(containerBeforeAllReady).catch(containerBeforeAllReady);
+      }
      ],
     function(err) {
       if (err)
@@ -58,180 +52,24 @@ function beforeAll(configToSet) {
 }
 
 function afterAll() {
-  return new Promise(function(afterAllResolve, afterAllReject) {
-    async.series([
-
-      function(teardownContainerDone) {
-        docker.teardownContainer().then(function() {
-          teardownContainerDone();
-        }).catch(function(err) {
-          teardownContainerDone(err);
-        });
-      }
-    ],
-    function(err) {
-      if (err)
-        afterAllReject(err);
-      else
-        afterAllResolve();
-    });     
-  });
+  return container.afterAll();
 }
 
 function beforeEach() {
-  return new Promise(function(beforeEachResolve, beforeEachReject) {
-
-    async.series([
-      
-      function(startMockupsDone) {
-        docker.startContainer((spec) => spec.imagename !== 'testmybot').then(function() {
-          startMockupsDone();
-        }).catch(function(err) {
-          startMockupsDone(err);
-        });
-      },
-      
-      function(mockupOnline) {
-        var urlparts = url.parse(config.testendpoint);
-        
-        var online = false;
-        async.until(
-          () => online, 
-          (callback) => {
-            log.debug('checking port usage (' + config.testendpoint + ') before proceed (to have mocks online)');
- 
-            tcpPortUsed.check(parseInt(urlparts.port), urlparts.hostname)
-            .then(function(inUse) {
-                log.debug('port usage (' + config.testendpoint + '): ' + inUse);
-                if (inUse) {
-                  online = true;
-                  callback();
-                } else {
-                  setTimeout(callback, 2000);
-                }
-            }, function(err) {
-              log.warn('error on port check: ' + err);
-              setTimeout(callback, 2000);
-            });
-          },
-          (err) => mockupOnline(err)
-        );
-      },
-      
-      function(startContainerDone) {
-        docker.startContainer((spec) => spec.imagename === 'testmybot').then(function() {
-          startContainerDone();
-        }).catch(function(err) {
-          startContainerDone(err);
-        });
-      },
-
-      function(startupPhaseDone) {
-        if (config.startupphase) {
-          setTimeout(startupPhaseDone, config.startupphase);
-        } else {
-          startupPhaseDone();  
-        }
-      },
-     
-      function(endpointOnline) {
-        var online = false;
-        async.until(
-          () => online, 
-          (callback) => {
-            var options = {
-              uri: config.testendpoint,
-              method: 'GET'
-            };
-            log.debug('checking if chatbot (testmybot) is online ...');
-            request(options, function (err, response, body) {
-              if (err) {
-                setTimeout(callback, 2000);
-              } else if (response && response.statusCode === 200) {
-                log.debug('chatbot (testmybot) is online!');
-                online = true;
-                callback();
-              } else {
-                setTimeout(callback, 2000);
-              }
-            });
-          },
-          (err) => endpointOnline(err)
-        );
-      },
-      
-      function(socketStartDone) {
-        
-        if (socket) {
-          socket.disconnect();
-          socket = null;
-        }
-        
-        msgqueue = new MsgQueue();
-        
-        socket = io.connect(config.testendpoint);
-        socket.on('botsays', function (saysContent) {
-          log.debug('socket received botsays event ' + JSON.stringify(saysContent));
-          if (saysContent && msgqueue) {
-            msgqueue.push(saysContent);
-          }
-        });
-        socket.on('error', function(err) {
-          log.error('socket connection error! ' + err);
-        });
-        socketStartDone();
-      }
-      
-    ],
-    function(err) {
-      if (err)
-        beforeEachReject(err);
-      else
-        beforeEachResolve();
-    });     
-  });
+  msgqueue.clear();
+  return container.beforeEach();
 }
 
 function afterEach() {
-  return new Promise(function(afterEachResolve, afterEachReject) {
-
-    async.series([
-    
-      function(socketStopDone) {
-        if (socket) {
-          socket.disconnect();
-          socket = null;
-        }
-        msgqueue = null;
-        socketStopDone();
-      },
-    
-      function(stopContainerDone) {
-        docker.stopContainer().then(function() {
-          stopContainerDone();
-        }).catch(function(err) {
-          stopContainerDone(err);
-        });
-      }
-    ],
-    function(err) {
-      if (err)
-        afterEachReject(err);
-      else
-        afterEachResolve();
-    });     
-  });
+  return container.afterEach();
 }
 
-function hears(msg, from, channel) {
-  return new Promise(function(hearsResolve, hearsReject) {
-    if (socket) {
-      socket.emit('bothears', from, msg, channel);
-      hearsResolve();
-    } else {
-      hearsReject('Socket not online');
-    }
-  });
+function setupTestSuite(testcaseCb, assertCb, failCb) {
+  testbuilder.setupTestSuite(testcaseCb, assertCb, failCb, hears, says);
+}
+
+function hears() {
+  return container.hears.apply(container, arguments);
 }
 
 function says(channel, timeoutMillis) {
@@ -260,10 +98,6 @@ function says(channel, timeoutMillis) {
   });
 }
 
-function setupTestSuite(testcaseCb, assertCb, failCb) {
-  testbuilder.setupTestSuite(testcaseCb, assertCb, failCb, hears, says)
-}
-
 module.exports = {
   beforeAll: beforeAll,
   afterAll: afterAll,
@@ -271,5 +105,6 @@ module.exports = {
   afterEach: afterEach,
   setupTestSuite: setupTestSuite,
   hears: hears,
-  says: says
+  says: says,
+  msgqueue: msgqueue
 };
