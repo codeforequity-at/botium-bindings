@@ -1,14 +1,6 @@
 FROM node:boron
 
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+VOLUME /usr/src/app
+WORKDIR /usr/src/app/node_modules/testmybot-fbmock
 
-# Install app dependencies
-COPY ./package.json /usr/src/app/
-RUN npm install --production
-
-# Bundle app source
-COPY . /usr/src/app
-
-CMD [ "node", "index.js" ]
+CMD node index.js

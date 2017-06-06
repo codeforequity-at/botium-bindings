@@ -278,7 +278,8 @@ function startContainer(filterCallback) {
           cmdOptions.push(envkey + '=' + envvalue + '');
         });
       }
-
+      cmdOptions.push('-v');
+      cmdOptions.push(process.env.PWD + ':/usr/src/app');
       cmdOptions.push('--name');
       cmdOptions.push(containerSpec.containername);
       cmdOptions.push('--network');

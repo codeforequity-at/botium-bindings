@@ -1,14 +1,6 @@
 FROM node:boron
 
-# Create app directory
-RUN mkdir -p /usr/src/app
+VOLUME /usr/src/app
 WORKDIR /usr/src/app
 
-# Install app dependencies
-COPY ./package.json /usr/src/app/
-RUN npm install --production
-
-# Bundle app source
-COPY . /usr/src/app
-
-CMD [ "npm", "run-script", "start_testmybot" ]
+CMD npm run-script start_testmybot
