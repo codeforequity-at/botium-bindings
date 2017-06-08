@@ -2,7 +2,7 @@
 
 const log = require('./util/log');
 
-const fblogin = require("facebook-chat-api");
+const fblogin = require('facebook-chat-api');
 const Promise = require('bluebird');
 const async = require('async');
 const _ = require('lodash');
