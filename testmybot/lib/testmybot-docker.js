@@ -208,7 +208,7 @@ function afterEach() {
 function hears(msg, from, channel) {
   return new Promise(function(hearsResolve, hearsReject) {
     if (socket) {
-      socket.emit('bothears', from, msg, channel);
+      socket.emit('bothears', msg, from, channel);
       hearsResolve();
     } else {
       hearsReject('Socket not online');

@@ -10,7 +10,7 @@
       $http.post('/api/startdocker', {}).then(
         function successCallback(response) {
           if (response.data && response.data.success) {
-            callback(null, response.data.testendpoint);
+            callback(null);
           } else {
             callback(response.data.error);
           }

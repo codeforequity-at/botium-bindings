@@ -248,9 +248,9 @@ var serverTest = http.createServer(appTest).listen(publishPort, '0.0.0.0', funct
 
 var io = require('socket.io')(serverTest);
 io.on('connection', function (socket) {
-	socket.on('bothears', function (from, msg, channel) {
+	socket.on('bothears', function (msg, from, channel) {
 		console.log('received message from', from, 'msg', JSON.stringify(msg), 'channel', channel);
-		hears(msg, from);
+		hears(msg, from, channel);
 	});
 });
 

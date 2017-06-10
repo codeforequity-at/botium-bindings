@@ -28,7 +28,7 @@
       if (!vm.sendtext) return;
       if (!vm.ChatSocket) return;
       
-      vm.ChatSocket.emit('bothears', 'me', vm.sendtext, vm.sendchannel);
+      vm.ChatSocket.emit('bothears', vm.sendtext, 'me', vm.sendchannel);
       
       vm.messages.push({
         msg: vm.sendtext,
@@ -44,7 +44,7 @@
       if (!msg) return;
       if (!vm.ChatSocket) return;
 
-      vm.ChatSocket.emit('bothears', 'me', msg, vm.sendchannel);
+      vm.ChatSocket.emit('bothears', msg, 'me', vm.sendchannel);
       vm.messages.push({
         msg: msg,
         from: 'me',
@@ -139,13 +139,13 @@
         vm.ChatSocket = null;
       }
 
-      TestSuite.startdocker(function (err, testendpoint) {
+      TestSuite.startdocker(function (err) {
         vm.busy = false;
         if (err) {
           return Flash.create('danger', 'Error restarting Chatbot ' + JSON.stringify(err));
         } else {
           Flash.create('success', 'Chatbot started.');
-          vm.ChatSocket = ChatSocketFactory(testendpoint, $scope);
+          vm.ChatSocket = ChatSocketFactory($scope);
         }
       });
     };

@@ -44,5 +44,5 @@ rl.on('line', function(line){
     line = line.substr(line.indexOf(' ') + 1);
   }
   
-  socket.emit('bothears', 'me', line, channel);
+  socket.emit('bothears', line, 'me', channel);
 });

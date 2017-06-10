@@ -15,6 +15,7 @@
     "jasmine": "^2.6.0",
     "jasmine-reporters": "^2.2.1",
     "testmybot": "^0.2.4",
-    "testmybot-chat": "^0.2.4"
+    "testmybot-chat": "^0.2.4",
+    "testmybot-ide": "^0.2.4"
   }
 }

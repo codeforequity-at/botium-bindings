@@ -23,7 +23,7 @@ appIde.use(bodyParser.json());
 appIde.use("/public", express.static(__dirname + '/public'));
 
 appIde.get('/', function (req, res) {
-  var packageJson = require('../../package.json');
+  var packageJson = require(process.cwd() + '/package.json');
   
   var data = {
     module: packageJson,
@@ -38,8 +38,6 @@ var router = express.Router();
 router.route('/startdocker')
   .post(function(req, res) {
     
-    var testendpoint = '';
-    
     var configToSet = {};
     if (demomode) {
       configToSet = { 'docker': { 'container': { 'testmybot-fbmock': { 'env': { 'TESTMYBOT_FACEBOOK_DEMOMODE': true } } } } };
@@ -47,12 +45,10 @@ router.route('/startdocker')
     
     testmybot.beforeAll(configToSet)
     .then((config) => {
-      testendpoint = config.testendpoint_ide;
-      if (!testendpoint) testendpoint = config.testendpoint;
       
       return testmybot.beforeEach();
     }).then(function() {
-      res.json({ success: true, testendpoint: testendpoint });
+      res.json({ success: true });
     }).catch(function (err) {
       console.log(err);
       
@@ -131,9 +127,16 @@ server.listen(idePort, function(err) {
   }
 });
 
+var io = require('socket.io')(server);
+io.on('connection', function (socket) {
+	socket.on('bothears', function (msg, from, channel) {
+		console.log('received message from', from, 'msg', JSON.stringify(msg), 'channel', channel);
+    testmybot.hears(msg, from, channel);
+	});
+});
 
-
-
-
-
-
+testmybot.msgqueue.registerPushListener((msg) => {
+  if (msg) {
+    io.sockets.emit('botsays', msg);    
+  }
+});

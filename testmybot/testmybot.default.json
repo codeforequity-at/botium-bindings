@@ -1,6 +1,5 @@
 {
   "testendpoint": "http://127.0.0.1:46199",
-	"testendpoint_ide": "",
   "defaultsaytimeout": 5000,
   "startupphase": 0,
   "containermode": "docker",
