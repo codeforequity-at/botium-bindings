@@ -2,11 +2,16 @@ const Jasmine = require('jasmine');
 const reporters = require('jasmine-reporters');
 const Promise = require('bluebird');
 
+/* Define the JUnit XML Reporter for outputing Test Reports as XML */
+
 var junitReporter = new reporters.JUnitXmlReporter({
   savePath: __dirname,
   consolidateAll: false
 });
 
+/**
+ * Setup TestMyBot and wire it with Botkit
+ */
 var tmb = require('testmybot/lib/testmybot-local');
 var runner = null;
 var msgqueue = null;
