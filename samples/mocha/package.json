@@ -1,0 +1,23 @@
+{
+  "name": "testmybot-sample-mocha",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start_testmybot": "page_token=test verify_token=test node index.js",
+    "test": "./node_modules/.bin/mocha --reporter spec spec"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2",
+    "testmybot": "../../testmybot",
+    "testmybot-chat": "../../testmybot-chat",
+    "testmybot-fbmock": "../../testmybot-fbmock"
+  },
+  "dependencies": {
+    "botkit": "^0.5.4"
+  }
+}

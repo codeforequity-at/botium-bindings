@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports.setupJasmineTestSuite = function(timeout) {
   
-  if (!timeout) timeout = 60000
+  if (!timeout) timeout = 60000;
   
   testbuilder.setupTestSuite(
     (testcaseName, testcaseFunction) => {
