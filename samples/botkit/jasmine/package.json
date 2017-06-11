@@ -11,8 +11,7 @@
   "devDependencies": {
     "jasmine": "^2.6.0",
     "jasmine-reporters": "^2.2.1",
-    "testmybot": "^0.2.4",
-    "testmybot-chat": "^0.2.4"
+    "testmybot": "../../../testmybot"
   },
   "dependencies": {
     "botkit": "^0.5.4"
