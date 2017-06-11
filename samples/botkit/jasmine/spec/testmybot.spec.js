@@ -1,4 +1,5 @@
 const bot = require('testmybot');
+const botHelper = require('testmybot/helper/jasmine');
 
 describe('TestMyBot Sample Conversation Test Suite', function() {
 
@@ -17,15 +18,7 @@ describe('TestMyBot Sample Conversation Test Suite', function() {
   afterAll(function(done) {
     bot.afterAll().then(done);
   }, 180000);
-  
-  bot.setupTestSuite(
-    (testcaseName, testcaseFunction) => {
-      it(testcaseName, testcaseFunction, 60000);
-    },
-    (response, tomatch) => {
-      expect(response).toContain(tomatch);
-    },
-    (err) => fail(err)
-  )
+
+  botHelper.setupJasmineTestSuite(60000);
 });
  
