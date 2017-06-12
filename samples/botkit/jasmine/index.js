@@ -8,10 +8,12 @@ if (!process.env.verify_token) {
     process.exit(1);
 }
 
-var runner = require('./bot')(process.env.page_token, process.env.verify_token);
+var controller = require('./bot')(process.env.page_token, process.env.verify_token);
+var bot = controller.spawn({
+});
 
-runner.controller.setupWebserver(process.env.PORT || 3000, function(err, webserver) {
-    runner.controller.createWebhookEndpoints(webserver, runner.bot, function() {
+controller.setupWebserver(process.env.PORT || 3000, function(err, webserver) {
+    controller.createWebhookEndpoints(webserver, bot, function() {
         console.log('ONLINE!');
     });
 });

@@ -9,10 +9,6 @@ module.exports = function(page_token, verify_token) {
       verify_token: verify_token
   });
 
-  var bot = controller.spawn({
-  });
-
-
   controller.hears(['hello', 'hi'], 'message_received', function(bot, message) {
 
 
@@ -218,10 +214,7 @@ module.exports = function(page_token, verify_token) {
       return false;
   });
   
-  return {
-    controller: controller,
-    bot: bot
-  };
+  return controller;
 };
 
 function formatUptime(uptime) {
