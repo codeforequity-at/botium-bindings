@@ -1,6 +1,9 @@
 {
   "name": "testmybot-ide",
   "version": "0.2.4",
+  "engines": {
+    "node": ">=4.0"
+  },	
   "description": "Continuous Testing for your Chatbots - IDE",
   "main": "ide.js",
   "repository": {
