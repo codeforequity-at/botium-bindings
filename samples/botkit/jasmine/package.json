@@ -9,6 +9,7 @@
   "author": "Florian Treml",
   "license": "ISC",
   "devDependencies": {
+    "bluebird": "^3.5.0",
     "jasmine": "^2.6.0",
     "jasmine-reporters": "^2.2.1",
     "testmybot": "../../../testmybot"
