@@ -16,23 +16,32 @@ With [Jasmine](https://jasmine.github.io/), the setup looks like this:
     $ npm install jasmine --save-dev
     $ ./node_modules/.bin/jasmine init
 
-Add a file named "testmybot.json" to your project directory. A very basic configuration for a [Facebook Chatbot](https://github.com/codeforequity-at/testmybot-sample1) looks like this:
+Add a file named "testmybot.json" to your project directory. A very basic configuration for a [Facebook Chatbot](https://github.com/codeforequity-at/testmybot/tree/master/samples/facebook) looks like this:
 
     {
       "docker": {
         "container": {
           "testmybot-fbmock": {
-	          "run": true,
-            "env": {
-              "TESTMYBOT_FACEBOOK_WEBHOOKPORT": 5000,
-              "TESTMYBOT_FACEBOOK_WEBHOOKPATH": "webhook"
-            }
+	    "run": true,
           }
         }
       }
     }
 
-Take the [Testmybot Jasmine Spec file](https://github.com/codeforequity-at/botkit-starter-slack/blob/master/spec/testmybot.spec.js) from the sample and place it into your project directory (spec/testmybot.spec.js).
+This tells TestMyBot to startup the Facebook mocker.
+
+Add a file named "docker-compose.testmybot.override.yml" to your project directory. The sample from above contains a working example:
+
+	version: "2"
+	services:
+	    testmybot-fbmock:
+		environment:
+		    TESTMYBOT_FACEBOOK_WEBHOOKPORT: 5000
+		    TESTMYBOT_FACEBOOK_WEBHOOKPATH: "webhook"
+
+This file tells TestMyBot where the Facebook Webhook is located. Most likely you have to adjust it to your own Chatbot project. 
+
+Take the [Testmybot Jasmine Spec file](https://github.com/codeforequity-at/testmybot/blob/master/samples/facebook/spec/testmybot.spec.js) from the sample and place it into your project directory (spec/testmybot.spec.js).
 
 In your package.json, define a script for TestMyBot names _start_testmybot_, which is run in the Docker container.
 
