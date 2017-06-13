@@ -1,0 +1,12 @@
+version: "2"
+services:
+    testmybot:
+        build:
+            context: ../../
+            dockerfile: ./Dockerfile.testmybot
+        environment:
+            WEB_DOCUMENT_ROOT: "/usr/src/app"
+    testmybot-fbmock:
+        environment:
+            TESTMYBOT_FACEBOOK_WEBHOOKPORT: 80
+            TESTMYBOT_FACEBOOK_WEBHOOKPATH: "index.php"

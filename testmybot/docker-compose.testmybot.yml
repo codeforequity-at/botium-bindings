@@ -1,0 +1,10 @@
+version: "2"
+services:
+    testmybot:
+        build:
+            context: .
+            dockerfile: ./Dockerfile.testmybot
+        volumes:
+        - ../../:/usr/src/app
+        environment:
+            NODE_TLS_REJECT_UNAUTHORIZED: 0

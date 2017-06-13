@@ -1,0 +1,8 @@
+version: "2"
+services:
+    testmybot-slackmock:
+        environment:
+            TESTMYBOT_SLACK_EVENTPORT: 3000
+            TESTMYBOT_SLACK_EVENTPATH: "slack/receive"
+            TESTMYBOT_SLACK_OAUTHPORT: 3000
+            TESTMYBOT_SLACK_OAUTHPATH: "oauth"

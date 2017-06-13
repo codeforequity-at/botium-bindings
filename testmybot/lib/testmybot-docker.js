@@ -68,14 +68,22 @@ function beforeEach() {
 
     async.series([
       
-      function(startMockupsDone) {
-        docker.startContainer((spec) => spec.imagename !== 'testmybot').then(function() {
-          startMockupsDone();
+      function(startContainerDone) {
+        docker.startContainer().then(function() {
+          startContainerDone();
         }).catch(function(err) {
-          startMockupsDone(err);
+          startContainerDone(err);
         });
       },
       
+      function(startupPhaseDone) {
+        if (config.startupphase) {
+          setTimeout(startupPhaseDone, config.startupphase);
+        } else {
+          startupPhaseDone();  
+        }
+      },
+
       function(mockupOnline) {
         var urlparts = url.parse(config.testendpoint);
         
@@ -102,23 +110,7 @@ function beforeEach() {
           (err) => mockupOnline(err)
         );
       },
-      
-      function(startContainerDone) {
-        docker.startContainer((spec) => spec.imagename === 'testmybot').then(function() {
-          startContainerDone();
-        }).catch(function(err) {
-          startContainerDone(err);
-        });
-      },
 
-      function(startupPhaseDone) {
-        if (config.startupphase) {
-          setTimeout(startupPhaseDone, config.startupphase);
-        } else {
-          startupPhaseDone();  
-        }
-      },
-     
       function(endpointOnline) {
         var online = false;
         async.until(

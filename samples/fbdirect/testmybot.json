@@ -1,0 +1,8 @@
+{
+  "containermode": "fbdirect",
+  "fbdirect": {
+    "pageid": "YOUR_FACEBOOK_PAGE_ID",
+    "fbuser": "YOUR_FACEBOOK_LOGIN",
+    "fbpassword": "YOUR_FACEBOOK_PASSWORD"
+  }
+}

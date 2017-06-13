@@ -1,0 +1,26 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    font-family: 'helvetica', sans-serif;
+    font-size: 18px;
+}
+
+a {
+    color: #0741DD;
+}
+
+.button {
+    display: block;
+}
+
+.wrapper div {
+    text-align: center;
+}
+
+.wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

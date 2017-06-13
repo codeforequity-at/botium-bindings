@@ -1,0 +1,9 @@
+{
+  "docker": {
+    "container": {
+      "testmybot-slackmock": {
+        "run": true
+      }
+	  }
+  }
+}

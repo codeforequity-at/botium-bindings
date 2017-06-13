@@ -1,0 +1,19 @@
+{
+  "name": "testmybot-sample-monitoring",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=4.0"
+  },	
+  "description": "Serverless Monitoring Of Your Facebook Chatbot in 3 Easy Steps",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine"
+  },
+  "author": "Florian Treml",
+  "license": "MIT",
+  "dependencies": {
+    "jasmine": "^2.6.0",
+    "testmybot": "../../testmybot",
+    "testmybot-chat": "../../testmybot-chat"
+  }
+}

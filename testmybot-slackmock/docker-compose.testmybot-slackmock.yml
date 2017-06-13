@@ -1,0 +1,33 @@
+version: "2"
+services:
+    testmybot:
+        links:
+        - testmybot-slackmock:slack.com
+    testmybot-slackmock:
+        build:
+            context: ../testmybot-slackmock/
+            dockerfile: ./Dockerfile
+        ports:
+        - "46199:46199"
+        volumes:
+        - ../../:/usr/src/app
+        environment:
+            TESTMYBOT_SLACK_PUBLISHPORT: 46199
+            TESTMYBOT_SLACK_USERNAME:
+            TESTMYBOT_SLACK_BOTNAME:
+            TESTMYBOT_SLACK_TEAMNAME:
+            TESTMYBOT_SLACK_CHANNELNAME:
+            TESTMYBOT_AUTH_TOKEN:
+            TESTMYBOT_APPID:
+            TESTMYBOT_AUTH_TOKEN:
+            TESTMYBOT_SLACK_EVENTURL:
+            TESTMYBOT_SLACK_EVENTPORT:
+            TESTMYBOT_SLACK_EVENTPATH:
+            TESTMYBOT_SLACK_EVENTHOST: "testmybot"
+            TESTMYBOT_SLACK_EVENTPROTOCOL: "http"
+            TESTMYBOT_SLACK_OAUTHURL:
+            TESTMYBOT_SLACK_OAUTHPORT:
+            TESTMYBOT_SLACK_OAUTHPATH:
+            TESTMYBOT_SLACK_OAUTHHOST: "testmybot"
+            TESTMYBOT_SLACK_OAUTHPROTOCOL: "http"
+            TESTMYBOT_SLACK_DEMOMODE: "false"

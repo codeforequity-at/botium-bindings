@@ -1,0 +1,30 @@
+{
+  "name": "testmybot-sample1",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=4.0"
+  },	
+  "description": "Continuous Testing for your Chatbots - Sample Application 1",
+  "main": "index.js",
+  "scripts": {
+    "start_testmybot": "node index.js",
+    "testmybot_chat": "node node_modules/testmybot-chat/index.js",
+    "testmybot_ide": "node node_modules/testmybot-ide/ide.js",
+    "test": "./node_modules/.bin/jasmine"
+  },
+  "author": "Florian Treml",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "request": "^2.71.0"
+  },
+  "devDependencies": {
+    "jasmine": "^2.6.0",
+    "jasmine-reporters": "^2.2.1",
+    "testmybot": "../../testmybot",
+    "testmybot-fbmock": "../../testmybot-fbmock",
+    "testmybot-chat": "../../testmybot-chat",
+    "testmybot-ide": "../../testmybot-ide"
+  }
+}

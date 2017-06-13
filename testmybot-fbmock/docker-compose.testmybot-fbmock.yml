@@ -1,0 +1,26 @@
+version: "2"
+services:
+    testmybot:
+        links:
+        - testmybot-fbmock:graph.facebook.com
+    testmybot-fbmock:
+        build:
+            context: ../testmybot-fbmock/
+            dockerfile: ./Dockerfile
+        ports:
+        - "46199:46199"
+        volumes:
+        - ../../:/usr/src/app
+        environment:
+            TESTMYBOT_FACEBOOK_PUBLISHPORT: 46199
+            TESTMYBOT_FACEBOOK_PAGEID:
+            TESTMYBOT_FACEBOOK_USERPROFILEIDDEFAULT:
+            TESTMYBOT_FACEBOOK_USERPROFILELOCALE: "en_US"
+            TESTMYBOT_FACEBOOK_SEQNOSTART:
+            TESTMYBOT_FACEBOOK_SENDDELIVERY: "true"
+            TESTMYBOT_FACEBOOK_WEBHOOKURL:
+            TESTMYBOT_FACEBOOK_WEBHOOKPORT:
+            TESTMYBOT_FACEBOOK_WEBHOOKPATH:
+            TESTMYBOT_FACEBOOK_WEBHOOKHOST: "testmybot"
+            TESTMYBOT_FACEBOOK_WEBHOOKPROTOCOL: "http"
+            TESTMYBOT_FACEBOOK_DEMOMODE: "false"

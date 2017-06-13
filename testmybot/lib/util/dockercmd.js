@@ -9,6 +9,49 @@ const _ = require('lodash');
 
 var config = undefined;
 
+function dockerComposeCmdOptions() {
+  var cmdOptions = [];
+  cmdOptions.push('-p');
+  cmdOptions.push(require(process.cwd() + '/package.json').name);
+  if (process.env.DEBUG)
+    cmdOptions.push('--verbose');
+  
+  var containers = _.values(config.docker.container);
+  containers = _.filter(containers, (containerSpec) => containerSpec.run);
+  containers = _.sortBy(containers, ['dockercomposeorder']);
+  
+  _.forEach(containers, function(containerSpec) {
+    cmdOptions.push('-f');
+    cmdOptions.push(containerSpec.dockercomposefile);
+  });
+  cmdOptions.push('-f');
+  cmdOptions.push('./docker-compose.testmybot.override.yml');
+  return cmdOptions;
+}
+
+function dockerComposeRun(cmdOptions, ignoreErrors) {
+  return new Promise(function(composeResolve, composeReject) {
+
+    log.info('Running Docker Command: ' + config.docker.dockercomposepath + ' ' + _.join(cmdOptions, ' '));
+    
+    var dockerProcess = child_process.spawn(config.docker.dockercomposepath, cmdOptions, getChildProcessOptions());
+    dockerProcess.on('close', function(code) {
+      log.info('docker-compose exited with code ' + code);
+      
+      if (code === 0 || ignoreErrors)
+        composeResolve();
+      else
+        composeReject('docker-compose returned error code ' + code);
+    });
+    dockerProcess.on('error', function(err) {
+      if (ignoreErrors)
+        composeResolve();
+      else
+        composeReject('docker-compose error '+ + err);
+    });
+  });
+}
+
 function setupContainer(configToSet) {
   return new Promise(function(setupContainerResolve, setupContainerReject) {
 
@@ -20,14 +63,10 @@ function setupContainer(configToSet) {
           configDone('config.docker required');
           return;
         }
-        if (!configToSet.docker.dockerpath) {
-          configDone('config.docker.dockerpath required');
+        if (!configToSet.docker.dockercomposepath) {
+          configDone('config.docker.dockercomposepath required');
           return;
         }
-        if (!configToSet.docker.networkname) {
-          configDone('config.docker.networkname required');
-          return;
-        }  
         if (!configToSet.docker.container) {
           configDone('config.docker.container required');
           return;
@@ -35,41 +74,11 @@ function setupContainer(configToSet) {
         
         var valid = true;
         _.forOwn(configToSet.docker.container, function(containerSpec) {
-          if (!containerSpec.imagename) {
-            configDone('config.docker.container.imagename required');
+          if (!containerSpec.dockercomposefile) {
+            configDone('config.docker.container.dockercomposefile required');
             valid = false;
             return;
           }
-          if (!containerSpec.containername) {
-            configDone('config.docker.container.containername required');
-            valid = false;
-            return;
-          }
-          if (!containerSpec.dockerfile) {
-            configDone('config.docker.container.dockerfile required');
-            valid = false;
-            return;
-          }
-          if (!containerSpec.dockerdir) {
-            configDone('config.docker.container.dockerdir required');
-            valid = false;
-            return;
-          }
-          if (!containerSpec.networkalias) {
-            configDone('config.docker.container.networkalias required');
-            valid = false;
-            return;
-          }
-          
-          if (!containerSpec.hostmapping)
-            containerSpec.hostmapping = {};
-
-          if (!containerSpec.portmapping)
-            containerSpec.portmapping = {};
-
-          if (!containerSpec.env)
-            containerSpec.env = {};
-          
         });
         if (!valid) return;
         
@@ -85,67 +94,12 @@ function setupContainer(configToSet) {
         teardownContainer(true).then(() => teardownDone()).catch(() => teardownDone());
       },
 
-      function(networkCreateDone) {
-        var cmdOptions = [];
-        cmdOptions.push('network');
-        cmdOptions.push('create');
-        cmdOptions.push('-d');
-        cmdOptions.push('bridge');
-        cmdOptions.push(config.docker.networkname);
-
-        log.info('Running Docker Command: ' + config.docker.dockerpath + ' ' + _.join(cmdOptions, ' '));
-
-        var dockerProcess = child_process.spawn(config.docker.dockerpath, cmdOptions, getChildProcessOptions());
-        dockerProcess.on('close', function(code) {
-          log.info('docker network create exited with code ' + code);
-          
-          if (code === 0)
-            networkCreateDone();
-          else
-            networkCreateDone('docker network create returned error code ' + code);
-        });
-        dockerProcess.on('error', function(err) {
-          networkCreateDone('docker network create error '+ + err);
-        });
-      },
-      
       function(buildContainerDone) {
-        var buildTasks = [];
-        
-        _.forOwn(config.docker.container, function(containerSpec) {
-          
-          if (!containerSpec.run)
-            return;
-          
-          var buildTask = new Promise(function(buildContainerResolve, buildContainerReject) {
-        
-            var cmdOptions = [];
-            cmdOptions.push('build');
-            cmdOptions.push('-t');
-            cmdOptions.push(containerSpec.imagename);
-            cmdOptions.push('-f');
-            cmdOptions.push(containerSpec.dockerfile);
-            cmdOptions.push(containerSpec.dockerdir);
 
-            log.info('Running Docker Command: ' + config.docker.dockerpath + ' ' + _.join(cmdOptions, ' '));
-
-            var dockerProcess = child_process.spawn(config.docker.dockerpath, cmdOptions, getChildProcessOptions());
-            dockerProcess.on('close', function(code) {
-              log.info('docker build ' + containerSpec.imagename + ' exited with code ' + code);
-              
-              if (code === 0)
-                buildContainerResolve();
-              else
-                buildContainerReject('docker build ' + containerSpec.imagename + ' returned error code ' + code);
-            });
-            dockerProcess.on('error', function(err) {
-              buildContainerReject('docker build ' + containerSpec.imagename + ' error '+ + err);
-            });
-          });
-          buildTasks.push(buildTask);
-        });
+        var cmdOptions = dockerComposeCmdOptions();
+        cmdOptions.push('build');
         
-        Promise.all(buildTasks).then(() => buildContainerDone()).catch((err) => buildContainerDone(err));
+        dockerComposeRun(cmdOptions, false).then(buildContainerDone).catch(buildContainerDone);
       }
     ],
     
@@ -159,203 +113,25 @@ function setupContainer(configToSet) {
 }
 
 function teardownContainer(ignoreErrors) {
-  return new Promise(function(teardownResolve, teardownReject) {
-    
-    async.series([
-    
-      function(removeImagesDone) {
-				if (config.docker.removeimages) {
-				
-					var removeTasks = [];
-					
-					_.forOwn(config.docker.container, function(containerSpec) {
-						
-						if (!containerSpec.run)
-							return;
-						
-						var removeTask = new Promise(function(removeImageResolve, removeImageReject) {
-					
-							var cmdOptions = [];
-							cmdOptions.push('rmi');
-							cmdOptions.push(containerSpec.imagename);
-
-							log.info('Running Docker Command: ' + config.docker.dockerpath + ' ' + _.join(cmdOptions, ' '));
-
-							var dockerProcess = child_process.spawn(config.docker.dockerpath, cmdOptions, getChildProcessOptions());
-							dockerProcess.on('close', function(code) {
-								log.info('docker rmi ' + containerSpec.imagename + ' exited with code ' + code);
-								
-								if (code === 0 || ignoreErrors)
-									removeImageResolve();
-								else
-									removeImageReject('docker rmi ' + containerSpec.imagename + ' returned error code ' + code);
-							});
-							dockerProcess.on('error', function(err) {
-								if (ignoreErrors)
-									removeImageResolve();
-								else
-									removeImageReject('docker rmi ' + containerSpec.imagename + ' error '+ + err);
-							});
-						});
-						removeTasks.push(removeTask);
-					});
-					
-					Promise.all(removeTasks).then(() => removeImagesDone()).catch((err) => removeImagesDone(err));
-				} else {
-					removeImagesDone();
-				}
-      },    
-    
-      function(networkTeardownDown) {
-        var cmdOptions = [];
-        cmdOptions.push('network');
-        cmdOptions.push('rm');
-        cmdOptions.push(config.docker.networkname);
-
-        log.debug('Running Docker Command: ' + config.docker.dockerpath + ' ' + _.join(cmdOptions, ' '));
-
-        var dockerProcess = child_process.spawn(config.docker.dockerpath, cmdOptions, getChildProcessOptions());
-        dockerProcess.on('close', function(code) {
-          log.info('docker network rm exited with code ' + code);
-          
-          if (code === 0 || ignoreErrors)
-            networkTeardownDown();
-          else
-            networkTeardownDown('docker network rm returned error code ' + code);
-        });
-        dockerProcess.on('error', function(err) {
-          if (ignoreErrors)
-            networkTeardownDown();
-          else
-            networkTeardownDown('docker network rm error '+ + err);
-        });
-      },
-      
-    ],
-    
-    function(err) {
-      if (err)
-        teardownReject(err);
-      else
-        teardownResolve();
-    });      
-        
-  });
+  var cmdOptions = dockerComposeCmdOptions();
+  cmdOptions.push('down');
+  
+  return dockerComposeRun(cmdOptions, ignoreErrors);
 }
 
-function startContainer(filterCallback) {
+function startContainer() {
+  var cmdOptions = dockerComposeCmdOptions();
+  cmdOptions.push('up');
+  cmdOptions.push('-d');
   
-  var startTasks = [];
-  
-  _.forOwn(config.docker.container, function(containerSpec) {
-    
-    if (filterCallback) {
-      if (!filterCallback(containerSpec))
-        return;
-    }
-    if (!containerSpec.run)
-      return;
-    
-    var startTask = new Promise(function(startContainerResolve, startContainerReject) {
-
-      var cmdOptions = [];
-      cmdOptions.push('run');
-      cmdOptions.push('-d');
-      if (containerSpec.hostmapping) {
-        _.forOwn(containerSpec.hostmapping, function(mappedto, hostname) {
-          cmdOptions.push('--add-host=' + hostname + ':' + mappedto);
-        });
-      }
-      if (containerSpec.portmapping) {
-        _.forOwn(containerSpec.portmapping, function(containerport, hostport) {
-          cmdOptions.push('-p');
-          cmdOptions.push(hostport + ':' + containerport);
-        });
-      }
-      if (containerSpec.env) {
-        _.forOwn(containerSpec.env, function(envvalue, envkey) {
-          cmdOptions.push('-e');
-          cmdOptions.push(envkey + '=' + envvalue);
-        });
-      }
-      cmdOptions.push('-v');
-      cmdOptions.push(process.env.PWD + ':/usr/src/app');
-      
-      if (containerSpec.mount) {
-        _.forOwn(containerSpec.mount, function(guestdir, hostdir) {
-          cmdOptions.push('-v');
-          cmdOptions.push(hostdir + ':' + guestdir);
-        });
-      }
-      cmdOptions.push('--name');
-      cmdOptions.push(containerSpec.containername);
-      cmdOptions.push('--network');
-      cmdOptions.push(config.docker.networkname);
-      cmdOptions.push('--network-alias');
-      if (_.isArray(containerSpec.networkalias)) {
-        cmdOptions.push(_.join(containerSpec.networkalias, ','));
-      } else {
-        cmdOptions.push(containerSpec.networkalias);
-      }
-      cmdOptions.push(containerSpec.imagename);
-
-      log.info('Running Docker Command: ' + config.docker.dockerpath + ' ' + _.join(cmdOptions, ' '));
-
-      var dockerProcess = child_process.spawn(config.docker.dockerpath, cmdOptions, getChildProcessOptions());
-      dockerProcess.on('close', function(code) {
-        log.info('docker run ' + containerSpec.containername + ' exited with code ' + code);
-        if (code === 0)
-          startContainerResolve();
-        else
-          startContainerReject('docker run ' + containerSpec.containername + ' returned error code ' + code);
-      });
-      dockerProcess.on('error', function(err) {
-        startContainerReject('docker ' + containerSpec.containername + ' run error ' + err);
-      });
-    });
-    startTasks.push(startTask);
-  });
-  
-  return Promise.all(startTasks);
+  return dockerComposeRun(cmdOptions, false);
 }
 
 function stopContainer(ignoreErrors) {
+  var cmdOptions = dockerComposeCmdOptions();
+  cmdOptions.push('kill');
   
-  var stopTasks = [];
-  
-  _.forOwn(config.docker.container, function(containerSpec) {
-    
-    if (!containerSpec.run)
-      return;
-    
-    var stopTask = new Promise(function(stopContainerResolve, stopContainerReject) {
-
-      var cmdOptions = [];
-      cmdOptions.push('rm');
-      cmdOptions.push('-f');
-      cmdOptions.push(containerSpec.containername);
-      
-      log.info('Running Docker Command: ' + config.docker.dockerpath + ' ' + _.join(cmdOptions, ' '));
-      
-      var stopProcess = child_process.spawn(config.docker.dockerpath, cmdOptions, getChildProcessOptions());
-      stopProcess.on('close', function(code) {
-        log.info('docker stop ' + containerSpec.containername + ' exited with code ' + code);
-
-        if (code === 0 || ignoreErrors)
-          stopContainerResolve();
-        else
-          stopContainerReject('docker stop ' + containerSpec.containername + ' returned error code ' + code);
-      });
-      stopProcess.on('error', function(err) {
-        if (ignoreErrors)
-          stopContainerResolve();
-        else
-          stopContainerReject('docker stop ' + containerSpec.containername + ' error ' + err);
-      });
-    });
-    stopTasks.push(stopTask);
-  });
-  return Promise.all(stopTasks);
+  return dockerComposeRun(cmdOptions, ignoreErrors);
 }
 
 function getChildProcessOptions() {
