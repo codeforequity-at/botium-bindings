@@ -22,7 +22,7 @@ Add a file named "testmybot.json" to your project directory. A very basic config
       "docker": {
         "container": {
           "testmybot-fbmock": {
-	    "run": true,
+	    "run": true
           }
         }
       }
