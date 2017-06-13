@@ -1,5 +1,3 @@
-const Jasmine = require.main.require('jasmine');
-const JasmineReporters = require.main.require('jasmine-reporters');
 const testbuilder = require('../lib/testbuilder');
 const testmybot = require('../lib/testmybot');
 
@@ -49,6 +47,8 @@ module.exports.setupJasmineTestSuite = function(timeout) {
 };
 
 module.exports.generateJUnit = function() {
+  const Jasmine = require.main.require('jasmine');
+  const JasmineReporters = require.main.require('jasmine-reporters');
 
   var junitReporter = new JasmineReporters.JUnitXmlReporter({
     savePath: process.cwd(),
