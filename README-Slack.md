@@ -35,7 +35,7 @@ Add a file named "testmybot.json" to your project directory. A very basic config
       "docker": {
         "container": {
           "testmybot-slackmock": {
-            "run": true,
+            "run": true
           }
         }
       }
