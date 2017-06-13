@@ -14,13 +14,35 @@ Your test cases are recorded by Capture & Replay tools and can be run against yo
 
 Here are links to some articles about TestMyBot:
 
+[Serverless Monitoring Of Your Facebook Chatbot in 3 Easy Steps](https://chatbotsmagazine.com/serverless-monitoring-of-your-facebook-chatbot-in-3-easy-steps-a051b4f248a8)
+
 [Capture & Replay: Bringing Chatbot Code Quality To a New Level](https://chatbotsmagazine.com/capture-replay-bringing-chatbot-code-quality-to-a-new-level-c0312971311a)
 
 [Continuous Automated Testing for Your Chatbot With Open Source Tool “TestMyBot”](https://chatbotsmagazine.com/continuous-automated-testing-for-your-chatbot-with-open-source-tool-testmybot-53fd3757764e)
 
 [No More Excuse: Automated Testing of your Chatbot with “TestMyBot”](https://chatbotsmagazine.com/no-more-excuse-automated-testing-of-your-chatbot-with-testmybot-3c1ed98dd043)
 
-## How does it work ?
+## TestMyBot "Container Modes"
+
+TestMyBot supports three modes to run automated tests against your Chatbot.
+
+### docker
+In this container mode, your Chatbot is transfered into a docker container, see below. This is the most versatile container mode.
+
+### local
+In this container mode, you have to wire your Chatbot with the TestMyBot library. Examples and helper classes for doing it with Botkit exist - see [this sample](https://github.com/codeforequity-at/testmybot/tree/master/samples/botkit/jasmine).
+
+**This mode is available for Chatbots developed with Node.js only**
+
+### fbdirect
+You can use TestMyBot to run your conversations against an already deployed Facebook Chatobt - see [this sample](https://github.com/codeforequity-at/testmybot/tree/master/samples/fbdirect)
+
+**This mode is available for Facebook Chatbots only**
+
+### What mode to use ?
+This depends on your Chatbot project and what you want to achieve.
+
+## How does container mode "Docker" work ?
 The key (and only) concept of this framework is to simulate ("mock out") the "real" Chatbot APIs (like the Facebook Messenger Platform API), hijacking them through docker networks. Your chatbot is transfered into a local docker container, the API mocks are possible by manipulating the DNS of the docker image. For example, any access to "graph.facebook.com" is redirected to another local docker container simulating the Facebook Messenger Platform API. 
 
 TestMyBot injects your Chatbots behaviour into the test runner, and your test case specifications into your Chatbot. 
@@ -37,16 +59,6 @@ In "normal" operation mode, your Chatbot connects to the Facebook Messenger Plat
 When TestMyBot runs your Chatbot, it won't connect to the real Chatbot API, but it won't notice. It runs within a docker container providing a network seperated from the physical network. TestMyBot simulates Facebook Messenger Platform API and runs your test cases on it.
 
 ![Architecture with Docker](docs/architecture_withdocker.png)
-
-### TestMyBot without Docker containers
-
-Apart from docker, TestMyBot supports two additional modes ("containermode"-setting):
-
-**local**
-In this container mode, you have to wire your Chatbot with the TestMyBot library. Examples and helper classes for doing it with Botkit exist (see samples directory).
-
-**fbdirect**
-You can use TestMyBot to run your conversations against an already deployed Facebook Chatobt - see [sample](https://github.com/codeforequity-at/testmybot/tree/master/samples/fbdirect)
 
 ## Requirements
 
