@@ -38,14 +38,24 @@ When TestMyBot runs your Chatbot, it won't connect to the real Chatbot API, but 
 
 ![Architecture with Docker](docs/architecture_withdocker.png)
 
+### TestMyBot without Docker containers
+
+Apart from docker, TestMyBot supports two additional modes ("containermode"-setting):
+
+**local**
+In this container mode, you have to wire your Chatbot with the TestMyBot library. Examples and helper classes for doing it with Botkit exist (see samples directory).
+
+**fbdirect**
+You can use TestMyBot to run your conversations against an already deployed Facebook Chatobt - see [sample](https://github.com/codeforequity-at/testmybot/tree/master/samples/fbdirect)
+
 ## Requirements
 
-Please install [Docker](https://www.docker.com/) first on your development machines. 
+Please install [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) (>= Version 1.10.0) first on your development machines. 
 
-Of course, you need Node.js and npm installed and working.
+Of course, you need Node.js (>= Version 4.0) and npm installed and working.
 
 Current Requirements on your Chatbot:
-* Developed in Node.js (other languages supported, but with more configuration effort)
+* Developed in Node.js or any other programming language where a Docker image is available
 * Developed with Facebook Messenger Platform or Slack API
 * Webhook has to listen on all interfaces (listen to 0.0.0.0)
 * Accept self-signed SSL certificates (for Node.js, NODE_TLS_REJECT_UNAUTHORIZED environment variable is set to 0 automatically by TestMyBot)
@@ -64,14 +74,10 @@ Quick Start
 
 Please check out one of the samples to get a quick overview.
 
-    $ git clone https://github.com/codeforequity-at/testmybot-sample1.git
-    $ cd testmybot-sample1
+    $ git clone https://github.com/codeforequity-at/testmybot.git
+    $ cd testmybot/samples/facebook
     $ npm install
-    $ ./node_modules/.bin/jasmine
-    
-* [Botkit Facebook Sample](https://github.com/codeforequity-at/testmybot-sample)
-* [Custom Facebook Sample](https://github.com/codeforequity-at/testmybot-sample1)
-* [Botkit Slack Sample](https://github.com/codeforequity-at/botkit-starter-slack)
+    $ npm test
 
 Installation and Basic Usage
 ============================
@@ -96,17 +102,23 @@ Add a file named "testmybot.json" to your project directory. A very basic config
       "docker": {
         "container": {
           "testmybot-fbmock": {
-	    "run": true,
-            "env": {
-              "TESTMYBOT_FACEBOOK_WEBHOOKPORT": 5000,
-              "TESTMYBOT_FACEBOOK_WEBHOOKPATH": "webhook"
-            }
+            "run": true,
           }
         }
       }
     }
 
-You tell TestMyBot that the Facebook Webhook of your chatbot runs on port 5000, and the url path is /webhook. You don't have to tell the hostname, because it will run in a docker container with a fixed hostname ("testmybot").  
+Add a file named "docker-compose.testmybot.override.yml" to your project directory.  A very basic configuration for a Facebook Chatbot looks like this:
+
+	version: "2"
+	services:
+	    testmybot-fbmock:
+		environment:
+		    TESTMYBOT_FACEBOOK_WEBHOOKPORT: 5000
+		    TESTMYBOT_FACEBOOK_WEBHOOKPATH: "webhook"
+
+
+You tell TestMyBot that the Facebook Webhook of your chatbot runs on port 5000, and the url path is /webhook. You don't have to tell the hostname, because it will run in a docker container with a fixed hostname ("testmybot").
 
 Add a file spec/testmybot.spec.js with a basic test case:
 
@@ -295,6 +307,18 @@ You have to provide the callback functions for:
 
 So TestMyBot is agnostic about the actual test runner you are using. The example above can be adapted to other test runners easily.
 
+## Test Suite Setup for Jasmine and Mocha
+
+There exist helper functions for setting up the whole test suite for Jasmine and Mocha. Place this code in your spec/testmybot.spec.js:
+
+	const bot = require('testmybot');
+	const botHelper = require('testmybot/helper/jasmine');
+
+	botHelper.setupJasmineTestSuite(60000);
+
+This will create a test case for all your conversation files automatically.
+
+
 Configuration
 =============
 
@@ -306,6 +330,14 @@ There are three steps for buildling the configuration:
 The subsequent steps are overwriting the configuration parameters from the previous steps. The .json-files are converted into a plain object in Node.js.
 
 Please see [_./node_modules/testmybot/testmybot.default.json_](https://github.com/codeforequity-at/testmybot/blob/master/testmybot/testmybot.default.json) for information what settings you have to override in your project configuration.
+
+The docker containers are configured with seperate docker-compose.yml-files:
+* ./node_modules/testmybot/docker-compose.testmybot.yml
+* ./node_modules/testmybot-fbmock/docker-compose.testmybot-fbmock.yml
+* ./node_modules/testmybot-slackmock/docker-compose.testmybot-slackmock.yml
+* ./docker-compose.testmybot.override.yml
+
+The files are handed over to docker-compose in this order, so you can include your project-specific settings in the last file.
 
 API
 ===
@@ -354,10 +386,10 @@ Work is ongoing
 - [ ] Support Wechat Chatbots
 - [x] Support Node.js Chatbots
 - [ ] Support Microsoft Bot Framework Chatbots
-- [ ] Support Python Chtabots
+- [x] Support Python Chtabots
 - [x] Define Test Cases with TestMyBot API calls
 - [x] Define Test Cases by conversation transcripts
-- [ ] Run your Tests in _live environment_ with _real_ Endpoints
+- [x] Run your Tests in _live environment_ with _real_ Endpoints
 
 
 License
