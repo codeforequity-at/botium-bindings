@@ -32,15 +32,9 @@ function readConvos() {
               callback();
               return;
             }
-            firstline(convodir + filename).then(
-              (line) => {
-                if (line && line.startsWith('#'))
-                  line = '';
-                
-                convos.push({
-                  name: line.trim(),
-                  filename: filename
-                });
+            firstline.firstline(convodir + filename).then(
+              (header) => {
+                convos.push(createConvoEntry(filename, header));
                 callback();
               }).catch(
               (err) => {
@@ -61,8 +55,24 @@ function readConvos() {
   });
 }
 
-function getConvoFilesSync() {
-  return readdirSync(convodir).filter((filename) => filename.endsWith(suffix));
+function readConvosSync() {
+  var filenames = readdirSync(convodir).filter((filename) => filename.endsWith(suffix));
+  var convos = [];
+  filenames.forEach(function (filename) {
+    var header = firstline.firstlineSync(convodir + filename);
+    convos.push(createConvoEntry(filename, header));
+  });
+  return convos;
+}
+
+function createConvoEntry(filename, header) {
+  if (header && header.startsWith('#'))
+    header = filename;
+  
+  return {
+    name: header.trim(),
+    filename: filename
+  };
 }
 
 function readConvo(filename) {
@@ -206,5 +216,5 @@ module.exports = {
 	writeConvo: writeConvo,
   readConvos: readConvos,
   readConvo: readConvo,
-  getConvoFilesSync: getConvoFilesSync
+  readConvosSync: readConvosSync
 };

@@ -8,15 +8,15 @@ const _ = require('lodash');
 
 function setupTestSuite(testcaseCb, assertCb, failCb, hears, says) {
   
-  var testcaseFiles = convo.getConvoFilesSync();
+  var testcaseConvos = convo.readConvosSync();
  
-  testcaseFiles.forEach(function(testcaseFile) {
-    log.info('adding test case file ' + testcaseFile);
+  testcaseConvos.forEach(function(testcaseConvo) {
+    log.info('adding test case ' + testcaseConvo.name + ' (file: ' + testcaseConvo.filename + ')');
     
-    testcaseCb(testcaseFile, function(testcaseDone) {
-      log.info('running testcase ' + testcaseFile);
+    testcaseCb(testcaseConvo.name, function(testcaseDone) {
+      log.info('running testcase ' + testcaseConvo.name);
       
-      convo.readConvo(testcaseFile).then(
+      convo.readConvo(testcaseConvo.filename).then(
         (testcase) => {
           
           async.eachSeries(testcase.conversation,

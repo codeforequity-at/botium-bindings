@@ -52,7 +52,7 @@ module.exports.generateJUnit = function() {
 
   var junitReporter = new JasmineReporters.JUnitXmlReporter({
     savePath: process.cwd(),
-    consolidateAll: false
+    consolidateAll: true
   });
 
   const jasmine = new Jasmine();

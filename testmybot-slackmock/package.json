@@ -1,6 +1,6 @@
 {
   "name": "testmybot-slackmock",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "engines": {
     "node": ">=4.0"
   },	

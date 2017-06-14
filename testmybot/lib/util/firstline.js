@@ -3,8 +3,9 @@
 const fs = require('fs');
 const EOL = require('os').EOL;
 const Promise = require('bluebird');
+const lineByLine = require('n-readlines');
 
-module.exports = function (path) {
+function firstline(path) {
   return new Promise(function (resolve, reject) {
     var rs = fs.createReadStream(path);
     var acc = '';
@@ -28,4 +29,17 @@ module.exports = function (path) {
         reject(err);
       })
   });
+}
+
+function firstlineSync(path) {
+  var liner = new lineByLine(path);
+  var line = liner.next();
+  if (line) {
+    return line.toString();
+  }
+}
+
+module.exports = {
+  firstline: firstline,
+  firstlineSync: firstlineSync
 };
