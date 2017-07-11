@@ -4,6 +4,7 @@ const log = require('./util/log');
 const readConfig = require('./readconfig');
 const MsgQueue = require('./msgqueue');
 const testbuilder = require('./testbuilder');
+const testslashbuilder = require('./testslashbuilder');
 
 const Promise = require('bluebird');
 const async = require('async');
@@ -12,6 +13,7 @@ const _ = require('lodash');
 var config = { };
 var container = null;
 var msgqueue = new MsgQueue();
+var msgqueueSlash = new MsgQueue();
 
 function beforeAll(configToSet) {
   return new Promise(function(beforeAllResolve, beforeAllReject) {
@@ -30,6 +32,7 @@ function beforeAll(configToSet) {
       function(containerReady) {
         log.debug(JSON.stringify(config, null, 2));
         try {
+	  console.log('===================== Testing ======================')
           container = require('./testmybot-' + config.containermode);
           containerReady();
         } catch (err) {
@@ -38,7 +41,7 @@ function beforeAll(configToSet) {
       },
       
       function(containerBeforeAllReady) {
-        container.beforeAll(config, msgqueue).then(containerBeforeAllReady).catch(containerBeforeAllReady);
+        container.beforeAll(config, msgqueue, msgqueueSlash).then(containerBeforeAllReady).catch(containerBeforeAllReady);
       }
      ],
     function(err) {
@@ -57,6 +60,7 @@ function afterAll() {
 
 function beforeEach() {
   msgqueue.clear();
+  msgqueueSlash.clear();
   return container.beforeEach();
 }
 
@@ -66,6 +70,10 @@ function afterEach() {
 
 function setupTestSuite(testcaseCb, assertCb, failCb) {
   testbuilder.setupTestSuite(testcaseCb, assertCb, failCb, hears, says);
+}
+
+function setupSlashTestSuite(testcaseCb, assertCb, failCb) {
+  testslashbuilder.setupSlashTestSuite(testcaseCb, assertCb, failCb, hears, says);
 }
 
 function hears() {
@@ -98,6 +106,36 @@ function says(channel, timeoutMillis) {
   });
 }
 
+function slashs() {
+  return container.slashs.apply(container, arguments);
+}
+
+function slashresponse(channel, timeoutMillis) {
+  return new Promise(function(slashresponseResolve, slashresponseReject) {
+
+    if (!timeoutMillis)
+      timeoutMillis = config.defaultsaytimeout;
+
+    var timeoutRequest = async.timeout(function(callback) {
+      msgqueueSlash.registerListener(
+        (msg) => {
+          callback(null, msg);
+        },
+        channel);
+    }, timeoutMillis);
+
+    timeoutRequest(function(err, body) {
+      if (err && err.code === 'ETIMEDOUT') {
+        slashresponseReject('nothing said in time');
+      } else if (err) {
+        slashresponseReject('says error: ' + err);
+      } else {
+        slashresponseResolve(body);
+      }
+    });
+  });
+}
+
 module.exports = {
   beforeAll: beforeAll,
   afterAll: afterAll,
@@ -106,5 +144,8 @@ module.exports = {
   setupTestSuite: setupTestSuite,
   hears: hears,
   says: says,
-  msgqueue: msgqueue
+  msgqueue: msgqueue,
+  slashs: slashs,
+  slashresponse: slashresponse,
+  msgqueueSlash: msgqueueSlash
 };

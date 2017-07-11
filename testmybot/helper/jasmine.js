@@ -1,4 +1,5 @@
 const testbuilder = require('../lib/testbuilder');
+const testslashbuilder = require('../lib/testslashbuilder');
 const testmybot = require('../lib/testmybot');
 
 module.exports.setupJasmineTestCases = function(timeout) {
@@ -18,11 +19,29 @@ module.exports.setupJasmineTestCases = function(timeout) {
   );
 };
 
+module.exports.setupJasmineSlashTestCases = function(timeout) {
+ 
+  if (!timeout) timeout = 60000;
+ 
+  testslashbuilder.setupSlashTestSuite(
+    (testcaseName, testcaseFunction) => {
+      it(testcaseName, testcaseFunction, timeout);
+    },
+    (response, tomatch) => {
+      expect(response).toContain(tomatch);
+    },
+    (err) => fail(err),
+    testmybot.slashs,
+    testmybot.slashresponse
+  );
+};
+
 module.exports.setupJasmineTestSuite = function(timeout) {
 
   if (!timeout) timeout = 60000;
 
   var packageJson = require(process.cwd() + '/package.json');
+  console.log('In setupJasmineTestSuite');
   
   describe('TestMyBot Test Suite for ' + packageJson.name, function() {
   
@@ -43,6 +62,7 @@ module.exports.setupJasmineTestSuite = function(timeout) {
     }, timeout);
   
     module.exports.setupJasmineTestCases(timeout);
+    module.exports.setupJasmineSlashTestCases(timeout);
   });
 };
 

@@ -31,8 +31,8 @@ function setupTestSuite(testcaseCb, assertCb, failCb, hears, says) {
                   if (saysmsg.messageText) {
                     log.debug(testcase.name + ': says ' + saysmsg.messageText);
 
-										var response = saysmsg.messageText.split(/\r?\n/).map((line) => line.trim()).join(' ').trim();
-										var tomatch = convomsg.msg.split(/\r?\n/).map((line) => line.trim()).join(' ').trim();
+		    var response = saysmsg.messageText.split(/\r?\n/).map((line) => line.trim()).join(' ').trim();
+		    var tomatch = convomsg.msg.split(/\r?\n/).map((line) => line.trim()).join(' ').trim();
                     assertCb(response, tomatch);
                   } else {
                     log.debug(testcase.name + ': says ' + JSON.stringify(saysmsg));

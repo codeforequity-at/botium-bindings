@@ -13,11 +13,13 @@ const _ = require('lodash');
 
 var config = null;
 var msgqueue = null;
+var msgqueueSlash = null;
 var socket = null;
 
-function beforeAll(configToSet, msgqueueToSet) {
+function beforeAll(configToSet, msgqueueToSet, msgqueueSlashToSet) {
   config = configToSet;
   msgqueue = msgqueueToSet;
+  msgqueueSlash = msgqueueSlashToSet;
   
   return new Promise(function(beforeAllResolve, beforeAllReject) {
   
@@ -151,6 +153,12 @@ function beforeEach() {
             msgqueue.push(saysContent);
           }
         });
+        socket.on('slashresponse', function (saysContent) {
+          log.debug('socket received slashresponse event ' + JSON.stringify(saysContent));
+          if (saysContent) {
+            msgqueueSlash.push(saysContent);
+          }
+        });
         socket.on('error', function(err) {
           log.error('socket connection error! ' + err);
         });
@@ -199,6 +207,7 @@ function afterEach() {
 
 function hears(msg, from, channel) {
   return new Promise(function(hearsResolve, hearsReject) {
+
     if (socket) {
       socket.emit('bothears', msg, from, channel);
       hearsResolve();
@@ -208,10 +217,23 @@ function hears(msg, from, channel) {
   });
 }
 
+function slashs(msg, from, channel) {
+  return new Promise(function(slashsResolve, slashsReject) {
+
+    if (socket) {
+      socket.emit('botslashs', msg, from, channel);
+      slashsResolve();
+    } else {
+      slashsReject('Socket not online');
+    }
+  });
+}
+
 module.exports = {
   beforeAll: beforeAll,
   afterAll: afterAll,
   beforeEach : beforeEach,
   afterEach: afterEach,
-  hears: hears
+  hears: hears,
+  slashs: slashs
 };
