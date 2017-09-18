@@ -48,10 +48,10 @@ function setupTestSuite(testcaseCb, assertCb, failCb, hears, says) {
             (err) => {
               if (err) {
                 log.info(testcase.name + ' failed: ' + err);
-                failCb(err); 
+              } else {
+                log.info(testcase.name + ' finished, calling done function.');
               }
-              log.info(testcase.name + ' ready, calling done function.');
-              testcaseDone();
+              testcaseDone(err);
             });
 
         }, 
