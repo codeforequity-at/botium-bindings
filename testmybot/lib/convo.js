@@ -143,7 +143,10 @@ function readConvo(filename) {
           convo.description = currentLines.slice(1).join(EOL);
         }
       }
-      
+
+      if (convo.conversation.length === 0) {
+        throw 'Conversation is empty';
+      }
       readConvoResolve(convo);
       
     }).catch((err) => readConvoReject(err));
