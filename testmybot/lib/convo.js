@@ -12,7 +12,7 @@ const readdir = Promise.promisify(require('fs').readdir);
 const readdirSync = require('fs').readdirSync;
 const mkdirp = Promise.promisify(require('mkdirp'));
 const async = require('async');
-const EOL = require('os').EOL;
+const EOL = "\n";
 const isJSON = require('is-json');
 const _ = require('lodash');
 
