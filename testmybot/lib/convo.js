@@ -66,7 +66,7 @@ function readConvosSync() {
 }
 
 function createConvoEntry(filename, header) {
-  if (header && header.startsWith('#'))
+	if (!header || header.startsWith('#'))
     header = filename;
   
   return {
@@ -144,8 +144,12 @@ function readConvo(filename) {
         }
       }
       
-      readConvoResolve(convo);
-      
+			if (convo.conversation.length === 0) {
+				readConvoReject('empty conversation file ' + convofilename);
+			} else {
+				readConvoResolve(convo);
+      }
+			
     }).catch((err) => readConvoReject(err));
   });
 }

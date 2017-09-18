@@ -48,15 +48,16 @@ function setupTestSuite(testcaseCb, assertCb, failCb, hears, says) {
             (err) => {
               if (err) {
                 log.info(testcase.name + ' failed: ' + err);
-                failCb(err); 
-              }
-              log.info(testcase.name + ' ready, calling done function.');
-              testcaseDone();
+                testcaseDone(err);
+              } else {
+								log.info(testcase.name + ' ready, calling done function.');
+								testcaseDone();
+							}
             });
-
         }, 
         (err) => {
-          failCb(err);
+          log.info(testcaseConvo.name + ' failed reading ' + testcaseConvo.filename + ': ' + err);
+          testcaseDone(err);
         });
     });
   });
