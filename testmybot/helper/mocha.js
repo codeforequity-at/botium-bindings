@@ -13,7 +13,7 @@ module.exports.setupMochaTestCases = function(timeout) {
     (response, tomatch, msg) => {
       expect(response).to.include(tomatch, msg);
     },
-    (err) => expect.fail(err),
+    (err) => expect.fail(null, null, err),
     testmybot.hears,
     testmybot.says
   );
