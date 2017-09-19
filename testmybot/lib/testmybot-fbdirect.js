@@ -26,6 +26,7 @@ function beforeAll(configToSet, msgqueueToSet) {
         log.debug('logging into facebook ' + config.fbdirect.fbuser);
         fblogin({ email: config.fbdirect.fbuser, password: config.fbdirect.fbpassword}, { logLevel: 'warn' }, (err, api) => {
           if(err) {
+						log.warn('facebook login failed: ' + err);
             fbLoginReady(err);
           } else {
             log.debug('logging into facebook ready');
@@ -77,6 +78,15 @@ function beforeEach() {
 
     async.series([
       
+			function(checkApiDone) {
+				if (fbapi) {
+					checkApiDone();
+				} else {
+					log.warn('fbapi not online, listening noch possible');
+					checkApiDone('fbapi not online');
+				}
+			},
+			
       function(startListenerDone) {
         if (fbapiStopListener) {
           fbapiStopListener();
