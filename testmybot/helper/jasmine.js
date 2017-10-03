@@ -27,19 +27,19 @@ module.exports.setupJasmineTestSuite = function(timeout) {
   describe('TestMyBot Test Suite for ' + packageJson.name, function() {
   
     beforeAll(function(done) {
-      testmybot.beforeAll().then(done, done);
+      testmybot.beforeAll().then(done, done.fail);
     }, timeout);
 
     beforeEach(function(done) {
-      testmybot.beforeEach().then(done, done);
+      testmybot.beforeEach().then(done, done.fail);
     }, timeout);
 
     afterEach(function(done) {
-      testmybot.afterEach().then(done, done);
+      testmybot.afterEach().then(done, done.fail);
     }, timeout);
     
     afterAll(function(done) {
-      testmybot.afterAll().then(done, done);
+      testmybot.afterAll().then(done, done.fail);
     }, timeout);
   
     module.exports.setupJasmineTestCases(timeout);
