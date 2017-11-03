@@ -2,17 +2,18 @@ const expect = require.main.require('chai').expect;
 const testbuilder = require('../lib/testbuilder');
 const testmybot = require('../lib/testmybot');
 
-module.exports.setupMochaTestCases = function(timeout) {
+module.exports.setupMochaTestCases = function(timeout, matcher) {
 
   if (!timeout) timeout = 60000;
+  if (!(matcher && typeof matcher === 'function')) matcher = (response, tomatch, msg) => {
+      expect(response).to.include(tomatch, msg);
+  };
 
   testbuilder.setupTestSuite(
     (testcaseName, testcaseFunction) => {
       it(testcaseName, testcaseFunction).timeout(timeout);
     },
-    (response, tomatch, msg) => {
-			expect(response).to.include(tomatch, msg);
-    },
+    matcher,
     (err) => {
 			expect.fail(null, null, err);
 		},
@@ -21,7 +22,7 @@ module.exports.setupMochaTestCases = function(timeout) {
   );
 };
 
-module.exports.setupMochaTestSuite = function(timeout) {
+module.exports.setupMochaTestSuite = function(timeout, matcher) {
 
   if (!timeout) timeout = 60000;
 
@@ -46,6 +47,6 @@ module.exports.setupMochaTestSuite = function(timeout) {
       testmybot.afterAll().then(() => done()).catch(done);
     });
   
-    module.exports.setupMochaTestCases(timeout);
+    module.exports.setupMochaTestCases(timeout, matcher);
   });
 };
