@@ -1,24 +1,25 @@
 const testbuilder = require('../lib/testbuilder');
 const testmybot = require('../lib/testmybot');
 
-module.exports.setupJasmineTestCases = function(timeout) {
+module.exports.setupJasmineTestCases = function(timeout, matcher) {
   
   if (!timeout) timeout = 60000;
-  
+  if (!(matcher && typeof matcher === 'function')) matcher = (response, tomatch) => {
+    expect(response).toContain(tomatch);
+  };
+
   testbuilder.setupTestSuite(
     (testcaseName, testcaseFunction) => {
       it(testcaseName, testcaseFunction, timeout);
     },
-    (response, tomatch) => {
-      expect(response).toContain(tomatch);
-    },
+    matcher,
     (err) => fail(err),
     testmybot.hears,
     testmybot.says
   );
 };
 
-module.exports.setupJasmineTestSuite = function(timeout) {
+module.exports.setupJasmineTestSuite = function(timeout, matcher) {
 
   if (!timeout) timeout = 60000;
 
@@ -42,7 +43,7 @@ module.exports.setupJasmineTestSuite = function(timeout) {
       testmybot.afterAll().then(done, done.fail);
     }, timeout);
   
-    module.exports.setupJasmineTestCases(timeout);
+    module.exports.setupJasmineTestCases(timeout, matcher);
   });
 };
 
