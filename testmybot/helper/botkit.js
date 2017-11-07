@@ -19,11 +19,19 @@ module.exports.wireWithBotkit = function(beforeEachCallback) {
 
     controller.on('spawned', function(worker) {
       worker.send = function(message, cb) {
-        if (message.text)
-          msgqueue.push({ messageText: message.text });
-        else
-          msgqueue.push({ message: message });
-        if (cb) cb();
+        if (message.message) {
+          message = message.message;
+        }
+
+        if (message.text) {
+          msgqueue.push({messageText: message.text});
+        } else {
+          msgqueue.push({message: message});
+        }
+
+        if (cb) {
+          cb();
+        }
       };
     });
 
