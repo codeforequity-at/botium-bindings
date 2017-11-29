@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "engines": {
     "node": ">=4.0"
-  },	
+  },
   "description": "Serverless Monitoring Of Your Facebook Chatbot in 3 Easy Steps",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "jasmine": "^2.6.0",
-    "testmybot": "../../testmybot",
-    "testmybot-chat": "../../testmybot-chat"
+    "testmybot": "../..",
+    "testmybot-chat": "*"
   }
 }

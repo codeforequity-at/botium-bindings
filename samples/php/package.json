@@ -14,9 +14,9 @@
   "devDependencies": {
     "jasmine": "^2.6.0",
     "jasmine-reporters": "^2.2.1",
-    "testmybot": "../../testmybot",
-    "testmybot-fbmock": "../../testmybot-fbmock",
-    "testmybot-chat": "../../testmybot-chat",
-    "testmybot-ide": "../../testmybot-ide"		
+    "testmybot": "../..",
+    "testmybot-fbmock": "*",
+    "testmybot-chat": "*",
+    "testmybot-ide": "*"
   }
 }

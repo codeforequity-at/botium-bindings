@@ -1,8 +1,13 @@
 {
   "name": "testmybot",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "engines": {
     "node": ">=4.0"
+  },
+  "scripts": {
+    "newpatch": "npm version patch && npm publish",
+    "version": "npm install testmybot-fbmock@$npm_package_version --save --no-package-lock && npm install testmybot-slackmock@$npm_package_version --save --no-package-lock",
+    "postversion": "npm link testmybot-slackmock && npm link testmybot-fbmock"
   },
   "description": "Continuous Testing for your Chatbots",
   "main": "lib/testmybot.js",
@@ -19,8 +24,8 @@
     "request": "^2.80.0",
     "socket.io-client": "^1.7.3",
     "tcp-port-used": "^0.1.2",
-    "testmybot-fbmock": "0.3.1",
-    "testmybot-slackmock": "0.3.1"
+    "testmybot-fbmock": "^0.3.2",
+    "testmybot-slackmock": "^0.3.2"
   },
   "devDependencies": {},
   "repository": {
