@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "engines": {
     "node": ">=4.0"
-  },	
+  },
   "description": "Continuous Testing for your Chatbots - Sample Application 1",
   "main": "index.js",
   "scripts": {
@@ -22,9 +22,9 @@
   "devDependencies": {
     "jasmine": "^2.6.0",
     "jasmine-reporters": "^2.2.1",
-    "testmybot": "../../testmybot",
-    "testmybot-fbmock": "../../testmybot-fbmock",
-    "testmybot-chat": "../../testmybot-chat",
-    "testmybot-ide": "../../testmybot-ide"
+    "testmybot": "../..",
+    "testmybot-fbmock": "*",
+    "testmybot-chat": "*",
+    "testmybot-ide": "*"
   }
 }
