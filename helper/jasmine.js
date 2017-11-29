@@ -1,24 +1,25 @@
 const testbuilder = require('../lib/testbuilder');
 const testmybot = require('../lib/testmybot');
 
-module.exports.setupJasmineTestCases = function(timeout) {
+module.exports.setupJasmineTestCases = function(timeout, matcher) {
   
   if (!timeout) timeout = 60000;
-  
+  if (!(matcher && typeof matcher === 'function')) matcher = (response, tomatch) => {
+    expect(response).toContain(tomatch);
+  };
+
   testbuilder.setupTestSuite(
     (testcaseName, testcaseFunction) => {
       it(testcaseName, testcaseFunction, timeout);
     },
-    (response, tomatch) => {
-      expect(response).toContain(tomatch);
-    },
+    matcher,
     (err) => fail(err),
     testmybot.hears,
     testmybot.says
   );
 };
 
-module.exports.setupJasmineTestSuite = function(timeout) {
+module.exports.setupJasmineTestSuite = function(timeout, matcher) {
 
   if (!timeout) timeout = 60000;
 
@@ -27,22 +28,22 @@ module.exports.setupJasmineTestSuite = function(timeout) {
   describe('TestMyBot Test Suite for ' + packageJson.name, function() {
   
     beforeAll(function(done) {
-      testmybot.beforeAll().then(done);
+      testmybot.beforeAll().then(done, done.fail);
     }, timeout);
 
     beforeEach(function(done) {
-      testmybot.beforeEach().then(done);
+      testmybot.beforeEach().then(done, done.fail);
     }, timeout);
 
     afterEach(function(done) {
-      testmybot.afterEach().then(done);
+      testmybot.afterEach().then(done, done.fail);
     }, timeout);
     
     afterAll(function(done) {
-      testmybot.afterAll().then(done);
+      testmybot.afterAll().then(done, done.fail);
     }, timeout);
   
-    module.exports.setupJasmineTestCases(timeout);
+    module.exports.setupJasmineTestCases(timeout, matcher);
   });
 };
 
