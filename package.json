@@ -6,7 +6,7 @@
   },
   "scripts": {
     "newpatch": "npm version patch && npm publish",
-    "version": "npm install testmybot-fbmock@$npm_package_version --save && npm install testmybot-slackmock@$npm_package_version --save"
+    "version": "npm install testmybot-fbmock@$npm_package_version --save && npm install testmybot-slackmock@$npm_package_version --save && npm link testmybot-slackmock && npm link testmybot-fbmock"
   },
   "description": "Continuous Testing for your Chatbots",
   "main": "lib/testmybot.js",
