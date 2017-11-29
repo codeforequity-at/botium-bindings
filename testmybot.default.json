@@ -1,0 +1,31 @@
+{
+  "testendpoint": "http://127.0.0.1:46199",
+  "defaultsaytimeout": 5000,
+  "startupphase": 0,
+  "containermode": "docker",
+  "fbdirect": {
+    "pageid": "",
+    "fbuser": "",
+    "fbpassword": ""
+  },
+  "docker": {
+    "dockercomposepath": "docker-compose",
+    "container": {
+      "testmybot": {
+        "run": true,
+				"dockercomposeorder": 10,
+        "dockercomposefile": "./node_modules/testmybot/docker-compose.testmybot.yml"
+      },
+      "testmybot-fbmock": {
+        "run": false,
+				"dockercomposeorder": 20,
+        "dockercomposefile": "./node_modules/testmybot-fbmock/docker-compose.testmybot-fbmock.yml"
+      },
+      "testmybot-slackmock": {
+        "run": false,
+				"dockercomposeorder": 20,
+        "dockercomposefile": "./node_modules/testmybot-slackmock/docker-compose.testmybot-slackmock.yml"
+      }	  
+    }
+  }
+}
