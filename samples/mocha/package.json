@@ -6,18 +6,18 @@
   "scripts": {
     "start": "node index.js",
     "start_testmybot": "page_token=test verify_token=test node index.js",
-    "test": "./node_modules/.bin/mocha --reporter spec spec"
+    "test": "./node_modules/.bin/mocha --reporter spec --exit spec"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.0.2",
-    "mocha": "^3.4.2",
+    "mocha": "^4.0.1",
     "testmybot": "../..",
     "testmybot-chat": "*",
     "testmybot-fbmock": "*"
   },
   "dependencies": {
-    "botkit": "^0.5.4"
+    "botkit": ">=0.5.4 <1.0.0"
   }
 }
