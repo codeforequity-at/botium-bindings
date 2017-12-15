@@ -25,7 +25,7 @@ describe('TestMyBot Sample Conversation Test Suite', function() {
     
     bot.says().then((msg) => {
       console.log('got Message: ' + JSON.stringify(msg));
-      expect(msg.messageText).toMatch(/echo/);
+      expect(msg && msg.messageText).toMatch(/echo/);
       done();
     }).catch((err) => {
       throw new Error(err);
@@ -38,8 +38,8 @@ describe('TestMyBot Sample Conversation Test Suite', function() {
     
     bot.says().then((msg) => {
       console.log('got Message: ' + JSON.stringify(msg));
-      expect(msg.message.attachment.type).toEqual('template');
-      expect(msg.message.attachment.payload.template_type).toEqual('generic');
+      expect(msg && msg.sourceData && msg.sourceData.message && msg.sourceData.message.attachment && msg.sourceData.message.attachment.type).toEqual('template');
+      expect(msg && msg.sourceData && msg.sourceData.message && msg.sourceData.message.attachment && msg.sourceData.message.attachment.payload.template_type).toEqual('generic');
       done();
     }).catch((err) => {
       throw new Error(err);
