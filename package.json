@@ -2,7 +2,7 @@
   "name": "testmybot",
   "version": "0.3.2",
   "engines": {
-    "node": ">=4.0"
+    "node": ">=6.0"
   },
   "scripts": {
     "newpatch": "npm version patch && npm publish"
