@@ -1,6 +1,0 @@
-FROM webdevops/php-nginx:7.1
-
-VOLUME /usr/src/app
-WORKDIR /usr/src/app
-
-CMD composer install && supervisord
