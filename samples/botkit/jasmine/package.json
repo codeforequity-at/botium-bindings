@@ -7,9 +7,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node jasmine.js",
-    "emulator": "node node_modules/testmybot/emulator-console.js",
-    "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js"
+    "test": "node jasmine.js"
   },
   "author": "Florian Treml",
   "license": "ISC",
@@ -19,6 +17,6 @@
     "testmybot": "../../.."
   },
   "dependencies": {
-    "botkit": "^0.5.4"
+    "botkit": "^0.6.7"
   }
 }

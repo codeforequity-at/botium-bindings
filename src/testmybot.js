@@ -70,6 +70,7 @@ function afterEach() {
 }
 
 function setupTestSuite(testcaseCb, assertCb, failCb) {
+  console.log('setupTestSuite');
   testbuilder.setupTestSuite(testcaseCb, assertCb, failCb, hears, says);
 }
 

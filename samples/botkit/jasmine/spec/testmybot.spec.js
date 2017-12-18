@@ -1,5 +1,3 @@
 const bot = require('testmybot');
-const botHelper = require('testmybot/helper/jasmine');
 
-botHelper.setupJasmineTestSuite(60000);
- 
+bot.helper.jasmine().setupJasmineTestSuite(60000);
