@@ -1,6 +1,6 @@
 const expect = require.main.require('chai').expect;
-const testbuilder = require('../lib/testbuilder');
-const testmybot = require('../lib/testmybot');
+const testbuilder = require('../testbuilder');
+const testmybot = require('../testmybot');
 
 module.exports.setupMochaTestCases = function(timeout, matcher) {
 

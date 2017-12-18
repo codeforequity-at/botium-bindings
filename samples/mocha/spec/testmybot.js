@@ -1,3 +1,4 @@
-const botHelper = require('testmybot/helper/mocha');
+const bot = require('testmybot');
+const mochaHelper = bot.helper.mocha();
 
-botHelper.setupMochaTestSuite(60000);
+mochaHelper.setupMochaTestSuite(60000);

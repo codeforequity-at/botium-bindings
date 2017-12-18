@@ -1,5 +1,5 @@
 const bot = require('testmybot');
-const botHelper = require('testmybot/helper/jasmine');
+const jasmineHelper = bot.helper.jasmine();
 
 describe('TestMyBot Sample Conversation Test Suite', function() {
 
@@ -46,5 +46,5 @@ describe('TestMyBot Sample Conversation Test Suite', function() {
     });
   }, 10000);
 
-  botHelper.setupJasmineTestCases(60000);
+  jasmineHelper.setupJasmineTestCases(60000);
 });

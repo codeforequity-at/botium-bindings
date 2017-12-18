@@ -8,7 +8,7 @@
     "newpatch": "npm version patch && npm publish"
   },
   "description": "Continuous Testing for your Chatbots",
-  "main": "lib/testmybot.js",
+  "main": "src/index.js",
   "author": "Florian Treml",
   "license": "MIT",
   "dependencies": {

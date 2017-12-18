@@ -2,7 +2,7 @@
  * Setup TestMyBot and wire it with Botkit
  */
  
-var tmbLocal = require('../lib/testmybot-local');
+var tmbLocal = require('../testmybot-local');
 
 module.exports.wireWithBotkit = function(beforeEachCallback) {
 
