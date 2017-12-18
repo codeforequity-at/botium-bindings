@@ -1,6 +1,4 @@
-const botkitHelper = require('testmybot/helper/botkit');
-const jasmineHelper = require('testmybot/helper/jasmine');
+const bot = require('testmybot');
 
-botkitHelper.wireWithBotkit(() => require('./bot')('page_token', 'verify_token'));
-
-jasmineHelper.generateJUnit();
+bot.helper.botkit().wireWithBotkit(() => require('./bot')('page_token', 'verify_token'));
+bot.helper.jasmine().generateJUnit();

@@ -5,6 +5,8 @@
   "scripts": {
     "start": "clientId=159753246482.159685134291 clientSecret=b993ecebb034fe06bb05e2e31bc8f465 PORT=3000 node bot.js",
     "start_testmybot": "DEBUG=* clientId=159753246482.159685134291 clientSecret=b993ecebb034fe06bb05e2e31bc8f465 PORT=3000 node bot.js",
+    "emulator": "node node_modules/testmybot/emulator-console.js",
+    "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js",
     "test": "./node_modules/.bin/jasmine"
   },
   "dependencies": {
@@ -20,10 +22,7 @@
   "devDependencies": {
     "jasmine": "^2.6.0",
     "jasmine-reporters": "^2.2.1",
-    "testmybot": "../..",
-    "testmybot-slackmock": "*",
-    "testmybot-chat": "*",
-    "testmybot-ide": "*"
+    "testmybot": "../.."
   },
   "author": "Florian Treml",
   "license": "ISC"

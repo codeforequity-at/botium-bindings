@@ -8,8 +8,8 @@
   "main": "index.js",
   "scripts": {
     "start_testmybot": "node index.js",
-    "testmybot_chat": "node node_modules/testmybot-chat/index.js",
-    "testmybot_ide": "node node_modules/testmybot-ide/ide.js",
+    "emulator": "node node_modules/testmybot/emulator-console.js",
+    "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js",
     "test": "./node_modules/.bin/jasmine"
   },
   "author": "Florian Treml",
@@ -22,8 +22,6 @@
   "devDependencies": {
     "jasmine": "^2.6.0",
     "jasmine-reporters": "^2.2.1",
-    "testmybot": "../..",
-    "testmybot-chat": "*",
-    "testmybot-ide": "*"
+    "testmybot": "../.."
   }
 }

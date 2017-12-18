@@ -8,12 +8,13 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/jasmine"
+    "emulator": "node node_modules/testmybot/emulator-console.js",
+    "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js"
   },
   "author": "Florian Treml",
   "license": "MIT",
   "dependencies": {
     "jasmine": "^2.6.0",
-    "testmybot": "../..",
-    "testmybot-chat": "*"
+    "testmybot": "../.."
   }
 }

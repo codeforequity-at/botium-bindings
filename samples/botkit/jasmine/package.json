@@ -7,16 +7,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node jasmine.js"
+    "test": "node jasmine.js",
+    "emulator": "node node_modules/testmybot/emulator-console.js",
+    "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js"
   },
   "author": "Florian Treml",
   "license": "ISC",
   "devDependencies": {
     "jasmine": "^2.6.0",
     "jasmine-reporters": "^2.2.1",
-    "testmybot": "../../..",
-    "testmybot-fbmock": "*",
-    "testmybot-chat": "*"
+    "testmybot": "../../.."
   },
   "dependencies": {
     "botkit": "^0.5.4"

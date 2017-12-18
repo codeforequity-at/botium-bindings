@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "emulator": "node node_modules/testmybot/emulator-console.js",
+    "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js",
     "test": "./node_modules/.bin/mocha --reporter spec --exit spec"
   },
   "author": "",
@@ -12,8 +14,7 @@
   "devDependencies": {
     "chai": "^4.0.2",
     "mocha": "^4.0.1",
-    "testmybot": "../..",
-    "testmybot-chat": "*"
+    "testmybot": "../.."
   },
   "dependencies": {
     "botkit": ">=0.5.4 <1.0.0"
