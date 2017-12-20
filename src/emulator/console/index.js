@@ -5,7 +5,6 @@ const clear = require('clear');
 const figlet = require('figlet');
 const async = require('async');
 const readline = require('readline');
-const inquirer = require('inquirer');
 
 module.exports = () => {
   testmybot.beforeAll().then((config) => { 
@@ -33,12 +32,12 @@ module.exports = () => {
         figlet.textSync('TestMyBot', { horizontalLayout: 'full' })
       )
     );
-    var helpText = 'Enter "#SAVE <conversation name>" to save your conversation into your Testsuite-directory, #EXIT to quit or just a message to send to your Chatbot!';
+    const helpText = 'Enter "#SAVE <conversation name>" to save your conversation into your Testsuite-directory, #EXIT to quit or just a message to send to your Chatbot!';
 
     console.log(chalk.green('Chatbot online.'));
     console.log(chalk.green(helpText));
 
-    var rl = readline.createInterface({
+    const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
       terminal: false
@@ -49,11 +48,12 @@ module.exports = () => {
       
       if (line.toLowerCase() === '#exit') {
         
-        testmybot.afterEach().then(() => testmybot.afterAll()).then(() => process.exit(0)).catch((err) => console.log(chalk.red(err)));
+        console.log(chalk.yellow('TestMyBot stopping ...'))
+        testmybot.afterEach().then(() => testmybot.afterAll()).then(() => console.log(chalk.green('TestMyBot stopped'))).then(() => process.exit(0)).catch((err) => console.log(chalk.red(err)));
       
       } else if (line.toLowerCase().startsWith('#save')) {
 
-        var name = line.substr(5).trim();
+        const name = line.substr(5).trim();
         if (!name) {
           console.log(chalk.red(helpText));
           return;
@@ -68,8 +68,8 @@ module.exports = () => {
             console.log(chalk.red(err));
           });
       } else if (line.startsWith('#')) {
-        var channel = line.substr(0, line.indexOf(' '));
-        var text = line.substr(line.indexOf(' ') + 1);
+        const channel = line.substr(0, line.indexOf(' '));
+        const text = line.substr(line.indexOf(' ') + 1);
 
         testmybot.hears({ messageText: text, sender: 'me', channel: channel });
         conversation.push({ from: 'me', msg: text, channel: channel });

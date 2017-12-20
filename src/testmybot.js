@@ -54,19 +54,35 @@ function beforeAll(configToSet) {
 }
 
 function on(event, listener) {
-  driver.on(event, listener);
+  if (driver) {
+    driver.on(event, listener);
+  }
 }
 
 function afterAll() {
-	return container.Clean();
+  let result = Promise.resolve();
+  if (container) {
+    result = container.Clean();
+  }
+  container = null;
+  driver = null;
+  return result;
 }
 
 function beforeEach() {
-	return container.Start();
+  if (container) {
+    return container.Start();
+  } else {
+    return Promise.reject('container not available');
+  }
 }
 
 function afterEach() {
-  return container.Stop();
+  if (container) {
+    return container.Stop();
+  } else {
+    return Promise.resolve();
+  }
 }
 
 function setupTestSuite(testcaseCb, assertCb, failCb) {
@@ -75,15 +91,23 @@ function setupTestSuite(testcaseCb, assertCb, failCb) {
 }
 
 function hears(arg) {
-  if (_.isString(arg)) {
-    return container.UserSaysText(arg);
+  if (container) {
+    if (_.isString(arg)) {
+      return container.UserSaysText(arg);
+    } else {
+      return container.UserSays(arg);
+    }
   } else {
-    return container.UserSays(arg);
+    return Promise.reject('container not available');
   }
 }
 
 function says(channel, timeoutMillis) {
-  return container.WaitBotSays(timeoutMillis);
+  if (container) {
+    return container.WaitBotSays(timeoutMillis);
+  } else {
+    return Promise.reject('container not available');
+  }
 }
 
 module.exports = {
