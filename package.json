@@ -5,15 +5,15 @@
     "node": ">=6.0"
   },
   "scripts": {
-    "newpatch": "npm version patch && npm publish"
+    "build": "rollup -c",
+    "newpatch": "npm version patch"
   },
   "description": "Continuous Testing for your Chatbots",
-  "main": "src/index.js",
+  "main": "index.js",
   "author": "Florian Treml",
   "license": "MIT",
   "dependencies": {
     "async": "^2.1.5",
-    "bluebird": "^3.5.0",
     "body-parser": "^1.18.2",
     "botium-core": "*",
     "chalk": "^2.3.0",
@@ -35,7 +35,13 @@
     "socket.io-client": "^2.0.4",
     "tcp-port-used": "^0.1.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "rollup": "^0.53.0",
+    "rollup-plugin-buble": "^0.18.0",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-node-resolve": "^3.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/codeforequity-at/testmybot.git"

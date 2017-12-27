@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const EOL = require('os').EOL;
-const Promise = require('bluebird');
 const lineByLine = require('n-readlines');
 
 function firstline(path) {

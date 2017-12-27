@@ -5,7 +5,6 @@ const readConfig = require('./readconfig');
 const testbuilder = require('./testbuilder');
 const BotDriver = require('botium-core').BotDriver;
 
-const Promise = require('bluebird');
 const async = require('async');
 const _ = require('lodash');
 

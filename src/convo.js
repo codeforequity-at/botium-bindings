@@ -4,13 +4,9 @@ const log = require('./util/log');
 const slugify = require('./util/slugify');
 const firstline = require('./util/firstline');
 
-const Promise = require('bluebird');
-const writeFile = Promise.promisify(require('fs').writeFile);
-const readFile = Promise.promisify(require('fs').readFile);
-const access = Promise.promisify(require('fs').access);
-const readdir = Promise.promisify(require('fs').readdir);
+const fs = require('fs')
 const readdirSync = require('fs').readdirSync;
-const mkdirp = Promise.promisify(require('mkdirp'));
+const mkdirp = require('mkdirp');
 const async = require('async');
 const EOL = "\n";
 const isJSON = require('is-json');
@@ -21,8 +17,11 @@ var suffix = '.convo.txt';
 
 function readConvos() {
   return new Promise(function(readConvosResolve, readConvosReject) {
-    access(convodir).then(() => {
-      readdir(convodir).then(function(filenames) {
+    fs.access(convodir, (err) => {
+      if (err) return readConvosResolve([]);
+      
+      fs.readdir(convodir, (err, filenames) => {
+        if (err) return readConvosReject(err);
         
         var convos = [];
         
@@ -49,9 +48,8 @@ function readConvos() {
               readConvosResolve(convos);
             }
           });
-        
-      }).catch((err) => readConvosReject(err));
-    }).catch((err) => readConvosResolve([]));
+      });
+    });
   });
 }
 
@@ -92,7 +90,9 @@ function readConvo(filename) {
   
   return new Promise(function(readConvoResolve, readConvoReject) {
   
-    readFile(convofilename).then((content) => {
+    fs.readFile(convofilename, (err, content) => {
+      if (err) return readConvoReject(err);
+      
       var lines = content.toString().split(EOL);
 
       var convo = {
@@ -149,8 +149,7 @@ function readConvo(filename) {
 			} else {
 				readConvoResolve(convo);
       }
-			
-    }).catch((err) => readConvoReject(err));
+    });
   });
 }
 
@@ -170,13 +169,20 @@ function writeConvo(convo, errorIfExists) {
       
       function(existsCheckDone) {
         if (errorIfExists)
-          access(filename).then(() => existsCheckDone(filename + ' already exists')).catch((err) => existsCheckDone());
-        else
+          fs.access(filename, (err) => {
+            if (err) return existsCheckDone();
+            existsCheckDone(filename + ' already exists');
+          });
+        else {
           existsCheckDone();
+        }
       },
       
       function(createDirectoryDone) {
-				mkdirp(convodir).then(() => createDirectoryDone()).catch((err) => createDirectoryDone(err));
+				mkdirp(convodir, (err) => {
+          if (err) return createDirectoryDone(err);
+          createDirectoryDone();
+        });
       },
 	
 			function(writeConvoDone) {
@@ -202,7 +208,10 @@ function writeConvo(convo, errorIfExists) {
           }
 				});
 
-				writeFile(filename, contents).then(() => writeConvoDone()).catch((err) => writeConvoDone(err));
+				fs.writeFile(filename, contents, (err) => {
+          if (err) return writeConvoDone(err);
+          writeConvoDone();
+        });
 			},
 
     ],
