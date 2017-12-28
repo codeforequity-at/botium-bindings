@@ -1,0 +1,22 @@
+{
+  "botium": {
+    "Capabilities": {
+      "PROJECTNAME": "testmybot-sample-botframework",
+      "BOTFRAMEWORK_API": true,
+      "BOTFRAMEWORK_APP_ID": "my microsoft app id",
+      "BOTFRAMEWORK_CHANNEL_ID": "facebook",
+      "CLEANUPTEMPDIR": false,
+      "STARTCMD": "npm start"
+    },
+    "Sources": {
+      "GITURL": "https://github.com/Microsoft/BotBuilder-Samples.git",
+      "GITPREPARECMD": "npm install",
+	  "GITDIR": "Node/core-CreateNewConversation"
+    },
+    "Envs": {
+      "MICROSOFT_APP_ID": "my microsoft app id",
+      "MICROSOFT_APP_PASSWORD": "my microsoft app password",
+      "NODE_DEBUG": "botbuilder"
+    }
+  }
+}
