@@ -7,7 +7,7 @@
   "description": "Serverless Monitoring Of Your Facebook Chatbot in 3 Easy Steps",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/jasmine"
+    "test": "./node_modules/.bin/jasmine",
     "emulator": "node node_modules/testmybot/emulator-console.js",
     "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js"
   },
