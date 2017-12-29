@@ -1,6 +1,0 @@
-FROM clojure:lein
-
-VOLUME /usr/src/app
-WORKDIR /usr/src/
-
-CMD git clone https://github.com/lemmings-io/02-facebook-example.git && cd /usr/src/02-facebook-example && lein ring server-headless

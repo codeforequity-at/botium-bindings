@@ -1,29 +1,15 @@
 {
   "name": "testmybot-sample-slack",
   "version": "1.0.0",
-  "main": "bot.js",
   "scripts": {
-    "start": "clientId=159753246482.159685134291 clientSecret=b993ecebb034fe06bb05e2e31bc8f465 PORT=3000 node bot.js",
-    "start_testmybot": "DEBUG=* clientId=159753246482.159685134291 clientSecret=b993ecebb034fe06bb05e2e31bc8f465 PORT=3000 node bot.js",
-    "test": "./node_modules/.bin/jasmine"
-  },
-  "dependencies": {
-    "body-parser": "^1.15.2",
-    "botkit": "^0.5",
-    "dashbot": "0.7.4",
-    "debug": "^2.3.3",
-    "express": "^4.14.0",
-    "querystring": "^0.2.0",
-    "request": "^2.79.0",
-    "wordfilter": "^0.2.6"
+    "test": "./node_modules/.bin/jasmine",
+    "emulator": "node node_modules/testmybot/emulator-console.js",
+    "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js"
   },
   "devDependencies": {
     "jasmine": "^2.6.0",
     "jasmine-reporters": "^2.2.1",
-    "testmybot": "../..",
-    "testmybot-slackmock": "*",
-    "testmybot-chat": "*",
-    "testmybot-ide": "*"
+    "testmybot": "../.."
   },
   "author": "Florian Treml",
   "license": "ISC"

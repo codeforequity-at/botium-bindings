@@ -1,9 +1,20 @@
 {
-  "docker": {
-    "container": {
-      "testmybot-fbmock": {
-        "run": true
-      }
-	  }
+  "botium": {
+    "Capabilities": {
+      "PROJECTNAME": "testmybot-sample1",
+      "FACEBOOK_API": true,
+      "FACEBOOK_WEBHOOK_PORT": 5000,
+      "FACEBOOK_WEBHOOK_PATH": "webhook",
+      "CLEANUPTEMPDIR": false,
+      "STARTCMD": "node index.js"
+    },
+    "_____Sources": {
+      "GITURL": "https://github.com/jw84/messenger-bot-tutorial",
+      "GITPREPARECMD": "npm install"
+    },
+    "Envs": {
+      "NODE_TLS_REJECT_UNAUTHORIZED": 0,
+      "NODE_ENV": "dev"
+    }
   }
 }

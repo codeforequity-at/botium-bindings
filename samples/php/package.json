@@ -7,16 +7,15 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "./node_modules/.bin/jasmine"
+    "test": "./node_modules/.bin/jasmine",
+    "emulator": "node node_modules/testmybot/emulator-console.js",
+    "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "jasmine": "^2.6.0",
     "jasmine-reporters": "^2.2.1",
-    "testmybot": "../..",
-    "testmybot-fbmock": "*",
-    "testmybot-chat": "*",
-    "testmybot-ide": "*"
+    "testmybot": "../.."
   }
 }

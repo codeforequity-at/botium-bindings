@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include partials/head %>
+  </head>
+
+  <body ng-app="testmybotide">
+    <header>
+        <% include partials/header %>
+    </header>
+    <div class="container">
+      <flash-message duration="5000" show-close="true"></flash-message>
+      <div ui-view></div>
+    </div>
+    <script type="text/javascript">
+      var config = <%- JSON.stringify(config) %>;
+    </script>
+    
+    <footer>
+        <% include partials/footer %>
+    </footer>
+  </body>
+  
+  <% include partials/scripts %>
+</html>

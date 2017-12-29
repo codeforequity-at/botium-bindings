@@ -11,44 +11,11 @@ There are some minor changes in code required:
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
       curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 
-## The Dockerfile to use
-
-The default TestMyBot Dockerfile for the TestMyBot Docker container is using a Node.js-container. A Dockerfile for running a PHP application is easy to compose (Dockerfile.testmybot):
-
-    FROM webdevops/php-nginx:7.1
-
-    VOLUME /usr/src/app
-    WORKDIR /usr/src/app
-
-    CMD composer install && supervisord
-
-The first line selects an official docker images with php and nginx. The last line first runs composer to install PHP dependencies and then starts the background processes (supervisord is included with the docker images from webdevops).
-
 ## The TestMyBot Configuration
 
-In the TestMyBot configuration file (testmybot.json), the docker containers have to be initialized correctly:
+The docker image used is "webdevops/php-nginx:7.1", with php and nginx. The command "composer install && supervisord" runs composer to install PHP dependencies and then starts the background processes (supervisord is included with the docker images from webdevops).
 
-    {
-      "docker": {
-        "container": {
-          "testmybot-fbmock": {
-            "run": true,
-            "env": {
-              "TESTMYBOT_FACEBOOK_WEBHOOKPORT": 80,
-              "TESTMYBOT_FACEBOOK_WEBHOOKPATH": "index.php"
-            }
-          },
-          "testmybot": {
-            "dockerfile": "./Dockerfile.testmybot",
-            "env": {
-              "WEB_DOCUMENT_ROOT": "/usr/src/app"
-            }				
-          }			
-        }
-      }
-    }
-
-It points the TestMyBot Facebook Mocker to the URL the PHP Webhook is running (Port 80, path index.php), points to the PHP Dockerfile and sets the document root for nginx to the mounted project directory.
+The environment variable "WEB_DOCUMENT_ROOT" points to the web server document root.
 
 ## Setting up TestMyBot
 
@@ -56,10 +23,9 @@ Now you can just initialize your project directory with testmybot and run the [C
 
     $ npm init
     $ npm install testmybot --save-dev
-    $ npm install testmybot-chat --save-dev
     $ npm install jasmine --save-dev
     $ ./node_modules/.bin/jasmine init
-    $ node ./node_modules/testmybot-chat/index.js
+    $ node node_modules/testmybot/emulator-console.js
     $ ./node_modules/.bin/jasmine
 
 

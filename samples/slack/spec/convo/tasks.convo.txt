@@ -7,7 +7,7 @@ I am a bot that has just joined your team
 You must now /invite me to a channel so that I can be of use!
 
 #me #general
-@testmybot add task reminder!!!!
+@botiumbot add task reminder!!!!
 
 #bot #general
 :thumbsup:

@@ -3,6 +3,7 @@ Test My Bot
 
 [![NPM](https://nodei.co/npm/testmybot.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/testmybot/)
 
+[ ![Codeship Status for codeforequity-at/testmybot](https://app.codeship.com/projects/077a7140-3175-0135-cee8-5eb28f78bdf5/status?branch=master)](https://app.codeship.com/projects/225703)
 [![npm version](https://badge.fury.io/js/testmybot.svg)](https://badge.fury.io/js/testmybot)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
@@ -14,72 +15,17 @@ Your test cases are recorded by Capture & Replay tools and can be run against yo
 
 Here are links to some articles about TestMyBot:
 
-[Serverless Monitoring Of Your Facebook Chatbot in 3 Easy Steps](https://chatbotsmagazine.com/serverless-monitoring-of-your-facebook-chatbot-in-3-easy-steps-a051b4f248a8)
+[Serverless Monitoring Of Your Facebook Chatbot in 3 Easy Steps](https://chatbotsmagazine.com/serverless-monitoring-of-your-facebook-chatbot-in-3-easy-steps-a051b4f248a8) (outdated)
 
-[Capture & Replay: Bringing Chatbot Code Quality To a New Level](https://chatbotsmagazine.com/capture-replay-bringing-chatbot-code-quality-to-a-new-level-c0312971311a)
+[Capture & Replay: Bringing Chatbot Code Quality To a New Level](https://chatbotsmagazine.com/capture-replay-bringing-chatbot-code-quality-to-a-new-level-c0312971311a) (outdated)
 
-[Continuous Automated Testing for Your Chatbot With Open Source Tool “TestMyBot”](https://chatbotsmagazine.com/continuous-automated-testing-for-your-chatbot-with-open-source-tool-testmybot-53fd3757764e)
+[Continuous Automated Testing for Your Chatbot With Open Source Tool “TestMyBot”](https://chatbotsmagazine.com/continuous-automated-testing-for-your-chatbot-with-open-source-tool-testmybot-53fd3757764e) (outdated)
 
-[No More Excuse: Automated Testing of your Chatbot with “TestMyBot”](https://chatbotsmagazine.com/no-more-excuse-automated-testing-of-your-chatbot-with-testmybot-3c1ed98dd043)
+[No More Excuse: Automated Testing of your Chatbot with “TestMyBot”](https://chatbotsmagazine.com/no-more-excuse-automated-testing-of-your-chatbot-with-testmybot-3c1ed98dd043) (outdated)
 
-## TestMyBot "Container Modes"
+## Botium, the Selenium for Chatbots
 
-TestMyBot supports three modes to run automated tests against your Chatbot.
-
-### docker
-In this container mode, your Chatbot is transfered into a docker container, see below. This is the most versatile container mode.
-
-### local
-In this container mode, you have to wire your Chatbot with the TestMyBot library. Examples and helper classes for doing it with Botkit exist - see [this sample](https://github.com/codeforequity-at/testmybot/tree/master/samples/botkit/jasmine).
-
-**This mode is available for Chatbots developed with Node.js only**
-
-### fbdirect
-You can use TestMyBot to run your conversations against an already deployed Facebook Chatobt - see [this sample](https://github.com/codeforequity-at/testmybot/tree/master/samples/fbdirect)
-
-**This mode is available for Facebook Chatbots only**
-
-### What mode to use ?
-This depends on your Chatbot project and what you want to achieve.
-
-## How does container mode "Docker" work ?
-The key (and only) concept of this framework is to simulate ("mock out") the "real" Chatbot APIs (like the Facebook Messenger Platform API), hijacking them through docker networks. Your chatbot is transfered into a local docker container, the API mocks are possible by manipulating the DNS of the docker image. For example, any access to "graph.facebook.com" is redirected to another local docker container simulating the Facebook Messenger Platform API. 
-
-TestMyBot injects your Chatbots behaviour into the test runner, and your test case specifications into your Chatbot. 
-
-TestMyBot heavily relies on [Docker](https://www.docker.com/) to provide it’s outstanding capabilities in test automation.  
-
-### Showcase: Your Chatbot as Node.js application with Facebook Messenger Platform API
-In "normal" operation mode, your Chatbot connects to the Facebook Messenger Platform API at http://graph.facebook.com and receives Callbacks from there on a [registered webhook](https://developers.facebook.com/docs/messenger-platform) - similar for Slack oder other platforms. So the architecture in the most simple scenario looks like this:
-
-![Architecture without Docker](docs/architecture_nodocker.png)
-
-### Showcase: TestMyBot is running automated tests on your Chatbot
-
-When TestMyBot runs your Chatbot, it won't connect to the real Chatbot API, but it won't notice. It runs within a docker container providing a network seperated from the physical network. TestMyBot simulates Facebook Messenger Platform API and runs your test cases on it.
-
-![Architecture with Docker](docs/architecture_withdocker.png)
-
-## Requirements
-
-Please install [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) (>= Version 1.10.0) first on your development machines. 
-
-Of course, you need Node.js (>= Version 4.0) and npm installed and working.
-
-Current Requirements on your Chatbot:
-* Developed in Node.js or any other programming language where a Docker image is available
-* Developed with Facebook Messenger Platform or Slack API
-* Webhook has to listen on all interfaces (listen to 0.0.0.0)
-* Accept self-signed SSL certificates (for Node.js, NODE_TLS_REJECT_UNAUTHORIZED environment variable is set to 0 automatically by TestMyBot)
-* Request verification has to be disabled (for Botkit: validate_requests should be set to false)
-
-### Special considerations for Facebook Messenger Platform
-
-See [README-Facebook.md](https://github.com/codeforequity-at/testmybot/blob/master/README-Facebook.md)
-
-### Special considerations for Slack API
-
-See [README-Slack.md](https://github.com/codeforequity-at/testmybot/blob/master/README-Slack.md)
+TestMyBot relies on [Botium, the Selenium for Chatbots](https://github.com/codeforequity-at/botium-core) to connect to your Chatbot, either in a Sandbox environment or in a live environment. TestMyBot reads the file "testmybot.json" to configure your Botium container.
 
 Quick Start
 ===========
@@ -110,27 +56,48 @@ With [Jasmine](https://jasmine.github.io/), the setup looks like this:
 	
 Add a file named "testmybot.json" to your project directory. A very basic configuration for a Facebook Chatbot looks like this:
 
-    {
-      "docker": {
-        "container": {
-          "testmybot-fbmock": {
-            "run": true,
-          }
-        }
-      }
-    }
+	{
+	  "botium": {
+	    "Capabilities": {
+	      "PROJECTNAME": "testmybot-sample1",
+	      "FACEBOOK_API": true,
+	      "FACEBOOK_WEBHOOK_PORT": 5000,
+	      "FACEBOOK_WEBHOOK_PATH": "webhook",
+	      "CLEANUPTEMPDIR": false,
+	      "STARTCMD": "node index.js"
+	    },
+	    "Envs": {
+	      "NODE_TLS_REJECT_UNAUTHORIZED": 0,
+	      "NODE_ENV": "dev"
+	    }
+	  }
+	}
 
-Add a file named "docker-compose.testmybot.override.yml" to your project directory.  A very basic configuration for a Facebook Chatbot looks like this:
+If your Chatbot code is located in a Git repository, you can make Botium load it from there:
 
-	version: "2"
-	services:
-	    testmybot-fbmock:
-		environment:
-		    TESTMYBOT_FACEBOOK_WEBHOOKPORT: 5000
-		    TESTMYBOT_FACEBOOK_WEBHOOKPATH: "webhook"
+	{
+	  "botium": {
+	    "Capabilities": {
+	      "PROJECTNAME": "testmybot-sample1",
+	      "FACEBOOK_API": true,
+	      "FACEBOOK_WEBHOOK_PORT": 5000,
+	      "FACEBOOK_WEBHOOK_PATH": "webhook",
+	      "CLEANUPTEMPDIR": false,
+	      "STARTCMD": "node index.js"
+	    },
+	    "Sources": {
+	      "GITURL": "https://github.com/jw84/messenger-bot-tutorial",
+	      "GITPREPARECMD": "npm install"
+	    },
+	    "Envs": {
+	      "NODE_TLS_REJECT_UNAUTHORIZED": 0,
+	      "NODE_ENV": "dev"
+	    }
+	  }
+	}
 
 
-You tell TestMyBot that the Facebook Webhook of your chatbot runs on port 5000, and the url path is /webhook. You don't have to tell the hostname, because it will run in a docker container with a fixed hostname ("testmybot").
+You tell TestMyBot that the Facebook Webhook of your chatbot runs on port 5000, and the url path is /webhook.
 
 Add a file spec/testmybot.spec.js with a basic test case:
 
@@ -164,43 +131,21 @@ Add a file spec/testmybot.spec.js with a basic test case:
           throw new Error(err);
         });
       });
-
-      it('should send a generic payload', function(done) {
-
-        bot.hears('Generic');
-
-        bot.says().then((msg) => {
-          expect(msg.message.attachment.type).toEqual('template');
-          expect(msg.message.attachment.payload.template_type).toEqual('generic');
-          done();
-        }).catch((err) => {
-          throw new Error(err);
-        });
-      });
     });
 
 Take special care for:
 * All test are asynchronous
 * Setup and Teardown has high timeouts, because buildling, running and stopping Docker containers can take some time. Especially on first run, it will take very long. Afterwards, the Docker cache speeds up things.
-* TestMyBot uses [Bluebird](http://bluebirdjs.com) Promises
 * The test API is rather simple
   * bot.hears: send a text (or structured content) to your chatbot
   * bot.says: receive a text (or structured content) from your chatbot
-
-In your package.json, define a script for TestMyBot names _start_testmybot_, which is run in the Docker container.
-
-    ...
-    "scripts": {
-      "start_testmybot": "node index.js",
-    },
-    ...
 
 You can hand over environment variables to your chatbot here. 
 And finally, run your tests with Jasmine:
 
     $ ./node_modules/.bin/jasmine
 
-You will see some output from Docker, and in the end, your Jasmine tests should succeed (of course).
+In the end, your Jasmine tests should succeed (of course).
 
 How to Compose Test Cases
 =========================
@@ -264,92 +209,36 @@ Actually, for sending structured messages, you can include the message content i
 
 
 ## Capture & Replay Tools
-Especially with structured messages, it can become uncomfortable to write those conversation files manually. TestMyBot contains two tools to support you with writing your conversation files:
+Especially with structured messages, it can become uncomfortable to write those conversation files manually. TestMyBot contains two emulators to support you with writing your conversation files:
 
-### TestMyBot IDE
-The TestMyBot IDE provides a simple browser interface to record and organize your test cases, and to interact with your Chatbot.
+### Browser Emulator
+The TestMyBot Browser Emulator provides a simple browser interface to record and organize your test cases, and to interact with your Chatbot.
 
 ![TestMyBot IDE](docs/screenshots/ide_demo.png)
 
-Installation and running it is simple:
+Running it is simple:
 
-    $ npm install testmybot-ide --save-dev
-    $ node ./node_modules/testmybot-ide/ide.js
+    $ node node_modules/testmybot/emulator-browser.js
 
 It will show all test cases from the ./spec/convo/-Folder and will write new conversations to this directory as well.
 
-[More Information](testmybot-ide)
-
-### TestMyBot Chat
-The TestMyBot Chat is a basic command line interface to your Chatbot running within TestMyBot. You can record and save your conversation files.
+### Console Emulator
+The TestMyBot Console Emulator is a basic command line interface to your Chatbot running within TestMyBot. You can record and save your conversation files.
 
 ![TestMyBot Chat](docs/screenshots/chat.png)
 
 Installation and running it is simple:
 
-    $ npm install testmybot-chat --save-dev
-    $ node ./node_modules/testmybot-chat/index.js
-
-[More Information](testmybot-chat)
+    $ node node_modules/testmybot/emulator-console.js
 
 ## Running the conversation files
 
-You have to advice the TestMyBot library within your test specification how to add test cases to your test runner. In the following example, you advice it to add the test cases to Jasmine:
-
-    describe('TestMyBot Sample Conversation Test Suite', function() {
-        var bot = require('testmybot');
-
-        ... setup / teardown code
-        
-        bot.setupTestSuite(
-            (testcaseName, testcaseFunction) => {
-              it(testcaseName, testcaseFunction, 60000);
-            },
-            (response, tomatch) => {
-              expect(response).toContain(tomatch);
-            },
-            (err) => fail(err)
-        )        
-    });
-
-You have to provide the callback functions for:
-* adding a test case to your test suite. TestMyBot provides the name of the test case and the function to call.
-* comparing your bot responses with the actual responses. You can choose your matcher here (regexp, contains, ...)
-* failing the test case because the bot doesn't respond (or other failures)
-
-So TestMyBot is agnostic about the actual test runner you are using. The example above can be adapted to other test runners easily.
-
-## Test Suite Setup for Jasmine and Mocha
-
-There exist helper functions for setting up the whole test suite for Jasmine and Mocha. Place this code in your spec/testmybot.spec.js:
+You have to advice the TestMyBot library within your test specification how to add test cases to your test runner. In the following example, you advice it to add the test cases to Jasmine - just place this code in the file spec/testmybot.spec.js:
 
 	const bot = require('testmybot');
-	const botHelper = require('testmybot/helper/jasmine');
+	bot.helper.jasmine().setupJasmineTestSuite(60000);
 
-	botHelper.setupJasmineTestSuite(60000);
-
-This will create a test case for all your conversation files automatically.
-
-
-Configuration
-=============
-
-There are three steps for buildling the configuration:
-* ./node_modules/testmybot/testmybot.default.json
-* ./testmybot.default
-* "config" Parameter to "beforeAll" method
-
-The subsequent steps are overwriting the configuration parameters from the previous steps. The .json-files are converted into a plain object in Node.js.
-
-Please see [_./node_modules/testmybot/testmybot.default.json_](https://github.com/codeforequity-at/testmybot/blob/master/testmybot/testmybot.default.json) for information what settings you have to override in your project configuration.
-
-The docker containers are configured with seperate docker-compose.yml-files:
-* ./node_modules/testmybot/docker-compose.testmybot.yml
-* ./node_modules/testmybot-fbmock/docker-compose.testmybot-fbmock.yml
-* ./node_modules/testmybot-slackmock/docker-compose.testmybot-slackmock.yml
-* ./docker-compose.testmybot.override.yml
-
-The files are handed over to docker-compose in this order, so you can include your project-specific settings in the last file.
+There are helpers available for Jasmine and Mocha (see [samples](https://github.com/codeforequity-at/testmybot/tree/master/samples)), but TestMyBot actually is agnostic about the actual test runner you are using. The example above can be adapted to other test runners easily.
 
 API
 ===
@@ -362,33 +251,16 @@ API
   * returns a bluebird Promise
 * testmybot.afterEach() - stops Docker containers
   * returns a bluebird Promise
-* testmybot.hears(msg, from, channel) - send a text (or structured content) to your chatbot
-  * msg - text or structured content
-  * from - sender of the message
+* testmybot.hears({ messageText, sourceData, sender, channel, sourceData }) - send a text (or structured content) to your chatbot
+  * messageText - text
+  * sourceData - structured content
+  * sender (optional) - sender of the message
   * channel (optional) - the channel to send your message to (Slack only). You can mock parallel conversations with multiple users
 * testmybot.says(channel, timeoutMillis) - receive a text (or structured content) from your chatbot
   * channel (optional) - receive for this channel (Slack only)
   * timeoutMillis (optional) - timeout when not receiving anything (default: 5000)
-  * returns a bluebird Promise, which resolves to the the received message. 
+  * returns a Promise, which resolves to the the received message. 
  
-Here is an example for a received message. It contains (for brevity) the message text (if applicable), the full original message (in "orig") and the message body (in "message). For structured messages, there is no messageText.
-
-      {
-          "orig": {
-              "recipient": {
-                "id":4440090943
-              },
-            "message": { 
-                "text": "Text received, echo: hello"
-            }
-          },
-          "messageText": "Text received, echo: hello",
-          "message": {
-              "text": "Text received, echo: hello"
-          },
-          "channel": "#private"
-      }
-
 Outlook
 =======
 Work is ongoing
@@ -397,8 +269,8 @@ Work is ongoing
 - [x] Support Slack Chatbots
 - [ ] Support Wechat Chatbots
 - [x] Support Node.js Chatbots
-- [ ] Support Microsoft Bot Framework Chatbots
-- [x] Support Python Chtabots
+- [x] Support Microsoft Bot Framework Chatbots
+- [x] Support Python Chatbots
 - [x] Define Test Cases with TestMyBot API calls
 - [x] Define Test Cases by conversation transcripts
 - [x] Run your Tests in _live environment_ with _real_ Endpoints

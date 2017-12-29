@@ -2,7 +2,6 @@
   "name": "testmybot-sample-clojure",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/jasmine"
   },
@@ -11,8 +10,6 @@
   "devDependencies": {
     "jasmine": "^2.6.0",
     "jasmine-reporters": "^2.2.1",
-    "testmybot": "../..",
-    "testmybot-fbmock": "*",
-    "testmybot-chat": "*"
-  }
+    "testmybot": "../.."
+	}
 }

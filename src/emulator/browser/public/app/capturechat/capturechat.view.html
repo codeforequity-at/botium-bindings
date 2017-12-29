@@ -1,0 +1,62 @@
+<div class="row chat-toolbar-row">
+  <div class="col-sm-12">
+      <div class="btn-group chat-toolbar" role="group" aria-label="...">
+          <button id="chat-clear" class="btn btn-info" type="button" ng-click="vm.clearChat()" ng-disabled="vm.busy">
+            <i class="fa fa-times" aria-hidden="true"></i> Clear Chat
+          </button>
+          <button id="chat-customer" class="btn btn-info" type="button" ng-click="vm.saveTestCaseClick()" ng-disabled="vm.busy">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Save as Test Case
+          </button>
+          <button id="chat-add-ticket" class="btn btn-danger" type="button" ng-click="vm.startdocker()" ng-disabled="vm.busy">
+            <i class="fa fa-repeat" aria-hidden="true"></i> Reset Chatbot
+          </button>
+      </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="savetestcase.html">
+  <form name="testcasenameForm" ng-submit="vmpopup.submit(testcasenameForm.$valid)" novalidate>
+    <div class="modal-header">
+      <h3>Save Conversation as Test Case</h3>
+      <div class="alert alert-danger" role="alert" ng-if="vmpopup.errormessage">{{::vmpopup.errormessage}}</div>     
+    </div>
+    <div class="modal-body">
+      <div class="form-group" show-errors>
+        <label>Test Case Name:</label>
+        <input type="text" name="testcasename" class="form-control" ng-model="vmpopup.testcasename" required/>
+      </div> 
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" type="button" ng-click="vmpopup.cancel()">Cancel</button>
+      <button class="btn btn-primary" type="submit">Save Test Case</button>
+    </div>
+  </form>
+</script>
+
+
+<div class="row current-chat-area" id="current-chat-area">
+  <div class="col-md-12">
+    <i class="fa fa-spinner fa-spin fa-3x fa-fw" ng-if="vm.busy"></i>
+    <ul class="media-list" ng-if="!vm.busy">
+      <li class="media" ng-repeat="msg in vm.messages">
+        <display-chatbot-message msg="msg" />
+        <hr>
+      </li>
+    </ul>  
+  </div>
+</div>
+<div class="row current-chat-footer">
+  <div class="panel-footer">
+    <form ng-submit="vm.send()">
+      <div class="input-group">
+        <input type="text" class="form-control" ng-model="vm.sendtext" ng-disabled="vm.busy" placeholder="Enter text to send">
+        <span class="input-group-btn">
+          <button class="btn btn-primary" ng-click="vm.send()" ng-disabled="!vm.sendtext || vm.busy">Send</button>
+        </span>
+      </div>
+      <div class="input-group">
+        <input type="text" class="form-control" ng-model="vm.sendchannel" ng-disabled="vm.busy" placeholder="Enter channel">
+      </div>
+    </form>
+  </div>
+</div>

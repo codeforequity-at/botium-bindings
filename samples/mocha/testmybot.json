@@ -1,9 +1,18 @@
 {
-  "docker": {
-    "container": {
-			"testmybot-fbmock": {
-				"run": true
-			}
-	  }
+  "botium": {
+    "Capabilities": {
+      "PROJECTNAME": "testmybot-sample-mocha",
+      "FACEBOOK_API": true,
+      "FACEBOOK_WEBHOOK_PORT": 3000,
+      "FACEBOOK_WEBHOOK_PATH": "facebook/receive",
+      "CLEANUPTEMPDIR": false,
+      "STARTCMD": "node index.js"
+    },
+    "Envs": {
+      "NODE_TLS_REJECT_UNAUTHORIZED": 0,
+      "NODE_ENV": "dev",
+	  "page_token": "test",
+	  "verify_token": "test"
+    }
   }
 }

@@ -1,6 +1,0 @@
-version: "2"
-services:
-    testmybot-fbmock:
-        environment:
-            TESTMYBOT_FACEBOOK_WEBHOOKPORT: 3000
-            TESTMYBOT_FACEBOOK_WEBHOOKPATH: "facebook/receive"

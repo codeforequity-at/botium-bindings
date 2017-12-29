@@ -1,0 +1,113 @@
+<div class="media-body">
+  <div class="media">
+
+    <a ng-class="{ 'pull-left': vm.msg.from === 'me', 'pull-right': vm.msg.from === 'bot' }" href="#">
+      <i class="fa fa-user fa-2x" aria-hidden="true" ng-if="vm.msg.from === 'me'"></i>
+      <i class="fa fa-android fa-2x" aria-hidden="true" ng-if="vm.msg.from === 'bot'"></i>
+    </a>
+    <div class="media-body">
+      <div ng-if="vm.msg.channel" ng-class="{ 'text-left': vm.msg.from === 'me', 'text-right': vm.msg.from === 'bot' }">{{ vm.msg.channel }}</div>
+	
+	
+      <div ng-if="vm.text" ng-class="{ 'text-left': vm.msg.from === 'me', 'text-right': vm.msg.from === 'bot' }">{{ vm.text }}</div>
+
+      <div ng-if="vm.structured && vm.structured.text">
+        <div class="message-structured-container">
+          <p>{{ vm.structured.text }}</p>
+          
+          <div class="btn-group" ng-if="vm.structured.quick_replies">
+            <p ng-if="0" ng-repeat-start="quick_reply in vm.structured.quick_replies"></p>
+              <a ng-if="quick_reply.content_type === 'text'" class="btn btn-default" ng-click="vm.quickReply(quick_reply.title, quick_reply.payload)">{{quick_reply.title}}</a>
+              <a ng-if="quick_reply.content_type === 'location'" class="btn btn-default">Send Location</a>
+            <p ng-if="0" ng-repeat-end></p>
+          </div>
+        </div>
+      </div>
+      
+      <div ng-if="vm.structured && vm.structured.attachment && ['audio', 'file', 'video'].indexOf(vm.structured.attachment.type) >= 0">
+        <div class="message-structured-container">
+          <p><a ng-href="{{ vm.structured.attachment.payload.url }}" target="_blank">Attachment</a></p>
+        </div>        
+      </div>
+      
+      <div ng-if="vm.structured && vm.structured.attachment && vm.structured.attachment.type === 'image'">
+        <div class="message-structured-container">
+          <img ng-src="{{ vm.structured.attachment.payload.url }}">
+        </div>        
+      </div>
+
+      <div ng-if="vm.structured && vm.structured.attachment && vm.structured.attachment.type === 'template' && vm.structured.attachment.payload.template_type === 'generic'">      
+        <div ng-repeat="element in vm.structured.attachment.payload.elements" class="message-structured-container">
+
+          <div ng-if="element.default_action && element.default_action.type === 'web_url'">
+            <p ng-if="element.image_url"><a ng-href="{{ element.default_action.url }}" target="_blank"><img ng-src="{{ element.image_url }}"></a></p>
+            <p ng-if="element.title"><a ng-href="{{ element.default_action.url }}" target="_blank"><strong>{{ element.title }}</strong></a></p>
+          </div>
+          <div ng-if="!element.default_action || element.default_action.type !== 'web_url'">
+            <p ng-if="element.image_url"><img ng-src="{{ element.image_url }}"></p>
+            <p ng-if="element.title"><strong>{{ element.title }}</strong></p>
+          </div>
+          
+          <p ng-if="element.subtitle" class="small" >{{ element.subtitle }}</p>
+          
+          <div class="btn-group">
+            <p ng-if="0" ng-repeat-start="button in element.buttons"></p>
+              <a ng-if="button.type === 'web_url'" ng-href="{{ button.url }}" target="_blank" class="btn btn-default">{{button.title}}</a>
+              <a ng-if="button.type === 'postback'" class="btn btn-default" ng-click="vm.postback(button.title, button.payload)">{{ button.title }}</a>
+            <p ng-if="0" ng-repeat-end></p>
+          </div>
+        </div>
+      </div>
+
+      <div ng-if="vm.structured && vm.structured.attachment && vm.structured.attachment.type === 'template' && vm.structured.attachment.payload.template_type === 'button'">
+      
+        <div class="message-structured-container">
+          <p ng-if="vm.structured.attachment.payload.text"><strong>{{ vm.structured.attachment.payload.text }}</strong></p>
+          
+          <div class="btn-group">
+            <p ng-if="0" ng-repeat-start="button in vm.structured.attachment.payload.buttons"></p>
+              <a ng-if="button.type === 'web_url'" ng-href="{{ button.url }}" target="_blank" class="btn btn-default">{{button.title}}</a>
+              <a ng-if="button.type === 'postback'" class="btn btn-default" ng-click="vm.postback(button.title, button.payload)">{{ button.title }}</a>
+            <p ng-if="0" ng-repeat-end></p>
+          </div>
+        </div>
+      </div>
+      
+      <div ng-if="vm.structured && vm.structured.attachment && vm.structured.attachment.type === 'template' && vm.structured.attachment.payload.template_type === 'list'">
+
+        <div ng-repeat="element in vm.structured.attachment.payload.elements" class="message-structured-container">
+
+          <div ng-if="element.default_action && element.default_action.type === 'web_url'">
+            <p ng-if="element.image_url"><a ng-href="{{ element.default_action.url }}" target="_blank"><img ng-src="{{ element.image_url }}"></a></p>
+            <p ng-if="element.title"><a ng-href="{{ element.default_action.url }}" target="_blank"><strong>{{ element.title }}</strong></a></p>
+          </div>
+          <div ng-if="!element.default_action || element.default_action.type !== 'web_url'">
+            <p ng-if="element.image_url"><img ng-src="{{ element.image_url }}"></p>
+            <p ng-if="element.title"><strong>{{ element.title }}</strong></p>
+          </div>
+          
+          <p ng-if="element.subtitle" class="small" >{{ element.subtitle }}</p>
+          
+          <div class="btn-group">
+            <p ng-if="0" ng-repeat-start="button in element.buttons"></p>
+              <a ng-if="button.type === 'web_url'" ng-href="{{ button.url }}" target="_blank" class="btn btn-default">{{button.title}}</a>
+              <a ng-if="button.type === 'postback'" class="btn btn-default" ng-click="vm.postback(button.title, button.payload)">{{ button.title }}</a>
+            <p ng-if="0" ng-repeat-end></p>
+          </div>
+        </div>
+        
+        <div ng-if="vm.structured.attachment.payload.buttons" class="message-structured-container">
+          <div class="btn-group">
+            <p ng-if="0" ng-repeat-start="button in vm.structured.attachment.payload.buttons"></p>
+              <a ng-if="button.type === 'web_url'" ng-href="{{ button.url }}" target="_blank" class="btn btn-default">{{button.title}}</a>
+              <a ng-if="button.type === 'postback'" class="btn btn-default"  ng-click="vm.postback(button.title, button.payload)">{{ button.title }}</a>
+            <p ng-if="0" ng-repeat-end></p>
+          </div>
+        </div>
+        
+      </div>      
+
+    </div>
+
+  </div>
+</div>
