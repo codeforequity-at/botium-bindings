@@ -31,40 +31,34 @@ With [Jasmine](https://jasmine.github.io/), the setup looks like this:
 
 Add a file named "testmybot.json" to your project directory. A very basic configuration for a [Slack Chatbot](https://github.com/codeforequity-at/testmybot/tree/master/samples/slack) looks like this:
 
-    {
-      "docker": {
-        "container": {
-          "testmybot-slackmock": {
-            "run": true
-          }
-        }
-      }
+{
+  "botium": {
+    "Capabilities": {
+      "PROJECTNAME": "testmybot-sample-slack",
+      "SLACK_API": true,
+      "SLACK_EVENT_PORT": 3000,
+      "SLACK_EVENT_PATH": "slack/receive",
+      "SLACK_OAUTH_PORT": 3000,
+      "SLACK_OAUTH_PATH": "oauth",
+      "CLEANUPTEMPDIR": false,
+      "STARTCMD": "npm run start"
+    },
+    "Sources": {
+      "GITURL": "https://github.com/howdyai/botkit-starter-slack",
+      "GITPREPARECMD": "npm install"
+    },
+    "Envs": {
+      "NODE_TLS_REJECT_UNAUTHORIZED": 0,
+      "NODE_ENV": "dev",
+      "DEBUG": "*",
+      "PORT": "3000",
+      "clientId": "159753246482.159685134291",
+      "clientSecret": "b993ecebb034fe06bb05e2e31bc8f465"
     }
-
-This tells TestMyBot to startup the Slack mocker.
-
-Add a file named "docker-compose.testmybot.override.yml" to your project directory. The sample from above contains a working example:
-
-    version: "2"
-    services:
-        testmybot-slackmock:
-            environment:
-                TESTMYBOT_SLACK_EVENTPORT: 3000
-                TESTMYBOT_SLACK_EVENTPATH: "slack/receive"
-                TESTMYBOT_SLACK_OAUTHPORT: 3000
-                TESTMYBOT_SLACK_OAUTHPATH: "oauth"
-
-This file tells TestMyBot where your Slack Webhooks are located. Most likely you have to adjust it to your own Chatbot project.
+  }
+}
 
 Take the [Testmybot Jasmine Spec file](https://github.com/codeforequity-at/testmybot/blob/master/samples/slack/spec/testmybot.spec.js) from the sample and place it into your project directory (spec/testmybot.spec.js).
-
-In your package.json, define a script for TestMyBot names _start_testmybot_, which is run in the Docker container.
-
-    ...
-    "scripts": {
-      "start_testmybot": "node index.js",
-    },
-    ...
 
 You can hand over environment variables to your chatbot here. 
 
@@ -78,7 +72,7 @@ And finally, run your tests with Jasmine:
 
     $ ./node_modules/.bin/jasmine
 
-You will see some output from Docker, and in the end, your Jasmine tests should succeed (of course).
+In the end, your Jasmine tests should succeed (of course).
 
 
 
