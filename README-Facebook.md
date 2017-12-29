@@ -18,38 +18,25 @@ With [Jasmine](https://jasmine.github.io/), the setup looks like this:
 
 Add a file named "testmybot.json" to your project directory. A very basic configuration for a [Facebook Chatbot](https://github.com/codeforequity-at/testmybot/tree/master/samples/facebook) looks like this:
 
-    {
-      "docker": {
-        "container": {
-          "testmybot-fbmock": {
-            "run": true
-          }
-        }
-      }
-    }
+	{
+	  "botium": {
+	    "Capabilities": {
+	      "PROJECTNAME": "testmybot-sample1",
+	      "FACEBOOK_API": true,
+	      "FACEBOOK_WEBHOOK_PORT": 5000,
+	      "FACEBOOK_WEBHOOK_PATH": "webhook",
+	      "CLEANUPTEMPDIR": false,
+	      "STARTCMD": "node index.js"
+	    },
+	    "Envs": {
+	      "NODE_TLS_REJECT_UNAUTHORIZED": 0,
+	      "NODE_ENV": "dev"
+	    }
+	  }
+	}
 
-This tells TestMyBot to startup the Facebook mocker.
-
-Add a file named "docker-compose.testmybot.override.yml" to your project directory. The sample from above contains a working example:
-
-	version: "2"
-	services:
-	    testmybot-fbmock:
-		environment:
-		    TESTMYBOT_FACEBOOK_WEBHOOKPORT: 5000
-		    TESTMYBOT_FACEBOOK_WEBHOOKPATH: "webhook"
-
-This file tells TestMyBot where the Facebook Webhook is located. Most likely you have to adjust it to your own Chatbot project. 
 
 Take the [Testmybot Jasmine Spec file](https://github.com/codeforequity-at/testmybot/blob/master/samples/facebook/spec/testmybot.spec.js) from the sample and place it into your project directory (spec/testmybot.spec.js).
-
-In your package.json, define a script for TestMyBot names _start_testmybot_, which is run in the Docker container.
-
-    ...
-    "scripts": {
-      "start_testmybot": "node index.js",
-    },
-    ...
 
 You can hand over environment variables to your chatbot here. 
 
@@ -63,10 +50,10 @@ And finally, run your tests with Jasmine:
 
     $ ./node_modules/.bin/jasmine
 
-You will see some output from Docker, and in the end, your Jasmine tests should succeed (of course).
+In the end, your Jasmine tests should succeed (of course).
 
+## Debugging
 
+In case of troubles, you can activate debug before starting your test cases:
 
-
-
-
+	$ export DEBUG=botium*
