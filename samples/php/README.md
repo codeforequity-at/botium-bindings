@@ -23,10 +23,9 @@ Now you can just initialize your project directory with testmybot and run the [C
 
     $ npm init
     $ npm install testmybot --save-dev
-    $ npm install testmybot-chat --save-dev
     $ npm install jasmine --save-dev
     $ ./node_modules/.bin/jasmine init
-    $ node ./node_modules/testmybot-chat/index.js
+    $ node node_modules/testmybot/emulator-console.js
     $ ./node_modules/.bin/jasmine
 
 
