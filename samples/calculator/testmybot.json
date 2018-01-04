@@ -1,0 +1,23 @@
+{
+  "botium": {
+    "Capabilities": {
+      "PROJECTNAME": "testmybot-sample-calculator",
+      "FACEBOOK_API": true,
+      "FACEBOOK_WEBHOOK_PORT": 3000,
+      "FACEBOOK_WEBHOOK_PATH": "facebook/receive",
+	  "FACEBOOK_SEND_DELIVERY_CONFIRMATION": false,
+      "CLEANUPTEMPDIR": false,
+      "STARTCMD": "node index.js"
+    },
+    "Sources": {
+      "GITURL": "https://github.com/codeforequity-at/testmybot-sample-calculator.git",
+      "GITPREPARECMD": "npm install"
+    },
+    "Envs": {
+      "NODE_TLS_REJECT_UNAUTHORIZED": 0,
+      "NODE_ENV": "dev",
+      "page_token": "sample",
+      "verify_token": "sample"
+    }
+  }
+}
