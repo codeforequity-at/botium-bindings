@@ -8,6 +8,7 @@ const Queue = require('botium-core/src/helpers/Queue');
 let controller = null;
 let msgqueue = null;
 let bot = null;
+let timeoutMillisDefault = 5000;
 
 /**
  * Setup TestMyBot and wire it with Botkit
@@ -69,7 +70,7 @@ let tmbMock = {
     return Promise.resolve();
   },
   says: (channel, timeoutMillis) => {
-    return msgqueue.pop(timeoutMillis);
+    return msgqueue.pop(timeoutMillis ? timeoutMillis : timeoutMillisDefault);
   }
 };
 tmbMock = Object.assign(tmb, tmbMock);
@@ -80,11 +81,13 @@ mockery.enable({
     warnOnUnregistered: false
 });
 
-module.exports.wireWithBotkit = function(beforeEachCallback) {
+module.exports.wireWithBotkit = function(beforeEachCallback, _timeoutMillisDefault) {
   tmb.beforeEach = () => {
-    console.log('tmb.beforeEach');
-    msgqueue = new Queue()
-
+    msgqueue = new Queue();
+    if (_timeoutMillisDefault) {
+      timeoutMillisDefault = _timeoutMillisDefault;
+    }
+    
     controller = beforeEachCallback();
     controller.startTicking();
 

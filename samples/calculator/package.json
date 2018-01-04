@@ -1,0 +1,16 @@
+{
+  "name": "testmybot-sample-calculator",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine",
+    "emulator": "node node_modules/testmybot/emulator-console.js",
+    "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js"
+  },
+  "devDependencies": {
+    "jasmine": "^2.6.0",
+    "jasmine-reporters": "^2.2.1",
+    "testmybot": "../.."
+  },
+  "author": "Florian Treml",
+  "license": "ISC"
+}

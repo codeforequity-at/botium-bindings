@@ -103,7 +103,7 @@ function hears(arg) {
 
 function says(channel, timeoutMillis) {
   if (container) {
-    return container.WaitBotSays(timeoutMillis);
+    return container.WaitBotSays(channel, timeoutMillis);
   } else {
     return Promise.reject('container not available');
   }
