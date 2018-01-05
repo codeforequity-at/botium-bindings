@@ -32,7 +32,7 @@ function setupTestSuite(testcaseCb, assertCb, failCb, hears, says) {
                 }
               } else if (convomsg.from === 'bot') {
                 log.debug(testcase.name + ': wait for bot says (channel: ' + convomsg.channel + ')');
-                says(convomsg.channel).then((saysmsg) => {
+                says(convomsg.channel, 5000).then((saysmsg) => {
                   if (saysmsg && saysmsg.messageText) {
                     log.debug(testcase.name + ': bot says ' + saysmsg.messageText);
 
