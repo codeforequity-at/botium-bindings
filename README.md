@@ -15,6 +15,8 @@ Your test cases are recorded by Capture & Replay tools and can be run against yo
 
 Here are links to some articles about TestMyBot:
 
+[Selenium for Chatbots — Introducing Botium](https://chatbotsmagazine.com/selenium-for-chatbots-introducing-botium-1f1f0b3d4164)
+
 [Serverless Monitoring Of Your Facebook Chatbot in 3 Easy Steps](https://chatbotsmagazine.com/serverless-monitoring-of-your-facebook-chatbot-in-3-easy-steps-a051b4f248a8) (outdated)
 
 [Capture & Replay: Bringing Chatbot Code Quality To a New Level](https://chatbotsmagazine.com/capture-replay-bringing-chatbot-code-quality-to-a-new-level-c0312971311a) (outdated)
@@ -26,6 +28,10 @@ Here are links to some articles about TestMyBot:
 ## Botium, the Selenium for Chatbots
 
 TestMyBot relies on [Botium, the Selenium for Chatbots](https://github.com/codeforequity-at/botium-core) to connect to your Chatbot, either in a Sandbox environment or in a live environment. TestMyBot reads the file "testmybot.json" to configure your Botium container.
+
+You can read more about Botium and TestMyBot [here](https://chatbotsmagazine.com/selenium-for-chatbots-introducing-botium-1f1f0b3d4164)
+
+![Botium and TestMyBot](https://github.com/codeforequity-at/testmybot-docs/blob/master/TestMyBot%20and%20Botium%20Overview.png?raw=true)
 
 Quick Start
 ===========
