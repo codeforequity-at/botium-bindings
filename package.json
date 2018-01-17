@@ -1,6 +1,6 @@
 {
   "name": "testmybot",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "engines": {
     "node": ">=6.0"
   },
@@ -15,7 +15,7 @@
   "dependencies": {
     "async": "^2.1.5",
     "body-parser": "^1.18.2",
-    "botium-core": "1.1.0",
+    "botium-core": "1.1.1",
     "chalk": "^2.3.0",
     "clear": "0.0.1",
     "ejs": "^2.5.7",
