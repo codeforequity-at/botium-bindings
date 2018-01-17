@@ -5,6 +5,7 @@ const slugify = require('./util/slugify');
 const firstline = require('./util/firstline');
 
 const fs = require('fs')
+const path = require('path')
 const readdirSync = require('fs').readdirSync;
 const mkdirp = require('mkdirp');
 const async = require('async');
@@ -35,7 +36,7 @@ function readConvos() {
               callback();
               return;
             }
-            firstline.firstline(convodir + filename).then(
+            firstline.firstline(path.resolve(convodir, filename)).then(
               (header) => {
                 convos.push(createConvoEntry(filename, header));
                 callback();
@@ -61,7 +62,7 @@ function readConvosSync() {
   var filenames = readdirSync(convodir).filter((filename) => filename.endsWith(suffix));
   var convos = [];
   filenames.forEach(function (filename) {
-    var header = firstline.firstlineSync(convodir + filename);
+    var header = firstline.firstlineSync(path.resolve(convodir, filename));
     convos.push(createConvoEntry(filename, header));
   });
   return convos;
@@ -79,7 +80,7 @@ function createConvoEntry(filename, header) {
 
 function readConvo(filename) {
   
-	var convofilename = convodir + filename;
+	var convofilename = path.resolve(convodir, filename);
   
   var parseMsg = function(lines) {
     if (!lines) return null;
@@ -165,7 +166,7 @@ function writeConvo(convo, errorIfExists) {
   if (!convo.filename.endsWith(suffix))
     convo.filename += suffix;
 
-	var filename = convodir + convo.filename;
+	var filename = path.resolve(convodir, convo.filename);
 	
   return new Promise(function(writeConvoResolve, writeConvoReject) {
 

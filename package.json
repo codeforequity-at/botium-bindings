@@ -9,18 +9,18 @@
   },
   "scripts": {
     "build": "rollup -c",
-	"buildbin": "./node_modules/.bin/pkg --out-path dist ./package.json",
+    "buildbin": "./node_modules/.bin/pkg --out-path dist ./package.json",
     "newpatch": "npm version patch"
   },
   "pkg": {
     "scripts": "src/**/*.js",
     "assets": [
-		"src/emulator/browser/public/**/*",
-		"src/emulator/browser/views/**/*",
-		"node_modules/figlet/fonts/*",
-		"node_modules/opn/xdg-open",
-		"*.json"
-	]
+      "src/emulator/browser/public/**/*",
+      "src/emulator/browser/views/**/*",
+      "node_modules/figlet/fonts/*",
+      "node_modules/opn/xdg-open",
+      "*.json"
+    ]
   },
   "description": "Continuous Testing for your Chatbots",
   "main": "index.js",
@@ -32,6 +32,7 @@
     "botium-core": "1.1.1",
     "chalk": "^2.3.0",
     "clear": "0.0.1",
+    "debug": "^3.1.0",
     "ejs": "^2.5.7",
     "exit-hook": "^1.1.1",
     "express": "^4.16.2",
@@ -46,6 +47,7 @@
     "yargs": "^10.1.1"
   },
   "devDependencies": {
+    "pkg": "^4.3.0-beta.5",
     "rollup": "^0.53.0",
     "rollup-plugin-buble": "^0.18.0",
     "rollup-plugin-commonjs": "^8.2.6",

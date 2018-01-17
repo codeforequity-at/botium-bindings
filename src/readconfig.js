@@ -7,6 +7,12 @@ const fs = require('fs');
 const async = require('async');
 const _ = require('lodash');
 
+let configfile = 'testmybot.json';
+
+function setConfigFile(c) {
+  configfile = c;
+}
+
 function readAndMergeConfig(configToSet) {
   return new Promise(function(getConfigResolve, getConfigReject) {
 
@@ -30,7 +36,7 @@ function readAndMergeConfig(configToSet) {
       },
       
       function(readConfigDone) {
-        fs.readFile('testmybot.json', (err, contents) => {
+        fs.readFile(configfile, (err, contents) => {
           if (err) {
             log.warn('could not read file testmybot.json: ' + err);
             readConfigDone();
@@ -62,5 +68,6 @@ function readAndMergeConfig(configToSet) {
 }
 
 module.exports = {
+  setConfigFile: setConfigFile,
   readAndMergeConfig: readAndMergeConfig
 };
