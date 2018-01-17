@@ -1,5 +1,6 @@
 const testmybot = require('../../testmybot');
 const convo = require('../../convo');
+const path = require('path')
 const chalk = require('chalk');
 const clear = require('clear');
 const figlet = require('figlet');
@@ -78,8 +79,14 @@ module.exports = () => {
   appIde.use("/public", express.static(__dirname + '/public'));
 
   appIde.get('/', function (req, res) {
-    const packageJson = require(process.cwd() + '/package.json');
-    
+    let packageJson = {
+      name: 'TestMyBot module',
+      version: 'unknown'
+    };
+    try {
+      packageJson = require(path.resolve(process.cwd(), 'package.json'));
+    } catch (e) {
+    }
     const data = {
       module: packageJson,
       config: {

@@ -1,3 +1,4 @@
+const path = require('path')
 const expect = require.main.require('chai').expect;
 const testbuilder = require('../testbuilder');
 const testmybot = require('../testmybot');
@@ -26,7 +27,7 @@ module.exports.setupMochaTestSuite = function(timeout, matcher) {
 
   if (!timeout) timeout = 60000;
 
-  var packageJson = require(process.cwd() + '/package.json');
+  var packageJson = require(path.resolve(process.cwd(), 'package.json'));
   
   describe('TestMyBot Test Suite for ' + packageJson.name, function() {
   

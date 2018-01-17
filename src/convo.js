@@ -15,6 +15,10 @@ const _ = require('lodash');
 var convodir = './spec/convo/';
 var suffix = '.convo.txt';
 
+function setConvoDir(c) {
+  convodir = c;
+}
+
 function readConvos() {
   return new Promise(function(readConvosResolve, readConvosReject) {
     fs.access(convodir, (err) => {
@@ -226,6 +230,7 @@ function writeConvo(convo, errorIfExists) {
 
 
 module.exports = {
+  setConvoDir: setConvoDir,
 	writeConvo: writeConvo,
   readConvos: readConvos,
   readConvo: readConvo,

@@ -1,3 +1,5 @@
+const path = require('path')
+
 const testbuilder = require('../testbuilder');
 const testmybot = require('../testmybot');
 
@@ -23,7 +25,7 @@ module.exports.setupJasmineTestSuite = function(timeout, matcher) {
 
   if (!timeout) timeout = 60000;
 
-  var packageJson = require(process.cwd() + '/package.json');
+  var packageJson = require(path.resolve(process.cwd(), 'package.json'));
   
   describe('TestMyBot Test Suite for ' + packageJson.name, function() {
   
