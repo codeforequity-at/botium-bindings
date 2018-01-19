@@ -1,5 +1,7 @@
 const testmybot = require('../../testmybot');
 const convo = require('../../convo');
+const moduleinfo = require('../../util/moduleinfo')
+const path = require('path')
 const chalk = require('chalk');
 const clear = require('clear');
 const figlet = require('figlet');
@@ -78,10 +80,8 @@ module.exports = () => {
   appIde.use("/public", express.static(__dirname + '/public'));
 
   appIde.get('/', function (req, res) {
-    const packageJson = require(process.cwd() + '/package.json');
-    
     const data = {
-      module: packageJson,
+      module: moduleinfo(),
       config: {
       }
     };

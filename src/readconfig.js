@@ -1,66 +1,65 @@
-'use strict'
+const path = require('path')
+const fs = require('fs')
+const async = require('async')
+const _ = require('lodash')
+const debug = require('debug')('testmybot-readconfig')
 
-const log = require('./util/log');
+let configfile = 'testmybot.json'
 
-const path = require('path');
-const fs = require('fs');
-const async = require('async');
-const _ = require('lodash');
+function setConfigFile (c) {
+  configfile = c
+}
 
-function readAndMergeConfig(configToSet) {
-  return new Promise(function(getConfigResolve, getConfigReject) {
+function readAndMergeConfig (configToSet) {
+  return new Promise((resolve, reject) => {
+    var resolvedConfig = {}
 
-    var resolvedConfig = {};
-  
     async.series([
-      
-      function(readDefaultConfigDone) {
+      (readDefaultConfigDone) => {
         fs.readFile(path.resolve(__dirname, '../testmybot.default.json'), (err, contents) => {
           if (err) {
-            log.info('could not read file testmybot.default.json: ' + err);
-            readDefaultConfigDone();
+            debug('could not read file testmybot.default.json: ' + err)
+            readDefaultConfigDone()
           } else {
-            var configJson = JSON.parse(contents);
+            var configJson = JSON.parse(contents)
             if (configJson) {
-              _.merge(resolvedConfig, configJson);
+              _.merge(resolvedConfig, configJson)
             }
-            readDefaultConfigDone();
+            readDefaultConfigDone()
           }
-        });
+        })
       },
-      
-      function(readConfigDone) {
-        fs.readFile('testmybot.json', (err, contents) => {
+
+      (readConfigDone) => {
+        fs.readFile(configfile, (err, contents) => {
           if (err) {
-            log.warn('could not read file testmybot.json: ' + err);
-            readConfigDone();
+            debug('could not read file testmybot.json: ' + err)
+            readConfigDone()
           } else {
-            var configJson = JSON.parse(contents);
+            var configJson = JSON.parse(contents)
             if (configJson) {
-              _.merge(resolvedConfig, configJson);
+              _.merge(resolvedConfig, configJson)
             }
-            readConfigDone();
+            readConfigDone()
           }
-        });
+        })
       },
-      
-      function(mergeManualConfigDone) {
+
+      (mergeManualConfigDone) => {
         if (configToSet) {
-          _.merge(resolvedConfig, configToSet);
+          _.merge(resolvedConfig, configToSet)
         }
-        mergeManualConfigDone();
+        mergeManualConfigDone()
       }
-      
     ],
-    function(err) {
-      if (err)
-        getConfigReject(err);
-      else
-        getConfigResolve(resolvedConfig);
-    });
-  });     
+    (err) => {
+      if (err) reject(err)
+      else resolve(resolvedConfig)
+    })
+  })
 }
 
 module.exports = {
+  setConfigFile: setConfigFile,
   readAndMergeConfig: readAndMergeConfig
-};
+}
