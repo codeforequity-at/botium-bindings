@@ -1,6 +1,6 @@
 {
   "name": "testmybot",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "engines": {
     "node": ">=6.0"
   },
@@ -8,17 +8,20 @@
     "testmybot": "./bin/testmybot.js"
   },
   "scripts": {
-    "build": "rollup -c",
-    "buildbin": "./node_modules/.bin/pkg --out-path dist ./package.json",
+    "build": "npm run eslint && rollup -c",
+    "eslint": "eslint \"./src/**/*.js\" \"./bin/**/*.js\"",
+    "buildbin": "./node_modules/.bin/pkg --targets linux-x64,linux-x86,win-x64,win-x86,macos-x64,macos-x86 --out-path dist ./package.json",
     "newpatch": "npm version patch"
   },
   "pkg": {
     "scripts": "src/**/*.js",
     "assets": [
+      "bin/**/*",
       "src/emulator/browser/public/**/*",
       "src/emulator/browser/views/**/*",
       "node_modules/figlet/fonts/*",
       "node_modules/opn/xdg-open",
+      "node_modules/botium-core",
       "*.json"
     ]
   },
@@ -29,7 +32,8 @@
   "dependencies": {
     "async": "^2.1.5",
     "body-parser": "^1.18.2",
-    "botium-core": "1.1.1",
+    "botium-core": "1.1.4",
+    "chai": "^4.1.2",
     "chalk": "^2.3.0",
     "clear": "0.0.1",
     "debug": "^3.1.0",
@@ -40,6 +44,7 @@
     "is-json": "^2.0.1",
     "lodash": "^4.17.4",
     "mkdirp": "^0.5.1",
+    "mocha": "^5.0.0",
     "mockery": "^2.1.0",
     "n-readlines": "^0.2.7",
     "opn": "^5.1.0",
@@ -47,6 +52,12 @@
     "yargs": "^10.1.1"
   },
   "devDependencies": {
+    "eslint": "^4.15.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
     "pkg": "^4.3.0-beta.5",
     "rollup": "^0.53.0",
     "rollup-plugin-buble": "^0.18.0",

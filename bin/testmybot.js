@@ -1,23 +1,30 @@
 #!/usr/bin/env node
 const yargsCmd = require('yargs')
-const async = require('async')
+const Mocha = require('mocha')
 const debug = require('debug')
-const log = require('../src/util/log')
-const testmybot = require('../src/testmybot')
+const path = require('path')
 
-yargsCmd
-  .usage('TestMyBot CLI\n\nUsage: $0 [options]')
+const outputTypes = [
+  'tap',
+  'json',
+  'xunit',
+  'spec',
+  'list',
+  'html'
+]
+
+yargsCmd.usage('TestMyBot CLI\n\nUsage: $0 [options]') // eslint-disable-line
   .help('help').alias('help', 'h')
   .version('version', require('../package.json').version).alias('version', 'V')
   .command('run [output]', 'Run TestMyBot convo files and output test report', (yargs) => {
     yargs.positional('output', {
-      describe: 'Output report type, supported: "csv", "junit"',
-      default: 'csv'
+      describe: 'Output report type, supported: ' + outputTypes.join(),
+      default: 'spec'
     })
   }, (argv) => {
     handleOptions(argv)
 
-    if (argv.output !== 'csv' && argv.output !== 'junit') {
+    if (outputTypes.findIndex((o) => o === argv.output) < 0) {
       yargsCmd.showHelp()
     } else {
       runTestsuite(argv)
@@ -30,7 +37,7 @@ yargsCmd
     })
   }, (argv) => {
     handleOptions(argv)
-    
+
     if (argv.type !== 'console' && argv.type !== 'browser') {
       yargsCmd.showHelp()
     } else if (argv.type === 'console') {
@@ -48,29 +55,18 @@ yargsCmd
     alias: 'C',
     describe: 'Path to the directory holding your convo files',
     default: './spec/convo'
-  })  
+  })
   .option('config', {
     alias: 'c',
     describe: 'Path to the TestMyBot configuration file (testmybot.json)',
     default: './testmybot.json'
-  })  
-  .option('out', {
-    alias: 'o',
-    describe: 'Path to the output directory',
-    default: './'
   })
-  .option('outfile', {
-    alias: 'O',
-    describe: 'Filename for the output report',
-    default: 'testmybot.out.[csv|xml]'
-  })  
   .demandCommand()
   .argv
 
-function handleOptions(argv) {
+function handleOptions (argv) {
   if (argv.verbose) {
-    debug.enable('botium')
-    process.env.DEBUG = 'true'
+    debug.enable('testmybot*,botium*')
   }
   if (argv.convos) {
     require('../src/convo').setConvoDir(argv.convos)
@@ -80,110 +76,15 @@ function handleOptions(argv) {
   }
 }
 
-function runTestsuite(argv) {
-  
-  const testcases = []
-  
-  testmybot.setupTestSuite(
-    (testcaseName, testcaseFunction) => {
-      testcases.push({
-        name: testcaseName,
-        exec: testcaseFunction
-      })
-    },
-    (check, tomatch) => {
-      if (!check && !tomatch) {
-        return
-      }
-      if (check.match(tomatch)) {
-        return
-      }
-      throw new Error(`assert failed: "${check}" not matching "${tomatch}"`)
-    },
-    (err) => {
-      throw new Error(err)
-    }
-  )
-  
-  async.series([
-    (beforeAllDone) => {
-      testmybot.beforeAll().then(
-        () => beforeAllDone(),
-        (err) => beforeAllDone('before all failed: ' + err)
-      )
-    },
-  
-    (testcasesDone) => {
-      async.eachSeries(testcases, (testcase, testcaseDone) => {
-        async.series([
-          (beforeEachDone) => {
-            testmybot.beforeEach().then(
-              () => beforeEachDone(),
-              (err) => beforeEachDone('before each failed: ' + err)
-            )
-          },
-          
-          (testcaseExecDone) => {
-            testcase.exec((err) => {
-              if (err) {
-                testcase.success = false
-                if (err.message) {
-                  testcase.err = err.message
-                } else {
-                  testcase.err = err
-                }
-                if (err.stack) {
-                  testcase.stack = err.stack
-                }
-              } else {
-                testcase.success = true
-              }
-              testcaseExecDone()
-            })
-          },
-          
-          (afterEachDone) => {
-            testmybot.afterEach().then(
-              () => afterEachDone(),
-              (err) => afterEachDone('after each failed: ' + err)
-            )
-          }
-        ], 
-        (err) => {
-          if (err) {
-            testcase.success = false
-            testcase.err = err
-          }
-          testcaseDone()
-        })
-      },
-      (err) => {
-        log.info('all testcases ready')
-        testcasesDone()
-      })
-    },
-    
-    (afterAllDone) => {
-      testmybot.afterAll().then(
-        () => afterAllDone(),
-        (err) => afterAllDone('after all failed: ' + err)
-      )
-    }
-  ],
-  (err) => {
-    if (err) {
-      log.error(err)
-    } else {
-      log.info('testsuite ready')
-      
-      testcases.forEach((testcase) => {
-        if (testcase.success) {
-          console.log(testcase.name + ' OK')
-        } else {
-          console.log(testcase.name + ' FAILED: ' + testcase.err)
-        }
-      })
-      
-    }
+function runTestsuite (argv) {
+  const mocha = new Mocha({
+    reporter: argv.output
+  })
+  mocha.addFile(path.resolve(__dirname, 'testmybot.spec.js'))
+
+  mocha.run((failures) => {
+    process.on('exit', () => {
+      process.exit(failures)
+    })
   })
 }

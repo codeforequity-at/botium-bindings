@@ -1,12 +1,10 @@
-'use strict'
+const slugifyStripRe = /[^\w\s-]/g
+const slugifyHyphenateRe = /[-\s]+/g
 
-var _slugify_strip_re = /[^\w\s-]/g;
-var _slugify_hyphenate_re = /[-\s]+/g;
-
-function slugify(s) {
-  s = s.replace(_slugify_strip_re, '').trim().toLowerCase();
-  s = s.replace(_slugify_hyphenate_re, '-');
-  return s;
+function slugify (s) {
+  s = s.replace(slugifyStripRe, '').trim().toLowerCase()
+  s = s.replace(slugifyHyphenateRe, '-')
+  return s
 }
 
-module.exports = slugify;
+module.exports = slugify
