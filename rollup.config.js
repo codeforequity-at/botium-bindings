@@ -6,12 +6,12 @@ export default {
   input: 'index.js',
   output: [
     {
-      file: 'dist/botium-es.js',
+      file: 'dist/testmybot-es.js',
       format: 'es',
       sourcemap: true
     },
     {
-      file: 'dist/botium-cjs.js',
+      file: 'dist/testmybot-cjs.js',
       format: 'cjs',
       sourcemap: true
     }

@@ -1,29 +1,31 @@
-const bot = require('testmybot');
-const jasmineHelper = bot.helper.jasmine();
+const TestMyBot = require('testmybot')
+const jasmineHelper = TestMyBot.helper.jasmine();
+
+const tmb = new TestMyBot()
 
 describe('TestMyBot Sample Conversation Test Suite', function() {
 
   beforeAll(function(done) {
-    bot.beforeAll().then(done);
+    tmb.beforeAll().then(done);
   }, 120000); //lots of timeout, first docker build could take pretty long
 
   beforeEach(function(done) {
-    bot.beforeEach().then(done);
+    tmb.beforeEach().then(done);
   }, 60000);
 
   afterEach(function(done) {
-    bot.afterEach().then(done);
+    tmb.afterEach().then(done);
   }, 60000);
   
   afterAll(function(done) {
-    bot.afterAll().then(done);
+    tmb.afterAll().then(done);
   }, 60000);
 
   it('should answer to hello', function(done) {
     
-    bot.hears('hello');
+    tmb.hears('hello');
     
-    bot.says().then((msg) => {
+    tmb.says().then((msg) => {
       console.log('got Message: ' + JSON.stringify(msg));
       expect(msg && msg.messageText).toMatch(/echo/);
       done();
@@ -34,9 +36,9 @@ describe('TestMyBot Sample Conversation Test Suite', function() {
 
   it('should send a generic payload', function(done) {
     
-    bot.hears('Generic');
+    tmb.hears('Generic');
     
-    bot.says().then((msg) => {
+    tmb.says().then((msg) => {
       console.log('got Message: ' + JSON.stringify(msg));
       expect(msg && msg.sourceData && msg.sourceData.message && msg.sourceData.message.attachment && msg.sourceData.message.attachment.type).toEqual('template');
       expect(msg && msg.sourceData && msg.sourceData.message && msg.sourceData.message.attachment && msg.sourceData.message.attachment.payload.template_type).toEqual('generic');
@@ -46,5 +48,5 @@ describe('TestMyBot Sample Conversation Test Suite', function() {
     });
   }, 10000);
 
-  jasmineHelper.setupJasmineTestCases(60000);
+  jasmineHelper.setupJasmineTestCases(60000, null, tmb);
 });

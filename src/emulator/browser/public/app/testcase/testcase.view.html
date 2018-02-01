@@ -1,6 +1,6 @@
 <div class="row testcase-toolbar-row">
   <div class="col-sm-12">
-    <h4><a href="#" editable-text="vm.testcase.name" e-required onaftersave="vm.onaftersave()" edit-disabled="!vm.testcase">{{ vm.testcase.name ? vm.testcase.name : 'no name' }}</a> / {{ vm.testcase.conversation.length }} Messages</h4>
+    <h4><a href="#" editable-text="vm.testcase.header.name" e-required onaftersave="vm.onaftersave()" edit-disabled="!vm.testcase">{{ vm.testcase.header.name ? vm.testcase.header.name : 'no name' }}</a> / {{ vm.testcase.conversation.length }} Messages</h4>
   </div>
 </div>
 <div class="row testcase-toolbar-row">
@@ -10,7 +10,7 @@
 </div>
 <div class="row testcase-toolbar-row">
   <div class="col-sm-12">
-    <p><a href="#" editable-textarea="vm.testcase.description" e-rows="7" e-cols="50" onaftersave="vm.onaftersave()"  edit-disabled="!vm.testcase">{{ vm.testcase.description ? vm.testcase.description : 'no description' }}</a></p>
+    <p><a href="#" editable-textarea="vm.testcase.header.description" e-rows="7" e-cols="50" onaftersave="vm.onaftersave()"  edit-disabled="!vm.testcase">{{ vm.testcase.header.description ? vm.testcase.header.description : 'no description' }}</a></p>
   </div>
 </div>
 

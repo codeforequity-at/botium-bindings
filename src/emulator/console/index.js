@@ -1,19 +1,20 @@
-const testmybot = require('../../testmybot');
-const convo = require('../../convo');
+const TestMyBot = require('../../testmybot');
 const chalk = require('chalk');
 const clear = require('clear');
 const figlet = require('figlet');
 const async = require('async');
 const readline = require('readline');
 
+const tmb = new TestMyBot()
+
 module.exports = () => {
-  testmybot.beforeAll().then((config) => { 
-    return testmybot.beforeEach();
+  tmb.beforeAll().then(() => { 
+    return tmb.beforeEach();
   }).then(function() {
     
     var conversation = [];
     
-    testmybot.on('MESSAGE_RECEIVEDFROMBOT', (container, msg) => {
+    tmb.driver.on('MESSAGE_RECEIVEDFROMBOT', (container, msg) => {
       if (msg) {
         if (msg.messageText) {
           console.log(chalk.blue('BOT SAYS ' + (msg.channel ? '(' + msg.channel + '): ' : ': ') + msg.messageText));
@@ -49,7 +50,7 @@ module.exports = () => {
       if (line.toLowerCase() === '#exit') {
         
         console.log(chalk.yellow('TestMyBot stopping ...'))
-        testmybot.afterEach().then(() => testmybot.afterAll()).then(() => console.log(chalk.green('TestMyBot stopped'))).then(() => process.exit(0)).catch((err) => console.log(chalk.red(err)));
+        tmb.afterEach().then(() => tmb.afterAll()).then(() => console.log(chalk.green('TestMyBot stopped'))).then(() => process.exit(0)).catch((err) => console.log(chalk.red(err)));
       
       } else if (line.toLowerCase().startsWith('#save')) {
 
@@ -58,24 +59,22 @@ module.exports = () => {
           console.log(chalk.red(helpText));
           return;
         }
-          
-        convo.writeConvo({ name: name, conversation: conversation}).then(
-          (filename) => {
-            console.log(chalk.green('Conversation written to file ' + filename));
-            conversation = [];
-          }).catch(
-          (err) => {
-            console.log(chalk.red(err));
-          });
+        
+        try {
+          const filename = tmb.convoReader.writeConvo({ header: { name }, conversation})
+          console.log(chalk.green('Conversation written to file ' + filename));
+        } catch (err) {
+          console.log(chalk.red(err));
+        }
       } else if (line.startsWith('#')) {
         const channel = line.substr(0, line.indexOf(' '));
         const text = line.substr(line.indexOf(' ') + 1);
 
-        testmybot.hears({ messageText: text, sender: 'me', channel: channel });
+        tmb.hears({ messageText: text, sender: 'me', channel: channel });
         conversation.push({ from: 'me', msg: text, channel: channel });
         
       } else {
-        testmybot.hears({ messageText: line, sender: 'me'});
+        tmb.hears({ messageText: line, sender: 'me'});
         conversation.push({ from: 'me', msg: line });
       }
     });
