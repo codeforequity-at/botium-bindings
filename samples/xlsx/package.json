@@ -1,0 +1,16 @@
+{
+  "name": "testmybot-sample-xlsx",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine",
+    "emulator": "node node_modules/testmybot/emulator-console.js",
+    "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js"
+  },
+  "devDependencies": {
+    "jasmine": "latest",
+    "jasmine-reporters": "latest",
+    "testmybot": "../.."
+  },
+  "author": "Florian Treml",
+  "license": "ISC"
+}

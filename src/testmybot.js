@@ -4,7 +4,7 @@ const BotDriver = require('botium-core').BotDriver
 
 const async = require('async')
 const _ = require('lodash')
-const debug = require('debug')('testmybot-readconfig')
+const debug = require('debug')('testmybot-main')
 
 var config = { }
 var driver = null
