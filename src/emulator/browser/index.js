@@ -1,5 +1,4 @@
-const testmybot = require('../../testmybot');
-const convo = require('../../convo');
+const TestMyBot = require('../../testmybot');
 const moduleinfo = require('../../util/moduleinfo')
 const path = require('path')
 const chalk = require('chalk');
@@ -13,6 +12,7 @@ const opn = require('opn');
 const url = require('url');
 const readline = require('readline');
 
+const tmb = new TestMyBot()
 
 module.exports = () => {
   const idePort = process.env.PORT || 3000;
@@ -23,7 +23,7 @@ module.exports = () => {
   io.on('connection', function (socket) {
     socket.on('bothears', function (msg, from, channel) {
       console.log('received message from', from, 'msg', JSON.stringify(msg), 'channel', channel);
-      testmybot.hears({ messageText: msg, sender: from, channel: channel });
+      tmb.hears({ messageText: msg, sender: from, channel: channel });
     });
   });
 
@@ -41,8 +41,8 @@ module.exports = () => {
       process.exit(0);
     }
     else {
-      testmybot.beforeAll().then(() => {
-        testmybot.on('MESSAGE_RECEIVEDFROMBOT', (container, msg) => {
+      tmb.beforeAll().then(() => {
+        tmb.driver.on('MESSAGE_RECEIVEDFROMBOT', (container, msg) => {
           if (msg) {
             io.sockets.emit('botsays', msg);    
           }
@@ -64,7 +64,7 @@ module.exports = () => {
           
           if (line.toLowerCase() === '#exit') {
             console.log(chalk.yellow('TestMyBot stopping ...'))
-            testmybot.afterAll().then(() => console.log(chalk.green('TestMyBot stopped'))).then(() => process.exit(0)).catch((err) => console.log(chalk.red(err)));
+            tmb.afterAll().then(() => console.log(chalk.green('TestMyBot stopped'))).then(() => process.exit(0)).catch((err) => console.log(chalk.red(err)));
           }
         });        
         
@@ -92,7 +92,7 @@ module.exports = () => {
 
   router.route('/startdocker')
     .post(function(req, res) {
-      testmybot.afterEach().then(() => testmybot.beforeEach()).then(function() {
+      tmb.afterEach().then(() => tmb.beforeEach()).then(function() {
         res.json({ success: true });
       }).catch(function (err) {
         console.log(err);
@@ -103,59 +103,52 @@ module.exports = () => {
 
   router.route('/testcases')
     .post(function(req, res) {
-      if (!req.body.name)
+      if (!req.body.header || !req.body.header.name)
         return res.json({ success: false, error: 'Name not specified' });
       if (!req.body.conversation)
         return res.json({ success: false, error: 'Conversation not specified' });
-      
-      convo.writeConvo(req.body, true).then(
-        (filename) => {
-          res.json({ success: true, filename: filename });
-        }).catch(
-        (err) => {
-          console.log('writeConvo error: ' + err);
-          return res.json({ success: false, error: err });
-        });    
 
+      try {
+        const filename = tmb.convoReader.writeConvo(req.body, true);
+        return res.json({ success: true, filename: filename });
+      } catch (err) {
+        console.log('writeConvo error: ' + err);
+        return res.json({ success: false, error: err });
+      }
     }).get(function(req, res) {
-      
-      convo.readConvos().then(
-        (convos) => {
-          res.json(convos);
-        }).catch(
-        (err) => {
-          console.log('readConvos error: ' + err);
-          return res.json({ success: false, error: err });
-        }); 
+      try {
+        const convos = tmb.convoReader.readConvos()
+        return res.json(convos);
+      } catch (err) {        
+        console.log('readConvos error: ' + err);
+        return res.json({ success: false, error: err });
+      }
     });
 
   router.route('/testcases/:filename')
     .get(function(req, res) {
-      convo.readConvo(req.params.filename).then(
-        (convo) => {
-          res.json(convo);
-        }).catch(
-        (err) => {
-          console.log('readConvo error: ' + err);
-          return res.json({ success: false, error: err });
-        }); 
-
+      try {
+        const convo = tmb.convoReader.readConvo(req.params.filename)
+        return res.json(convo)
+      } catch (err) {
+        console.log('readConvo error: ' + err);
+        return res.json({ success: false, error: err });
+      }
     }).put(function(req, res) {
-      if (!req.body.name)
+      if (!req.body.header || !req.body.header.name)
         return res.json({ success: false, error: 'Name not specified' });
       if (!req.body.filename)
         return res.json({ success: false, error: 'Filename not specified' });
       if (!req.body.conversation)
         return res.json({ success: false, error: 'Conversation not specified' });
       
-      convo.writeConvo(req.body, false).then(
-        (filename) => {
-          res.json({ success: true, filename: filename });
-        }).catch(
-        (err) => {
-          console.log('writeConvo error: ' + err);
-          return res.json({ success: false, error: err });
-        });    
+      try {
+        const filename = tmb.convoReader.writeConvo(req.body, false)
+        return res.json({ success: true, filename: filename })
+      } catch (err) {
+        console.log('writeConvo error: ' + err);
+        return res.json({ success: false, error: err });
+      }
     });
       
   appIde.use('/api', router);

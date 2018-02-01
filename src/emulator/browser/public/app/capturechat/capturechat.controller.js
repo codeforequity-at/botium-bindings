@@ -119,7 +119,7 @@
 
     vm.saveNewTestCase = function(testcasename) {
 
-      TestCase.save({ name: testcasename, conversation: vm.messages }, function(data) {
+      TestCase.save({ header: { name: testcasename }, conversation: vm.messages }, function(data) {
         if (data.success) {
           vm.messages = [];
           Flash.create('success', 'Conversation saved to file ' + data.filename);

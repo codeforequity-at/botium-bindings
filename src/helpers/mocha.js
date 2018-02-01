@@ -1,11 +1,12 @@
 /* global describe it before beforeEach after afterEach */
 
 const expect = require('chai').expect
-const testbuilder = require('../testbuilder')
-const testmybot = require('../testmybot')
+const TestMyBot = require('../testmybot')
 const moduleinfo = require('../util/moduleinfo')
 
-module.exports.setupMochaTestCases = (timeout, matcher) => {
+module.exports.setupMochaTestCases = (timeout, matcher, tmb) => {
+  if (!tmb) tmb = new TestMyBot()
+
   if (!timeout) timeout = 60000
   if (!(matcher && typeof matcher === 'function')) {
     matcher = (response, tomatch, msg) => {
@@ -13,20 +14,20 @@ module.exports.setupMochaTestCases = (timeout, matcher) => {
     }
   }
 
-  testbuilder.setupTestSuite(
+  tmb.setupTestSuite(
     (testcaseName, testcaseFunction) => {
       it(testcaseName, testcaseFunction).timeout(timeout)
     },
     matcher,
     (err) => {
       expect.fail(null, null, err)
-    },
-    testmybot.hears,
-    testmybot.says
+    }
   )
 }
 
-module.exports.setupMochaTestSuite = (timeout, matcher) => {
+module.exports.setupMochaTestSuite = (timeout, matcher, tmb) => {
+  if (!tmb) tmb = new TestMyBot()
+
   if (!timeout) timeout = 60000
 
   var packageJson = moduleinfo()
@@ -34,21 +35,21 @@ module.exports.setupMochaTestSuite = (timeout, matcher) => {
   describe('TestMyBot Test Suite for ' + packageJson.name, () => {
     before(function (done) {
       this.timeout(timeout)
-      testmybot.beforeAll().then(() => done()).catch(done)
+      tmb.beforeAll().then(() => done()).catch(done)
     })
     beforeEach(function (done) {
       this.timeout(timeout)
-      testmybot.beforeEach().then(() => done()).catch(done)
+      tmb.beforeEach().then(() => done()).catch(done)
     })
     afterEach(function (done) {
       this.timeout(timeout)
-      testmybot.afterEach().then(() => done()).catch(done)
+      tmb.afterEach().then(() => done()).catch(done)
     })
     after(function (done) {
       this.timeout(timeout)
-      testmybot.afterAll().then(() => done()).catch(done)
+      tmb.afterAll().then(() => done()).catch(done)
     })
 
-    module.exports.setupMochaTestCases(timeout, matcher)
+    module.exports.setupMochaTestCases(timeout, matcher, tmb)
   })
 }

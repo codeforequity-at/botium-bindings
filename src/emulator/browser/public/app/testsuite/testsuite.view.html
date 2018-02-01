@@ -17,7 +17,7 @@
             <i class="fa fa-comments" aria-hidden="true"></i> New Conversation
           </a>
           <a ui-sref="testsuite.testcase({filename: testcase.filename})" class="list-group-item" ng-repeat="testcase in vm.testcases">
-            <i class="fa fa-file" aria-hidden="true"></i> {{ testcase.name }}
+            <i class="fa fa-file" aria-hidden="true"></i> {{ testcase.header.name }}
           </a>
         </div>
       </div>

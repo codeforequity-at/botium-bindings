@@ -1,113 +1,110 @@
-const readConfig = require('./readconfig')
-const testbuilder = require('./testbuilder')
-const BotDriver = require('botium-core').BotDriver
-
+const util = require('util')
 const async = require('async')
 const _ = require('lodash')
 const debug = require('debug')('testmybot-main')
 
-var config = { }
-var driver = null
-var container = null
+const BotDriver = require('botium-core').BotDriver
 
-function beforeAll (configToSet) {
-  return new Promise((resolve, reject) => {
-    async.series([
-      (readConfigDone) => {
-        readConfig.readAndMergeConfig(configToSet).then((resolvedConfig) => {
-          config = resolvedConfig
-          readConfigDone()
-        }).catch((err) => {
-          readConfigDone(err)
-        })
-      },
+const readConfig = require('./readconfig')
+const ConvoReader = require('./convo')
 
-      (containerReady) => {
-        debug(JSON.stringify(config, null, 2))
+module.exports = class TestMyBot {
+  constructor (configToSet = {}) {
+    this.config = readConfig(configToSet)
+    debug(JSON.stringify(this.config, null, 2))
 
-        driver = new BotDriver()
-          .setCapabilities(config.botium.Capabilities)
-          .setEnvs(config.botium.Envs)
-          .setSources(config.botium.Sources)
+    this.driver = new BotDriver()
+      .setCapabilities(this.config.botium.Capabilities)
+      .setEnvs(this.config.botium.Envs)
+      .setSources(this.config.botium.Sources)
 
-        driver.Build()
-          .then((c) => {
-            container = c
-            containerReady()
-          })
-          .catch(containerReady)
-      }
-    ],
-    (err) => {
-      if (err) reject(err)
-      else resolve(config)
+    this.convoReader = new ConvoReader(this.driver.BuildCompiler())
+    this.container = null
+  }
+
+  beforeAll () {
+    return new Promise((resolve, reject) => {
+      async.series([
+        (containerReady) => {
+          this.driver.Build()
+            .then((c) => {
+              this.container = c
+              containerReady()
+            })
+            .catch(containerReady)
+        }
+      ],
+      (err) => {
+        if (err) reject(err)
+        else resolve()
+      })
     })
-  })
-}
-
-function on (event, listener) {
-  if (driver) {
-    driver.on(event, listener)
   }
-}
 
-function afterAll () {
-  let result = Promise.resolve()
-  if (container) {
-    result = container.Clean()
-  }
-  container = null
-  driver = null
-  return result
-}
-
-function beforeEach () {
-  if (container) {
-    return container.Start()
-  } else {
-    return Promise.reject(new Error('container not available'))
-  }
-}
-
-function afterEach () {
-  if (container) {
-    return container.Stop()
-  } else {
-    return Promise.resolve()
-  }
-}
-
-function setupTestSuite (testcaseCb, assertCb, failCb) {
-  testbuilder.setupTestSuite(testcaseCb, assertCb, failCb, hears, says)
-}
-
-function hears (arg) {
-  if (container) {
-    if (_.isString(arg)) {
-      return container.UserSaysText(arg)
-    } else {
-      return container.UserSays(arg)
+  afterAll () {
+    let result = Promise.resolve()
+    if (this.container) {
+      result = this.container.Clean()
     }
-  } else {
-    return Promise.reject(new Error('container not available'))
+    this.container = null
+    return result
   }
-}
 
-function says (channel, timeoutMillis) {
-  if (container) {
-    return container.WaitBotSays(channel, timeoutMillis)
-  } else {
-    return Promise.reject(new Error('container not available'))
+  beforeEach () {
+    if (this.container) {
+      return this.container.Start()
+    } else {
+      return Promise.reject(new Error('container not available'))
+    }
   }
-}
 
-module.exports = {
-  beforeAll: beforeAll,
-  afterAll: afterAll,
-  beforeEach: beforeEach,
-  afterEach: afterEach,
-  setupTestSuite: setupTestSuite,
-  on: on,
-  hears: hears,
-  says: says
+  afterEach () {
+    if (this.container) {
+      return this.container.Stop()
+    } else {
+      return Promise.resolve()
+    }
+  }
+
+  setupTestSuite (testcaseCb, assertCb, failCb) {
+    const convos = this.convoReader.readConvos()
+
+    convos.forEach((convo) => {
+      debug('adding test case ' + convo.header.name + ' (file: ' + convo.filename + ')')
+      testcaseCb(convo.header.name, (testcaseDone) => {
+        debug('running testcase ' + convo.header.name)
+
+        convo.Run(this.container, assertCb, failCb)
+          .then(() => {
+            debug(convo.header.name + ' ready, calling done function.')
+            testcaseDone()
+          })
+          .catch((err) => {
+            debug(convo.header.name + ' failed: ' + util.inspect(err))
+            failCb(err)
+            testcaseDone(err)
+          })
+      })
+    })
+  }
+
+  hears (arg) {
+    if (this.container) {
+      if (_.isString(arg)) {
+        return this.container.UserSaysText(arg)
+      } else {
+        return this.container.UserSays(arg)
+      }
+    } else {
+      return Promise.reject(new Error('container not available'))
+    }
+  }
+
+  says (channel, timeoutMillis) {
+    if (this.container) {
+      return this.container.WaitBotSays(channel, timeoutMillis)
+    } else {
+      return Promise.reject(new Error('container not available'))
+    }
+  }
 }

@@ -1,10 +1,11 @@
 restaurant
+Driving to a restaurant
 
 #me
 hi
 
 #bot
-Hi. It looks like a nice drive today. What would you like me to do?  
+Hi. It looks like a nice drive today. What would you like me to do?
 
 #me
 where is the next restauran
@@ -38,4 +39,3 @@ What day/time did you want to go to the restaurant?
 
 #bot
 Ok, let's go to the restaurant on
-

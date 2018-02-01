@@ -1,10 +1,11 @@
 /* global describe it beforeAll beforeEach afterAll afterEach expect fail */
 
-const testbuilder = require('../testbuilder')
-const testmybot = require('../testmybot')
+const TestMyBot = require('../testmybot')
 const moduleinfo = require('../util/moduleinfo')
 
-module.exports.setupJasmineTestCases = (timeout, matcher) => {
+module.exports.setupJasmineTestCases = (timeout, matcher, tmb) => {
+  if (!tmb) tmb = new TestMyBot()
+
   if (!timeout) timeout = 60000
   if (!(matcher && typeof matcher === 'function')) {
     matcher = (response, tomatch) => {
@@ -12,40 +13,40 @@ module.exports.setupJasmineTestCases = (timeout, matcher) => {
     }
   }
 
-  testbuilder.setupTestSuite(
+  tmb.setupTestSuite(
     (testcaseName, testcaseFunction) => {
       it(testcaseName, testcaseFunction, timeout)
     },
     matcher,
-    (err) => fail(err),
-    testmybot.hears,
-    testmybot.says
+    (err) => fail(err)
   )
 }
 
-module.exports.setupJasmineTestSuite = (timeout, matcher) => {
+module.exports.setupJasmineTestSuite = (timeout, matcher, tmb) => {
+  if (!tmb) tmb = new TestMyBot()
+
   if (!timeout) timeout = 60000
 
   var packageJson = moduleinfo()
 
   describe('TestMyBot Test Suite for ' + packageJson.name, () => {
     beforeAll((done) => {
-      testmybot.beforeAll().then(done, done.fail)
+      tmb.beforeAll().then(done, done.fail)
     }, timeout)
 
     beforeEach((done) => {
-      testmybot.beforeEach().then(done, done.fail)
+      tmb.beforeEach().then(done, done.fail)
     }, timeout)
 
     afterEach((done) => {
-      testmybot.afterEach().then(done, done.fail)
+      tmb.afterEach().then(done, done.fail)
     }, timeout)
 
     afterAll((done) => {
-      testmybot.afterAll().then(done, done.fail)
+      tmb.afterAll().then(done, done.fail)
     }, timeout)
 
-    module.exports.setupJasmineTestCases(timeout, matcher)
+    module.exports.setupJasmineTestCases(timeout, matcher, tmb)
   })
 }
 
