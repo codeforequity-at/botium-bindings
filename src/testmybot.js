@@ -81,7 +81,6 @@ module.exports = class TestMyBot {
           })
           .catch((err) => {
             debug(convo.header.name + ' failed: ' + util.inspect(err))
-            failCb(err)
             testcaseDone(err)
           })
       })

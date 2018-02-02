@@ -4,12 +4,17 @@ const path = require('path')
 const mkdirp = require('mkdirp')
 const debug = require('debug')('testmybot-convo')
 
+const globals = require('./globals')
+
 const allowedSuffices = ['.convo.txt', '.xlsx']
 
 module.exports = class ConvoReader {
-  constructor (compiler, convodir = './spec/convo/') {
+  constructor (compiler, convodir) {
     this.compiler = compiler
     this.convodir = convodir
+    if (!this.convodir) {
+      this.convodir = globals.get().convodir
+    }
   }
 
   readConvos () {
