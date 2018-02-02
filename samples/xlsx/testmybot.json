@@ -12,8 +12,7 @@
       "SIMPLEREST_METHOD": "GET",
       "SIMPLEREST_HEADERS_TEMPLATE": "{ \"apiToken\": \"testapitoken\" }",
       "SIMPLEREST_CONTEXT_JSONPATH": "$",
-      "SIMPLEREST_RESPONSE_JSONPATH": "$.text.*",
-	  "SIMPLEREST_STRIP_HTML": true
+      "SIMPLEREST_RESPONSE_JSONPATH": "$.text.*"
     }
   }
 }
