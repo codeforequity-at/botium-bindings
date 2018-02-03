@@ -1,0 +1,12 @@
+{
+  "botium": {
+    "Capabilities": {
+      "PROJECTNAME": "webspeechsample",
+      "CONTAINERMODE": "webspeech",
+	  "WAITFORBOTTIMEOUT": 30000,
+	  "WEBSPEECH_LANGUAGE": "en-US",
+	  "WEBSPEECH_VOICE": "Google UK English Male",
+      "WEBSPEECH_BROWSER_APP": "chrome"
+    }
+  }
+}
