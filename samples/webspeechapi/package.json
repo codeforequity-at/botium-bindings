@@ -1,5 +1,5 @@
 {
-  "name": "testmybot-sample-xlsx",
+  "name": "testmybot-sample-webspeechapi",
   "version": "1.0.0",
   "scripts": {
     "test": "./node_modules/.bin/jasmine",

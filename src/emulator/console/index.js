@@ -16,14 +16,14 @@ module.exports = () => {
     
     tmb.driver.on('MESSAGE_RECEIVEDFROMBOT', (container, msg) => {
       if (msg) {
+        if (!msg.sender) msg.sender = 'bot';
         if (msg.messageText) {
           console.log(chalk.blue('BOT SAYS ' + (msg.channel ? '(' + msg.channel + '): ' : ': ') + msg.messageText));
-          conversation.push({ from: 'bot', msg: msg.messageText, channel: msg.channel });
         } else if (msg.sourceData && msg.sourceData.message) {
           console.log(chalk.blue('BOT SAYS ' + (msg.channel ? '(' + msg.channel + '): ' : ': ')));
           console.log(chalk.blue(JSON.stringify(msg.sourceData.message, null, 2)));
-          conversation.push({ from: 'bot', msg: JSON.stringify(msg.sourceData, null, 2), channel: msg.channel });
         }
+        conversation.push(msg);
       }
     });
 
@@ -70,12 +70,16 @@ module.exports = () => {
         const channel = line.substr(0, line.indexOf(' '));
         const text = line.substr(line.indexOf(' ') + 1);
 
-        tmb.hears({ messageText: text, sender: 'me', channel: channel });
-        conversation.push({ from: 'me', msg: text, channel: channel });
+        const msg = { messageText: text, sender: 'me', channel: channel };
+        
+        tmb.hears(msg);
+        conversation.push(msg);
         
       } else {
-        tmb.hears({ messageText: line, sender: 'me'});
-        conversation.push({ from: 'me', msg: line });
+        const msg = { messageText: line, sender: 'me' };
+
+        tmb.hears(msg);
+        conversation.push(msg);
       }
     });
     
