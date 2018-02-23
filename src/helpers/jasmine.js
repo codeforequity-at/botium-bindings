@@ -31,19 +31,19 @@ module.exports.setupJasmineTestSuite = (timeout, matcher, tmb) => {
 
   describe('TestMyBot Test Suite for ' + packageJson.name, () => {
     beforeAll((done) => {
-      tmb.beforeAll().then(done, done.fail)
+      tmb.beforeAll().then(() => done()).catch(done.fail)
     }, timeout)
 
     beforeEach((done) => {
-      tmb.beforeEach().then(done, done.fail)
+      tmb.beforeEach().then(() => done()).catch(done.fail)
     }, timeout)
 
     afterEach((done) => {
-      tmb.afterEach().then(done, done.fail)
+      tmb.afterEach().then(() => done()).catch(done.fail)
     }, timeout)
 
     afterAll((done) => {
-      tmb.afterAll().then(done, done.fail)
+      tmb.afterAll().then(() => done()).catch(done.fail)
     }, timeout)
 
     module.exports.setupJasmineTestCases(timeout, matcher, tmb)

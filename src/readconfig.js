@@ -18,7 +18,7 @@ module.exports = (configToSet) => {
       _.merge(resolvedConfig, configJson)
     }
   } catch (err) {
-    debug(`could not read file testmybot.default.json: ${util.inspect(err)}`)
+    debug(`warning: could not read file testmybot.default.json: ${util.inspect(err)}`)
   }
   try {
     const contents = fs.readFileSync(configfile)
@@ -27,10 +27,13 @@ module.exports = (configToSet) => {
       _.merge(resolvedConfig, configJson)
     }
   } catch (err) {
-    debug(`could not read file ${configfile}: ${util.inspect(err)}`)
+    debug(`warning: could not read file ${configfile}: ${util.inspect(err)}`)
   }
   if (configToSet) {
     _.merge(resolvedConfig, configToSet)
+  }
+  if (globals.get().configToSet) {
+    _.merge(resolvedConfig, globals.get().configToSet)
   }
   return resolvedConfig
 }

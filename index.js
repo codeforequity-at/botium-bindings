@@ -7,6 +7,6 @@ module.exports.helper = {
   botkit: () => require('./src/helpers/botkit')
 };
 module.exports.emulator = {
-  console: require('./src/emulator/console/index'),
-  browser: require('./src/emulator/browser/index')
+  console: () => require('./src/emulator/console/index'),
+  browser: () => require('./src/emulator/browser/index')
 };

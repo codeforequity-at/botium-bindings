@@ -1,6 +1,13 @@
 const settings = {
   convodir: './spec/convo/',
-  configfile: 'testmybot.json'
+  configfile: 'testmybot.json',
+  configToSet: null,
+  hooks: {
+    beforeAllPre: null,
+    beforeEachPre: null,
+    afterEachPre: null,
+    afterAllPre: null
+  }
 }
 
 function get () {
