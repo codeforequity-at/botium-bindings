@@ -7,6 +7,7 @@ const BotDriver = require('botium-core').BotDriver
 
 const readConfig = require('./readconfig')
 const ConvoReader = require('./convo')
+const globals = require('./globals')
 
 module.exports = class TestMyBot {
   constructor (configToSet = {}) {
@@ -22,7 +23,16 @@ module.exports = class TestMyBot {
     this.container = null
   }
 
+  _callHook (hookName, arg) {
+    if (globals.get().hooks[hookName]) {
+      debug(`calling testmybot hook ${hookName}`)
+      globals.get().hooks[hookName](this, arg)
+    }
+  }
+
   beforeAll () {
+    this._callHook('beforeAllPre')
+
     return new Promise((resolve, reject) => {
       async.series([
         (containerReady) => {
@@ -42,6 +52,8 @@ module.exports = class TestMyBot {
   }
 
   afterAll () {
+    this._callHook('afterAllPre')
+
     let result = Promise.resolve()
     if (this.container) {
       result = this.container.Clean()
@@ -51,6 +63,7 @@ module.exports = class TestMyBot {
   }
 
   beforeEach () {
+    this._callHook('beforeEachPre')
     if (this.container) {
       return this.container.Start()
     } else {
@@ -59,6 +72,7 @@ module.exports = class TestMyBot {
   }
 
   afterEach () {
+    this._callHook('afterEachPre')
     if (this.container) {
       return this.container.Stop()
     } else {
