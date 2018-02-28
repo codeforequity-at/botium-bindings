@@ -9,4 +9,17 @@ Test My Bot
 
 TestMyBot is a test automation library for chatbots. Test cases are recorded by Capture & Replay tools and can be run against your chatbot implementation automatically over and over again. It is meant to be included in your continuous integration pipeline, just as with your unit tests.
 
-Please navigate to our [Wiki](https://github.com/codeforequity-at/testmybot/wiki) for documentation.
+#Documentation
+
+Please navigate to our [Wiki](./testmybot/wiki) for documentation.
+
+#Samples
+
+There are a couple of [samples](./tree/master/samples) available, showing possible scenarios to use TestMyBot.
+
+
+
+
+
+
+
