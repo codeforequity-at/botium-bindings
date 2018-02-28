@@ -9,11 +9,11 @@ Test My Bot
 
 TestMyBot is a test automation library for chatbots. Test cases are recorded by Capture & Replay tools and can be run against your chatbot implementation automatically over and over again. It is meant to be included in your continuous integration pipeline, just as with your unit tests.
 
-#Documentation
+# Documentation
 
 Please navigate to our [Wiki](https://github.com/codeforequity-at/testmybot/wiki) for documentation.
 
-#Samples
+# Samples
 
 There are a couple of [samples](samples) available, showing possible scenarios to use TestMyBot. For all samples, you these commands to run them:
 
@@ -85,6 +85,91 @@ In case you want to see some more output, enable debug logging:
   }
 }
 ```
+
+## Sample Facebook Chatbot (Node.js)
+
+[Link](samples/facebook)
+
+* Shows how to include TestMyBot into your build pipeline for continuous testing
+* docker container
+
+## Connecting to Chatbot running in Facebook Messenger
+
+[Link](samples/fbdirect)
+
+* Can be used to automate testing of a chatbot already running in facebook messenger
+* Usefull for regression testing, not for continous testing (takes to much time to run)
+* See sample directory for instructions
+
+## Using Mocha
+
+[Link](samples/mocha)
+
+* Mocha can be used instead of Jasmine as well
+* docker container
+
+## Chatbot developed in PHP
+
+[Link](samples/php)
+
+* Chatbot developed in PHP
+* See sample directory for instructions
+
+
+## Slack Chatbot
+
+[Link](samples/slack)
+
+* Sample how to test a Slack chatbot
+
+## IBM Watson Chatbot
+
+[Link](samples/watson)
+
+* Connecting to Watson conversation service to run your convos
+* Useful for regression testing
+* Workspace can be copied automatically before running the test cases (to not pollute your workspace)
+
+## Voice recognition and speech synthesis
+
+[Link](samples/webspeechapi)
+
+* Uses the Web speech api to run a conversation with Alexa
+* Requires a *real* browser supporting the [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)
+
+## Custom REST/HTTP interface and using Excel test cases
+
+[Link](samples/xlsx)
+
+* Contacting a custom REST/HTTP interface, as usual for chatbots running on websites
+* Test cases are extracted from an Excel sheet instead of text files
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
