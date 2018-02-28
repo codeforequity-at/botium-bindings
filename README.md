@@ -11,11 +11,11 @@ TestMyBot is a test automation library for chatbots. Test cases are recorded by 
 
 #Documentation
 
-Please navigate to our [Wiki](./testmybot/wiki) for documentation.
+Please navigate to our [Wiki](wiki) for documentation.
 
 #Samples
 
-There are a couple of [samples](./tree/master/samples) available, showing possible scenarios to use TestMyBot.
+There are a couple of [samples](samples) available, showing possible scenarios to use TestMyBot.
 
 
 
