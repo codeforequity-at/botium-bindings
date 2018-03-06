@@ -1,4 +1,5 @@
 {
+  "pkgFiles": ["package.json", "package-lock.json"],
   "src": {
 	"commit": true,
 	"commitMessage": "Release Bump %s [skip ci]",
