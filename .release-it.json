@@ -1,6 +1,7 @@
 {
   "src": {
 	"commit": true,
+	"commitMessage": "Release Bump %s [skip ci]",
 	"push": true,
 	"tag": true
   },
