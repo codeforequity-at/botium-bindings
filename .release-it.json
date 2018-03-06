@@ -8,7 +8,7 @@
   },
   "github": {
     "release": true,
-	"assets": "dist/*.*"
+	"assets": "dist/bin/*.*"
   },
   "npm": {
 	"publish": true

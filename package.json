@@ -10,7 +10,7 @@
   "scripts": {
     "build": "npm run eslint && rollup -c",
     "eslint": "eslint \"./src/**/*.js\" \"./bin/**/*.js\"",
-    "buildbin": "./node_modules/.bin/pkg --targets linux-x64,linux-x86,win-x64,win-x86,macos-x64,macos-x86 --out-path dist ./package.json",
+    "buildbin": "./node_modules/.bin/pkg --targets linux-x64,linux-x86,win-x64,win-x86,macos-x64,macos-x86 --out-path dist/bin ./package.json",
     "newpatch": "npm version patch"
   },
   "pkg": {
