@@ -1,0 +1,16 @@
+{
+  "pkgFiles": ["package.json", "package-lock.json"],
+  "src": {
+	"commit": true,
+	"commitMessage": "Release Bump %s [skip ci]",
+	"push": true,
+	"tag": true
+  },
+  "github": {
+    "release": true,
+	"assets": "dist/*.*"
+  },
+  "npm": {
+	"publish": true
+  }
+}
