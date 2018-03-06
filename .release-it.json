@@ -1,0 +1,14 @@
+{
+  "src": {
+	"commit": true,
+	"push": true,
+	"tag": true
+  },
+  "github": {
+    "release": true,
+	"assets": "dist/*.*"
+  },
+  "npm": {
+	"publish": true
+  }
+}
