@@ -2,11 +2,8 @@ const slug = require('slug')
 const fs = require('fs')
 const path = require('path')
 const mkdirp = require('mkdirp')
-const debug = require('debug')('testmybot-convo')
 
 const globals = require('./globals')
-
-const allowedSuffices = ['.convo.txt', '.xlsx']
 
 module.exports = class ConvoReader {
   constructor (compiler, convodir) {
@@ -18,28 +15,13 @@ module.exports = class ConvoReader {
   }
 
   readConvos () {
-    const filenames = fs.readdirSync(this.convodir).filter((filename) => allowedSuffices.find((suffix) => filename.endsWith(suffix)))
-    debug(`readConvos(${this.convodir}) found filenames: ${filenames}`)
-    const convos = []
-    filenames.forEach((filename) => {
-      const scriptData = fs.readFileSync(path.resolve(this.convodir, filename))
-      const scriptConvos = this.compiler.Compile(scriptData)
-      if (scriptConvos) {
-        scriptConvos.forEach((scriptConvo) => {
-          scriptConvo.filename = filename
-          if (!scriptConvo.header.name) {
-            scriptConvo.header.name = filename
-          }
-          convos.push(scriptConvo)
-        })
-      }
-    })
-    return convos
+    this.compiler.ReadScriptsFromDirectory(this.convodir)
+    return this.compiler.convos
   }
 
   readConvo (filename) {
     const scriptData = fs.readFileSync(path.resolve(this.convodir, filename))
-    const scriptConvos = this.compiler.Compile(scriptData)
+    const scriptConvos = this.compiler.Compile(scriptData, 'SCRIPTING_FORMAT_TXT')
     if (scriptConvos && scriptConvos.length > 0) {
       scriptConvos[0].filename = filename
       if (!scriptConvos[0].header.name) {
@@ -67,7 +49,7 @@ module.exports = class ConvoReader {
     }
     mkdirp.sync(this.convodir)
 
-    const scriptData = this.compiler.Decompile([ convo ])
+    const scriptData = this.compiler.Decompile([ convo ], 'SCRIPTING_FORMAT_TXT')
 
     fs.writeFileSync(filename, scriptData)
 
