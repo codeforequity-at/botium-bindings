@@ -8,11 +8,6 @@ module.exports.setupMochaTestCases = (timeout, matcher, tmb) => {
   if (!tmb) tmb = new TestMyBot()
 
   if (!timeout) timeout = 60000
-  if (!(matcher && typeof matcher === 'function')) {
-    matcher = (response, tomatch, msg) => {
-      expect(response).to.include(tomatch, msg)
-    }
-  }
 
   tmb.setupTestSuite(
     (testcaseName, testcaseFunction) => {

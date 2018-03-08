@@ -19,7 +19,8 @@ module.exports = class TestMyBot {
       .setEnvs(this.config.botium.Envs)
       .setSources(this.config.botium.Sources)
 
-    this.convoReader = new ConvoReader(this.driver.BuildCompiler())
+    this.compiler = this.driver.BuildCompiler()
+    this.convoReader = new ConvoReader(this.compiler)
     this.container = null
   }
 
@@ -83,12 +84,19 @@ module.exports = class TestMyBot {
   setupTestSuite (testcaseCb, assertCb, failCb) {
     const convos = this.convoReader.readConvos()
 
+    if (assertCb) {
+      this.compiler.scriptingEvents.assertBotResponse = assertCb
+    }
+    if (failCb) {
+      this.compiler.scriptingEvents.fail = failCb
+    }
+
     convos.forEach((convo) => {
       debug('adding test case ' + convo.header.name + ' (file: ' + convo.filename + ')')
       testcaseCb(convo.header.name, (testcaseDone) => {
         debug('running testcase ' + convo.header.name)
 
-        convo.Run(this.container, assertCb, failCb)
+        convo.Run(this.container)
           .then(() => {
             debug(convo.header.name + ' ready, calling done function.')
             testcaseDone()

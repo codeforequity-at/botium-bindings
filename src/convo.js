@@ -20,14 +20,9 @@ module.exports = class ConvoReader {
   }
 
   readConvo (filename) {
-    const scriptData = fs.readFileSync(path.resolve(this.convodir, filename))
-    const scriptConvos = this.compiler.Compile(scriptData, 'SCRIPTING_FORMAT_TXT')
-    if (scriptConvos && scriptConvos.length > 0) {
-      scriptConvos[0].filename = filename
-      if (!scriptConvos[0].header.name) {
-        scriptConvos[0].header.name = filename
-      }
-      return scriptConvos[0]
+    this.compiler.ReadScript(this.convodir, filename)
+    if (this.compiler.convos && this.compiler.convos.length > 0) {
+      return this.compiler.convos[this.compiler.convos.length - 1]
     }
   }
 
