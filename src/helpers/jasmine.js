@@ -1,4 +1,4 @@
-/* global describe it beforeAll beforeEach afterAll afterEach expect fail */
+/* global describe it beforeAll beforeEach afterAll afterEach fail */
 
 const TestMyBot = require('../testmybot')
 const moduleinfo = require('../util/moduleinfo')
@@ -7,11 +7,6 @@ module.exports.setupJasmineTestCases = (timeout, matcher, tmb) => {
   if (!tmb) tmb = new TestMyBot()
 
   if (!timeout) timeout = 60000
-  if (!(matcher && typeof matcher === 'function')) {
-    matcher = (response, tomatch) => {
-      expect(response).toContain(tomatch)
-    }
-  }
 
   tmb.setupTestSuite(
     (testcaseName, testcaseFunction) => {
