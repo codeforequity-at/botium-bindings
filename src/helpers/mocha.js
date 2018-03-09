@@ -1,7 +1,7 @@
 /* global describe it before beforeEach after afterEach */
 
 const expect = require('chai').expect
-const addContext = require('mochawesome/addContext');
+const addContext = require('mochawesome/addContext')
 const TestMyBot = require('../testmybot')
 const moduleinfo = require('../util/moduleinfo')
 
@@ -23,9 +23,8 @@ module.exports.setupMochaTestCases = (timeout, matcher, tmb) => {
         tmb.driver.on('MESSAGE_SENTTOBOT', listenerMe)
         tmb.driver.on('MESSAGE_RECEIVEDFROMBOT', listenerBot)
 
-
         testcaseFunction((err) => {
-          addContext(this,  { title: 'Conversation Log', value: messageLog.join('\n') })
+          addContext(this, { title: 'Conversation Log', value: messageLog.join('\n') })
           tmb.driver.eventEmitter.removeListener('MESSAGE_SENTTOBOT', listenerMe)
           tmb.driver.eventEmitter.removeListener('MESSAGE_RECEIVEDFROMBOT', listenerBot)
 
