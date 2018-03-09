@@ -1,3 +1,3 @@
 const bot = require('testmybot');
 
-bot.helper.jasmine().setupJasmineTestSuite(60000);
+bot.helper.mocha().setupMochaTestSuite(60000);

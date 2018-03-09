@@ -2,13 +2,13 @@
   "name": "testmybot-sample-watson",
   "version": "1.0.0",
   "scripts": {
-    "test": "./node_modules/.bin/jasmine",
+    "test": "mocha --reporter mochawesome --reporter-options \"code=false,reportTitle=IBM Watson Conversation Sample\"  --exit spec",
     "emulator": "node node_modules/testmybot/emulator-console.js",
     "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js"
   },
   "devDependencies": {
-    "jasmine": "^2.6.0",
-    "jasmine-reporters": "^2.2.1",
+    "mocha": "^5.0.4",
+    "mochawesome": "^3.0.2",
     "testmybot": "../.."
   },
   "author": "Florian Treml",
