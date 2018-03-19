@@ -1,4 +1,6 @@
+const util = require('util')
 const _ = require('lodash')
+const debug = require('debug')('testmybot-botkit')
 
 const globals = require('../globals')
 
@@ -49,6 +51,7 @@ module.exports.wireWithBotkit = (beforeEachCallback) => {
       } else {
         return Promise.resolve()
       }
+      debug(`MESSAGE_SENTTOBOT injecting message from testmybot (${util.inspect(mockMsg)}) into botkit: ${util.inspect(message)}`)
 
       controller.handleWebhookPayload(
         {
@@ -77,11 +80,12 @@ module.exports.wireWithBotkit = (beforeEachCallback) => {
 
     controller.on('spawned', (worker) => {
       worker.send = (message, cb) => {
+        const mockMsg = { sourceData: message }
         if (message.message && message.message.text) {
-          tmb.container.InjectBotSays({ messageText: message.message.text })
-        } else {
-          tmb.container.InjectBotSays({ sourceData: message })
+          mockMsg.messageText = message.message.text
         }
+        debug(`worker.send injecting message from botkit (${util.inspect(message)}) into testmybot: ${util.inspect(mockMsg)}`)
+        tmb.container.InjectBotSays(mockMsg)
         if (cb) {
           cb()
         }
