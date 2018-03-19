@@ -8,20 +8,20 @@ const readline = require('readline');
 const tmb = new TestMyBot()
 
 module.exports = () => {
-  tmb.beforeAll().then(() => { 
+  tmb.beforeAll().then(() => {
     return tmb.beforeEach();
   }).then(function() {
-    
+
     var conversation = [];
-    
+
     tmb.driver.on('MESSAGE_RECEIVEDFROMBOT', (container, msg) => {
       if (msg) {
         if (!msg.sender) msg.sender = 'bot';
         if (msg.messageText) {
           console.log(chalk.blue('BOT SAYS ' + (msg.channel ? '(' + msg.channel + '): ' : ': ') + msg.messageText));
-        } else if (msg.sourceData && msg.sourceData.message) {
+        } else if (msg.sourceData) {
           console.log(chalk.blue('BOT SAYS ' + (msg.channel ? '(' + msg.channel + '): ' : ': ')));
-          console.log(chalk.blue(JSON.stringify(msg.sourceData.message, null, 2)));
+          console.log(chalk.blue(JSON.stringify(msg.sourceData, null, 2)));
         }
         conversation.push(msg);
       }
@@ -46,12 +46,12 @@ module.exports = () => {
 
     rl.on('line', function(line){
       if (!line) return;
-      
+
       if (line.toLowerCase() === '#exit') {
-        
+
         console.log(chalk.yellow('TestMyBot stopping ...'))
         tmb.afterEach().then(() => tmb.afterAll()).then(() => console.log(chalk.green('TestMyBot stopped'))).then(() => process.exit(0)).catch((err) => console.log(chalk.red(err)));
-      
+
       } else if (line.toLowerCase().startsWith('#save')) {
 
         const name = line.substr(5).trim();
@@ -59,7 +59,7 @@ module.exports = () => {
           console.log(chalk.red(helpText));
           return;
         }
-        
+
         try {
           const filename = tmb.convoReader.writeConvo({ header: { name }, conversation})
           console.log(chalk.green('Conversation written to file ' + filename));
@@ -71,17 +71,17 @@ module.exports = () => {
         const text = line.substr(line.indexOf(' ') + 1);
 
         const msg = { messageText: text, sender: 'me', channel: channel };
-        
-        tmb.hears(msg);
+
         conversation.push(msg);
-        
+        tmb.hears(msg);
+
       } else {
         const msg = { messageText: line, sender: 'me' };
 
-        tmb.hears(msg);
         conversation.push(msg);
+        tmb.hears(msg);
       }
     });
-    
+
   }).catch((err) => console.log(chalk.red(JSON.stringify(err))));
 };
