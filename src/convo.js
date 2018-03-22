@@ -16,6 +16,7 @@ module.exports = class ConvoReader {
 
   readConvos () {
     this.compiler.ReadScriptsFromDirectory(this.convodir)
+    this.compiler.ExpandConvos()
     return this.compiler.convos
   }
 
