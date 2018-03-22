@@ -6,4 +6,4 @@ if (!fs.existsSync(__dirname + '/convo/botium-utterances-master')) {
   process.exit(1)
 }
 
-bot.helper.mocha().setupMochaTestSuite(60000);
+bot.helper.jest().setupJestTestSuite(null, (n) => n.startsWith("jokes.get/jokes.feedback.good"));
