@@ -9,10 +9,10 @@ module.exports.setupJasmineTestCases = ({ timeout: timeout = defaultTimeout, tes
   if (!tmb) tmb = new TestMyBot()
 
   tmb.setupTestSuite(
-    (testcaseName, testcaseFunction) => {
+    (testcase, testcaseFunction) => {
       if (testcaseSelector && !testcaseSelector(testcase)) return
 
-      it(testcaseName.header.name, testcaseFunction, timeout)
+      it(testcase.header.name, testcaseFunction, timeout)
     },
     null,
     (err) => fail(err)
