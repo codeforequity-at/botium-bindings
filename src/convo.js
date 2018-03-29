@@ -2,26 +2,34 @@ const slug = require('slug')
 const fs = require('fs')
 const path = require('path')
 const mkdirp = require('mkdirp')
+const debug = require('debug')('testmybot-convo')
 
 const globals = require('./globals')
 
 module.exports = class ConvoReader {
-  constructor (compiler, convodir) {
+  constructor (compiler, convodirs) {
     this.compiler = compiler
-    this.convodir = convodir
-    if (!this.convodir) {
-      this.convodir = globals.get().convodir
+    if (convodirs && convodirs.length > 0) {
+      this.convodirs = convodirs
+    } else {
+      this.convodirs = globals.get().convodirs
     }
   }
 
   readConvos () {
-    this.compiler.ReadScriptsFromDirectory(this.convodir)
+    if (this.convodirs) {
+      this.convodirs.forEach((convodir) => {
+        this.compiler.ReadScriptsFromDirectory(convodir)
+      })
+    }
+    debug(`ready reading convos (${this.compiler.convos.length}), expanding utterances ...`)
     this.compiler.ExpandConvos()
+    debug(`ready expanding utterances, number of test cases: (${this.compiler.convos.length}).`)
     return this.compiler.convos
   }
 
   readConvo (filename) {
-    this.compiler.ReadScript(this.convodir, filename)
+    this.compiler.ReadScript(this.convodirs[0], filename)
     if (this.compiler.convos && this.compiler.convos.length > 0) {
       return this.compiler.convos[this.compiler.convos.length - 1]
     }
@@ -34,7 +42,7 @@ module.exports = class ConvoReader {
     if (!convo.filename.endsWith('.convo.txt')) {
       convo.filename += '.convo.txt'
     }
-    const filename = path.resolve(this.convodir, convo.filename)
+    const filename = path.resolve(this.convodirs[0], convo.filename)
 
     if (errorIfExists) {
       try {
@@ -43,7 +51,7 @@ module.exports = class ConvoReader {
       } catch (err) {
       }
     }
-    mkdirp.sync(this.convodir)
+    mkdirp.sync(this.convodirs[0])
 
     const scriptData = this.compiler.Decompile([ convo ], 'SCRIPTING_FORMAT_TXT')
 

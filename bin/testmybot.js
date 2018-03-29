@@ -69,7 +69,7 @@ function handleOptions (argv) {
     debug.enable('testmybot*,botium*')
   }
   if (argv.convos) {
-    require('../src/globals').get().convodir = argv.convos
+    require('../src/globals').get().convodirs = [ argv.convos ]
   }
   if (argv.config) {
     require('../src/globals').get().configfile = argv.config

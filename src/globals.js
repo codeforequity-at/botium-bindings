@@ -1,5 +1,5 @@
 const settings = {
-  convodir: './spec/convo/',
+  convodirs: [ './spec/convo/' ],
   configfile: 'testmybot.json',
   configToSet: null,
   hooks: {

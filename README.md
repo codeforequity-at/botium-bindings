@@ -35,6 +35,13 @@ In case you want to see some more output, enable debug logging:
 > export DEBUG=testmybot*,botium*
 ```
 
+## Loading ready-to-use Chatbot Test Cases and Utterances from "Botium Utterances" library
+
+[Link](samples/utterances)
+
+* Demonstrates usage of the free utterances and chatbot test cases library ["Botium Utterances"](https://github.com/codeforequity-at/botium-utterances)
+* Loads the typical "Tell me a Joke" test suite and runs it agains a Dialogflow chatbot
+
 ## Chatbot developed with Microsoft Bot Framework
 
 [Link](samples/botframework)

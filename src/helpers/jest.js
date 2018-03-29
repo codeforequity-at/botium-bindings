@@ -1,24 +1,28 @@
-/* global describe it beforeAll beforeEach afterAll afterEach fail */
+/* global describe test beforeAll beforeEach afterAll afterEach */
 
 const TestMyBot = require('../testmybot')
 const moduleinfo = require('../util/moduleinfo')
 
-module.exports.setupJestTestCases = (tmb, testcaseSelector) => {
+module.exports.setupJestTestCases = ({ testcaseSelector, tmb } = {}) => {
   if (!tmb) tmb = new TestMyBot()
 
   tmb.setupTestSuite(
-    (testcaseName, testcaseFunction) => {
-      if (!testcaseSelector || testcaseSelector(testcaseName))
-        test(testcaseName, testcaseFunction)
+    (testcase, testcaseFunction) => {
+      if (testcaseSelector && !testcaseSelector(testcase)) return
+
+      test(testcase.header.name, testcaseFunction)
     }
   )
 }
 
-module.exports.setupJestTestSuite = (tmb, testcaseSelector) => {
+module.exports.setupJestTestSuite = ({ name, testcaseSelector, tmb } = {}) => {
   if (!tmb) tmb = new TestMyBot()
-  const packageJson = moduleinfo()
+  if (!name) {
+    let packageJson = moduleinfo()
+    name = 'TestMyBot Test Suite for ' + packageJson.name
+  }
 
-  describe('TestMyBot Test Suite for ' + packageJson.name, () => {
+  describe(name, () => {
     beforeAll((done) => {
       tmb.beforeAll().then(() => done()).catch(done)
     })
@@ -35,6 +39,6 @@ module.exports.setupJestTestSuite = (tmb, testcaseSelector) => {
       tmb.afterAll().then(() => done()).catch(done)
     })
 
-    module.exports.setupJestTestCases(tmb, testcaseSelector)
+    module.exports.setupJestTestCases({ tmb, testcaseSelector })
   })
 }

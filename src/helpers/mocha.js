@@ -5,14 +5,16 @@ const addContext = require('mochawesome/addContext')
 const TestMyBot = require('../testmybot')
 const moduleinfo = require('../util/moduleinfo')
 
-module.exports.setupMochaTestCases = (timeout, matcher, tmb) => {
+const defaultTimeout = 60000
+
+const setupMochaTestCases = ({ timeout: timeout = defaultTimeout, testcaseSelector, tmb } = {}) => {
   if (!tmb) tmb = new TestMyBot()
 
-  if (!timeout) timeout = 60000
-
   tmb.setupTestSuite(
-    (testcaseName, testcaseFunction) => {
-      it(testcaseName, function (testcaseDone) {
+    (testcase, testcaseFunction) => {
+      if (testcaseSelector && !testcaseSelector(testcase)) return
+
+      it(testcase.header.name, function (testcaseDone) {
         const messageLog = []
         const listenerMe = (container, msg) => {
           messageLog.push('#me: ' + msg.messageText)
@@ -32,22 +34,21 @@ module.exports.setupMochaTestCases = (timeout, matcher, tmb) => {
         })
       }).timeout(timeout)
     },
-    matcher,
+    null,
     (err) => {
       expect.fail(null, null, err)
-    },
-    addContext
+    }
   )
 }
 
-module.exports.setupMochaTestSuite = (timeout, matcher, tmb) => {
+const setupMochaTestSuite = ({ timeout: timeout = defaultTimeout, name, testcaseSelector, tmb } = {}) => {
   if (!tmb) tmb = new TestMyBot()
+  if (!name) {
+    let packageJson = moduleinfo()
+    name = 'TestMyBot Test Suite for ' + packageJson.name
+  }
 
-  if (!timeout) timeout = 60000
-
-  var packageJson = moduleinfo()
-
-  describe('TestMyBot Test Suite for ' + packageJson.name, () => {
+  describe(name, () => {
     before(function (done) {
       this.timeout(timeout)
       tmb.beforeAll().then(() => done()).catch(done)
@@ -65,6 +66,11 @@ module.exports.setupMochaTestSuite = (timeout, matcher, tmb) => {
       tmb.afterAll().then(() => done()).catch(done)
     })
 
-    module.exports.setupMochaTestCases(timeout, matcher, tmb)
+    setupMochaTestCases({ timeout, testcaseSelector, tmb })
   })
+}
+
+module.exports = {
+  setupMochaTestCases,
+  setupMochaTestSuite
 }

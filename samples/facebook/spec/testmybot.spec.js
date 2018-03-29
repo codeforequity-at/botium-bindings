@@ -48,5 +48,5 @@ describe('TestMyBot Sample Conversation Test Suite', function() {
     });
   }, 10000);
 
-  jasmineHelper.setupJasmineTestCases(60000, null, tmb);
+  jasmineHelper.setupJasmineTestCases({ timeout: 60000, tmb });
 });

@@ -3,28 +3,30 @@
 const TestMyBot = require('../testmybot')
 const moduleinfo = require('../util/moduleinfo')
 
-module.exports.setupJasmineTestCases = (timeout, matcher, tmb) => {
-  if (!tmb) tmb = new TestMyBot()
+const defaultTimeout = 60000
 
-  if (!timeout) timeout = 60000
+module.exports.setupJasmineTestCases = ({ timeout: timeout = defaultTimeout, testcaseSelector, tmb } = {}) => {
+  if (!tmb) tmb = new TestMyBot()
 
   tmb.setupTestSuite(
     (testcaseName, testcaseFunction) => {
-      it(testcaseName, testcaseFunction, timeout)
+      if (testcaseSelector && !testcaseSelector(testcase)) return
+
+      it(testcaseName.header.name, testcaseFunction, timeout)
     },
-    matcher,
+    null,
     (err) => fail(err)
   )
 }
 
-module.exports.setupJasmineTestSuite = (timeout, matcher, tmb) => {
+module.exports.setupJasmineTestSuite = ({ timeout: timeout = defaultTimeout, name, testcaseSelector, tmb } = {}) => {
   if (!tmb) tmb = new TestMyBot()
+  if (!name) {
+    let packageJson = moduleinfo()
+    name = 'TestMyBot Test Suite for ' + packageJson.name
+  }
 
-  if (!timeout) timeout = 60000
-
-  var packageJson = moduleinfo()
-
-  describe('TestMyBot Test Suite for ' + packageJson.name, () => {
+  describe(name, () => {
     beforeAll((done) => {
       tmb.beforeAll().then(() => done()).catch(done.fail)
     }, timeout)
@@ -41,7 +43,7 @@ module.exports.setupJasmineTestSuite = (timeout, matcher, tmb) => {
       tmb.afterAll().then(() => done()).catch(done.fail)
     }, timeout)
 
-    module.exports.setupJasmineTestCases(timeout, matcher, tmb)
+    module.exports.setupJasmineTestCases({ timeout, testcaseSelector, tmb })
   })
 }
 
