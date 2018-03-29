@@ -10,7 +10,7 @@ const ConvoReader = require('./convo')
 const globals = require('./globals')
 
 module.exports = class TestMyBot {
-  constructor (configToSet = {}) {
+  constructor (configToSet = {}, convodirs = []) {
     this.config = readConfig(configToSet)
     debug(JSON.stringify(this.config, null, 2))
 
@@ -20,7 +20,7 @@ module.exports = class TestMyBot {
       .setSources(this.config.botium.Sources)
 
     this.compiler = this.driver.BuildCompiler()
-    this.convoReader = new ConvoReader(this.compiler)
+    this.convoReader = new ConvoReader(this.compiler, convodirs)
     this.container = null
   }
 
@@ -92,9 +92,9 @@ module.exports = class TestMyBot {
     }
 
     convos.forEach((convo) => {
-      debug('adding test case ' + convo.header.name + ' (file: ' + convo.filename + ')')
-      testcaseCb(convo.header.name, (testcaseDone) => {
-        debug('running testcase ' + convo.header.name)
+      debug('adding test case ' + convo.header.toString())
+      testcaseCb(convo, (testcaseDone) => {
+        debug('running testcase ' + convo.header.toString())
 
         convo.Run(this.container)
           .then(() => {
