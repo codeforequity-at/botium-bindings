@@ -6,10 +6,12 @@ const debug = require('debug')('testmybot-readconfig')
 
 const globals = require('./globals')
 
-module.exports = (configToSet) => {
+module.exports = (configToSet, configfile) => {
   const resolvedConfig = {}
 
-  let configfile = globals.get().configfile
+  if (!configfile) {
+    configfile = globals.get().configfile
+  }
 
   try {
     const contents = fs.readFileSync(path.resolve(__dirname, '../testmybot.default.json'))
