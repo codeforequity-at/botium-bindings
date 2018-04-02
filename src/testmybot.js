@@ -10,8 +10,8 @@ const ConvoReader = require('./convo')
 const globals = require('./globals')
 
 module.exports = class TestMyBot {
-  constructor (configToSet = {}, convodirs = []) {
-    this.config = readConfig(configToSet)
+  constructor (configToSet = {}, convodirs = [], configfile = null) {
+    this.config = readConfig(configToSet, configfile)
     debug(JSON.stringify(this.config, null, 2))
 
     this.driver = new BotDriver()
