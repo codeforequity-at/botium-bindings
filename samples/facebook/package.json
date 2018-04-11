@@ -8,9 +8,9 @@
   "main": "index.js",
   "scripts": {
     "start_testmybot": "node index.js",
-    "emulator": "node node_modules/testmybot/emulator-console.js",
-    "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js",
-    "test": "./node_modules/.bin/jasmine"
+    "emulator": "../../node_modules/.bin/botium-cli emulator console --convos ./spec/convo --config ./testmybot.json",
+    "emulatorBrowser": "../../node_modules/.bin/botium-cli emulator browser --convos ./spec/convo --config ./testmybot.json"
+    "test": "jasmine"
   },
   "author": "Florian Treml",
   "license": "MIT",

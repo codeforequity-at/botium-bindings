@@ -10,8 +10,3 @@ module.exports.helper = {
   mocha: () => require('./src/helpers/mocha'),
   botkit: () => require('./src/helpers/botkit')
 }
-
-module.exports.emulator = {
-  console: () => require('./src/emulator/console/index'),
-  browser: () => require('./src/emulator/browser/index')
-}
