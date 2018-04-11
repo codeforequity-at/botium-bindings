@@ -2,9 +2,9 @@
   "name": "testmybot-sample-slack",
   "version": "1.0.0",
   "scripts": {
-    "test": "./node_modules/.bin/jasmine",
-    "emulator": "node node_modules/testmybot/emulator-console.js",
-    "emulatorBrowser": "node node_modules/testmybot/emulator-browser.js"
+    "test": "jasmine",
+    "emulator": "../../node_modules/.bin/botium-cli emulator console --convos ./spec/convo --config ./testmybot.json",
+    "emulatorBrowser": "../../node_modules/.bin/botium-cli emulator browser --convos ./spec/convo --config ./testmybot.json"
   },
   "devDependencies": {
     "jasmine": "^2.6.0",

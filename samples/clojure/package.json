@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "./node_modules/.bin/jasmine"
+    "test": "jasmine"
   },
   "author": "Florian Treml",
   "license": "ISC",
