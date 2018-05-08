@@ -102,8 +102,9 @@ module.exports = class TestMyBot {
             testcaseDone()
           })
           .catch((err) => {
-            debug(convo.header.name + ' failed: ' + util.inspect(err))
-            testcaseDone(err)
+            debug(convo.header.name + ' failed: ' + util.inspect(err));
+            fail(err);
+            testcaseDone();
           })
       })
     })
