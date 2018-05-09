@@ -10,9 +10,19 @@ module.exports.setupJasmineTestCases = ({ timeout: timeout = defaultTimeout, tes
 
   tmb.setupTestSuite(
     (testcase, testcaseFunction) => {
-      if (testcaseSelector && !testcaseSelector(testcase)) return
+      if (testcaseSelector && !testcaseSelector(testcase)) return;
 
-      it(testcase.header.name, testcaseFunction, timeout)
+      it(
+        testcase.header.name, 
+        (done)=>{
+          testcaseFunction((err)=>{
+            if(err){
+              fail(err);
+            }
+            done();
+          });
+        },
+        timeout)
     },
     null,
     (err) => fail(err)
