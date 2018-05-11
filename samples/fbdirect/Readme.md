@@ -4,6 +4,10 @@ In this sample, your Chatbot is already deployed to Facebok. TestMyBot makes use
 
 Find instructions on how to use this sample here: https://chatbotsmagazine.com/serverless-monitoring-of-your-facebook-chatbot-in-3-easy-steps-a051b4f248a8
 
+You have to enter the "Page ID" of the Facebook page your Chatbot is linked to in the testmybot.json file.
+
+You have to enter your facebook credentials in the package.json file.
+
 **ATTENTION**
 
 When running this sample code with your Facebook account from a hosted server (for example, from Amazon EC2 instance), your Facebook account will most likely get locked. Please make sure to run this sample from your workstation.

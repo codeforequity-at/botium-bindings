@@ -68,7 +68,7 @@ module.exports = class TestMyBot {
     if (this.container) {
       return this.container.Start()
     } else {
-      return Promise.reject(new Error('container not available'))
+      return Promise.reject(new Error('Botium Initialization failed. Please see error messages above (enable debug logging).'))
     }
   }
 
@@ -94,17 +94,21 @@ module.exports = class TestMyBot {
     convos.forEach((convo) => {
       debug('adding test case ' + convo.header.toString())
       testcaseCb(convo, (testcaseDone) => {
-        debug('running testcase ' + convo.header.toString())
+        if (this.container) {
+          debug('running testcase ' + convo.header.toString())
 
-        convo.Run(this.container)
-          .then(() => {
-            debug(convo.header.name + ' ready, calling done function.')
-            testcaseDone()
-          })
-          .catch((err) => {
-            debug(convo.header.name + ' failed: ' + util.inspect(err))
-            testcaseDone(err)
-          })
+          convo.Run(this.container)
+            .then(() => {
+              debug('Test Case "' + convo.header.name + '" ready, calling done function.')
+              testcaseDone()
+            })
+            .catch((err) => {
+              debug('Test Case "' + convo.header.name + '" failed: ' + util.inspect(err))
+              testcaseDone(err)
+            })
+        } else {
+          testcaseDone(new Error('Botium Initialization failed. Please see error messages above (enable debug logging).'))
+        }
       })
     })
   }
@@ -117,7 +121,7 @@ module.exports = class TestMyBot {
         return this.container.UserSays(arg)
       }
     } else {
-      return Promise.reject(new Error('container not available'))
+      return Promise.reject(new Error('Botium Initialization failed. Please see error messages above (enable debug logging).'))
     }
   }
 
@@ -125,7 +129,7 @@ module.exports = class TestMyBot {
     if (this.container) {
       return this.container.WaitBotSays(channel, timeoutMillis)
     } else {
-      return Promise.reject(new Error('container not available'))
+      return Promise.reject(new Error('Botium Initialization failed. Please see error messages above (enable debug logging).'))
     }
   }
 }

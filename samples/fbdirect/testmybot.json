@@ -3,9 +3,7 @@
     "Capabilities": {
       "PROJECTNAME": "testmybot-sample-monitoring",
       "CONTAINERMODE": "fbdirect",
-      "FB_PAGEID": "YOUR_FACEBOOK_PAGE_ID",
-      "FB_USER": "YOUR_FACEBOOK_LOGIN",
-      "FB_PASSWORD": "YOUR_FACEBOOK_PASSWORD"
+      "FB_PAGEID": "YOUR_FACEBOOK_PAGE_ID"
     }
   }
 }

@@ -8,8 +8,8 @@
   "main": "index.js",
   "scripts": {
     "start_testmybot": "node index.js",
-    "emulator": "../../node_modules/.bin/botium-cli emulator console --convos ./spec/convo --config ./testmybot.json",
-    "emulatorBrowser": "../../node_modules/.bin/botium-cli emulator browser --convos ./spec/convo --config ./testmybot.json",
+    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo --config ./testmybot.json",
+    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo --config ./testmybot.json",
     "test": "jasmine"
   },
   "author": "Florian Treml",
