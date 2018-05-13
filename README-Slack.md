@@ -2,6 +2,8 @@ Testing your Slack Chatbots
 ===========================
 Here you find a quick introduction how to test your Slack chatbot with TestMyBot. The [sample chatbot](https://github.com/howdyai/botkit-starter-slack) is taken from Bitkit.
 
+__You can find the ready-to-run sample test suite [here](https://github.com/codeforequity-at/testmybot/tree/master/samples/slack)__
+
 ## What Slack API features are supported ?
 
 - [x] Authentication of your Bot over Oauth-Webhook
