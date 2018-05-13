@@ -1,6 +1,6 @@
 Testing your Slack Chatbots
 ===========================
-Here you find a quick introduction how to test your Slack Chatbot with TestMyBot.
+Here you find a quick introduction how to test your Slack chatbot with TestMyBot. The [sample chatbot](https://github.com/howdyai/botkit-starter-slack) is taken from Bitkit.
 
 ## What Slack API features are supported ?
 
@@ -31,6 +31,7 @@ With [Jasmine](https://jasmine.github.io/), the setup looks like this:
 
 Add a file named "testmybot.json" to your project directory. A very basic configuration for a [Slack Chatbot](https://github.com/codeforequity-at/testmybot/tree/master/samples/slack) looks like this:
 
+```
 {
   "botium": {
     "Capabilities": {
@@ -57,14 +58,14 @@ Add a file named "testmybot.json" to your project directory. A very basic config
     }
   }
 }
-
+```
 Take the [Testmybot Jasmine Spec file](https://github.com/codeforequity-at/testmybot/blob/master/samples/slack/spec/testmybot.spec.js) from the sample and place it into your project directory (spec/testmybot.spec.js).
 
 You can hand over environment variables to your chatbot here. 
 
 ## Preparing your test cases
 
-Now it's time to define your test cases. Please follow the guide in the section "How to Compose Test Cases" in the [project description](https://github.com/codeforequity-at/testmybot/blob/master/README.md#how-to-compose-test-cases).
+Now it's time to define your test cases. Please follow the guide in the [project wiki](https://github.com/codeforequity-at/testmybot/wiki/Compose-Test-Cases).
 
 ## Running your test cases
 
