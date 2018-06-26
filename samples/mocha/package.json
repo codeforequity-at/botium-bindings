@@ -17,6 +17,7 @@
     "testmybot": "../.."
   },
   "dependencies": {
+    "botium-cli": "0.0.13",
     "botkit": ">=0.5.4 <1.0.0"
   }
 }

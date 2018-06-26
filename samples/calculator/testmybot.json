@@ -2,6 +2,7 @@
   "botium": {
     "Capabilities": {
       "PROJECTNAME": "testmybot-sample-calculator",
+	  "CONTAINERMODE": "docker",
       "FACEBOOK_API": true,
       "FACEBOOK_WEBHOOK_PORT": 3000,
       "FACEBOOK_WEBHOOK_PATH": "facebook/receive",
