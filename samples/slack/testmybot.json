@@ -2,6 +2,7 @@
   "botium": {
     "Capabilities": {
       "PROJECTNAME": "testmybot-sample-slack",
+	  "CONTAINERMODE": "docker",
       "SLACK_API": true,
       "SLACK_EVENT_PORT": 3000,
       "SLACK_EVENT_PATH": "slack/receive",

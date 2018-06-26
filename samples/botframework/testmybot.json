@@ -2,6 +2,7 @@
   "botium": {
     "Capabilities": {
       "PROJECTNAME": "testmybot-sample-botframework",
+	  "CONTAINERMODE": "docker",
       "BOTFRAMEWORK_API": true,
       "BOTFRAMEWORK_APP_ID": "my microsoft app id",
       "BOTFRAMEWORK_CHANNEL_ID": "facebook",
