@@ -8,8 +8,8 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env BOTIUM_FB_USER=my_fb_user BOTIUM_FB_PASSWORD=my_fb_password jasmine",
-    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo --config ./testmybot.json",
-    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo --config ./testmybot.json"
+    "emulator": "npm install botium-cli && cross-env BOTIUM_FB_USER=my_fb_user BOTIUM_FB_PASSWORD=my_fb_password botium-cli emulator console --convos ./spec/convo --config ./testmybot.json",
+    "emulatorBrowser": "npm install botium-cli && cross-env BOTIUM_FB_USER=my_fb_user BOTIUM_FB_PASSWORD=my_fb_password botium-cli emulator browser --convos ./spec/convo --config ./testmybot.json"
   },
   "author": "Florian Treml",
   "license": "MIT",
