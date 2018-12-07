@@ -1,27 +1,28 @@
 {
-  "name": "testmybot-sample1",
+  "name": "botium-bindings-sample1",
   "version": "1.0.0",
-  "engines": {
-    "node": ">=4.0"
-  },
   "description": "Continuous Testing for your Chatbots - Sample Application 1",
-  "main": "index.js",
   "scripts": {
-    "start_testmybot": "node index.js",
-    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo --config ./testmybot.json",
-    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo --config ./testmybot.json",
+    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo",
+    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo",
     "test": "jasmine"
   },
-  "author": "Florian Treml",
+  "author": "Botium GmbH",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.15.0",
-    "express": "^4.13.4",
-    "request": "^2.71.0"
+    "body-parser": "latest",
+    "express": "latest",
+    "request": "latest"
   },
   "devDependencies": {
-    "jasmine": "^2.6.0",
-    "jasmine-reporters": "^2.2.1",
-    "testmybot": "../.."
+    "jasmine": "latest",
+    "botium-bindings": "../.."
+  },
+  "botium": {
+    "convodirs": [
+      "./spec/convo"
+    ],
+    "expandConvos": true,
+    "expandUtterancesToConvos": false
   }
 }

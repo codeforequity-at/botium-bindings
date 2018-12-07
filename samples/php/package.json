@@ -1,21 +1,22 @@
 {
-  "name": "testmybot-sample-php",
+  "name": "botium-bindings-sample-php",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
   "scripts": {
     "test": "jasmine",
-    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo --config ./testmybot.json",
-    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo --config ./testmybot.json"
+    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo",
+    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo"
   },
-  "author": "",
+  "author": "Botium GmbH",
   "license": "ISC",
   "devDependencies": {
-    "jasmine": "^2.6.0",
-    "jasmine-reporters": "^2.2.1",
-    "testmybot": "../.."
+    "jasmine": "latest",
+    "botium-bindings": "../.."
+  },
+  "botium": {
+    "convodirs": [
+      "./spec/convo"
+    ],
+    "expandConvos": true,
+    "expandUtterancesToConvos": false
   }
 }

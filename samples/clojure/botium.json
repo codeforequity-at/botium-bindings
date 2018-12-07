@@ -1,0 +1,17 @@
+{
+  "botium": {
+    "Capabilities": {
+      "PROJECTNAME": "botium-bindings-sample-clojure",
+	    "CONTAINERMODE": "docker",
+      "FACEBOOK_API": true,
+      "FACEBOOK_WEBHOOK_PORT": 3000,
+      "FACEBOOK_WEBHOOK_PATH": "webhook",
+      "CLEANUPTEMPDIR": false,
+	    "DOCKERIMAGE": "clojure:lein",
+      "STARTCMD": "lein ring server-headless"
+    },
+    "Sources": {
+      "GITURL": "https://github.com/lemmings-io/02-facebook-example.git"
+    }
+  }
+}

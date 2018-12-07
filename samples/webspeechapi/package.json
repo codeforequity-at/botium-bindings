@@ -1,16 +1,15 @@
 {
-  "name": "testmybot-sample-webspeechapi",
+  "name": "botium-bindings-sample-webspeechapi",
   "version": "1.0.0",
   "scripts": {
     "test": "jasmine",
-    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo --config ./testmybot.json",
-    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo --config ./testmybot.json"
+    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo",
+    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo"
   },
   "devDependencies": {
     "jasmine": "latest",
-    "jasmine-reporters": "latest",
-    "testmybot": "../.."
+    "botium-bindings": "../.."
   },
-  "author": "Florian Treml",
+  "author": "Botium GmbH",
   "license": "ISC"
 }

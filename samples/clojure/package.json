@@ -1,15 +1,20 @@
 {
-  "name": "testmybot-sample-clojure",
+  "name": "botium-bindings-sample-clojure",
   "version": "1.0.0",
-  "description": "",
   "scripts": {
     "test": "jasmine"
   },
-  "author": "Florian Treml",
+  "author": "Botium GmbH",
   "license": "ISC",
   "devDependencies": {
-    "jasmine": "^2.6.0",
-    "jasmine-reporters": "^2.2.1",
-    "testmybot": "../.."
+    "jasmine": "latest",
+    "botium-bindings": "../.."
+  },
+  "botium": {
+    "convodirs": [
+      "./spec/convo"
+    ],
+    "expandConvos": true,
+    "expandUtterancesToConvos": false
   }
 }

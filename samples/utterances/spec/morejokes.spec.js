@@ -1,11 +1,11 @@
 const fs = require('fs')
 const path = require('path')
-const TestMyBot = require('testmybot')
+const BotiumBindings = require('botium-bindings')
 
-if (!fs.existsSync(__dirname + '/convo/botium-utterances-master')) {
+if (!fs.existsSync(path.resolve(__dirname, 'convo/botium-utterances-master'))) {
   console.log('Please download botium-utterances package from https://github.com/codeforequity-at/botium-utterances and unpack it to ./spec/convo/botium-utterances-master.')
   process.exit(1)
 }
-const tmb = new TestMyBot({}, [ './spec/convo/botium-utterances-master/shared', './spec/convo/botium-utterances-master/convos/joke' ], './testmybot.json')
+const bb = new BotiumBindings({ convodirs: [ './spec/convo/botium-utterances-master/shared', './spec/convo/botium-utterances-master/convos/joke' ] })
 
-TestMyBot.helper.jest().setupJestTestSuite({ name: 'More Jokes', tmb, testcaseSelector: (n) => n.header.name.startsWith('jokes.get/jokes.get.more') })
+BotiumBindings.helper.jest().setupJestTestSuite({ name: 'Good Jokes', bb, testcaseSelector: (n) => n.header.name.startsWith('jokes.get/jokes.get.more') })

@@ -1,72 +1,47 @@
 /* global describe it before beforeEach after afterEach */
 
-const expect = require('chai').expect
-const addContext = require('mochawesome/addContext')
-const TestMyBot = require('../testmybot')
-const moduleinfo = require('../util/moduleinfo')
+const BotiumBindings = require('../BotiumBindings')
 
 const defaultTimeout = 60000
 
-const setupMochaTestCases = ({ timeout: timeout = defaultTimeout, testcaseSelector, tmb } = {}) => {
-  if (!tmb) tmb = new TestMyBot()
+const setupMochaTestCases = ({ timeout = defaultTimeout, testcaseSelector, bb } = {}) => {
+  bb = bb || new BotiumBindings()
 
-  tmb.setupTestSuite(
+  bb.setupTestSuite(
     (testcase, testcaseFunction) => {
       if (testcaseSelector && !testcaseSelector(testcase)) return
 
-      it(testcase.header.name, function (testcaseDone) {
-        const messageLog = []
-        const listenerMe = (container, msg) => {
-          messageLog.push('#me: ' + msg.messageText)
-        }
-        const listenerBot = (container, msg) => {
-          messageLog.push('#bot: ' + msg.messageText)
-        }
-        tmb.driver.on('MESSAGE_SENTTOBOT', listenerMe)
-        tmb.driver.on('MESSAGE_RECEIVEDFROMBOT', listenerBot)
-
-        testcaseFunction((err) => {
-          addContext(this, { title: 'Conversation Log', value: messageLog.join('\n') })
-          tmb.driver.eventEmitter.removeListener('MESSAGE_SENTTOBOT', listenerMe)
-          tmb.driver.eventEmitter.removeListener('MESSAGE_RECEIVEDFROMBOT', listenerBot)
-
-          testcaseDone(err)
-        })
-      }).timeout(timeout)
-    },
-    null,
-    (err) => {
-      expect.fail(null, null, err)
+      it(testcase.header.name, testcaseFunction).timeout(timeout)
     }
   )
 }
 
-const setupMochaTestSuite = ({ timeout: timeout = defaultTimeout, name, testcaseSelector, tmb } = {}) => {
-  if (!tmb) tmb = new TestMyBot()
+const setupMochaTestSuite = ({ timeout = defaultTimeout, name, testcaseSelector, bb } = {}) => {
+  bb = bb || new BotiumBindings()
   if (!name) {
-    let packageJson = moduleinfo()
-    name = 'TestMyBot Test Suite for ' + packageJson.name
+    let packageJson = bb.getModuleInfo()
+    name = 'Botium Test Suite for ' + packageJson.name
   }
 
   describe(name, () => {
     before(function (done) {
       this.timeout(timeout)
-      tmb.beforeAll().then(() => done()).catch(done)
+      bb.beforeAll().then(() => done()).catch(done)
     })
     beforeEach(function (done) {
       this.timeout(timeout)
-      tmb.beforeEach().then(() => done()).catch(done)
+      bb.beforeEach().then(() => done()).catch(done)
     })
     afterEach(function (done) {
       this.timeout(timeout)
-      tmb.afterEach().then(() => done()).catch(done)
+      bb.afterEach().then(() => done()).catch(done)
     })
     after(function (done) {
       this.timeout(timeout)
-      tmb.afterAll().then(() => done()).catch(done)
+      bb.afterAll().then(() => done()).catch(done)
     })
 
-    setupMochaTestCases({ timeout, testcaseSelector, tmb })
+    setupMochaTestCases({ timeout, testcaseSelector, bb })
   })
 }
 

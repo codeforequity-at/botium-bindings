@@ -1,13 +1,13 @@
-Test My Bot
-===========
+Botium Bindings
+===============
 
-[![NPM](https://nodei.co/npm/testmybot.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/testmybot/)
+[![NPM](https://nodei.co/npm/botium-bindings.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/botium-bindings/)
 
-[ ![Codeship Status for codeforequity-at/testmybot](https://app.codeship.com/projects/077a7140-3175-0135-cee8-5eb28f78bdf5/status?branch=master)](https://app.codeship.com/projects/225703)
-[![npm version](https://badge.fury.io/js/testmybot.svg)](https://badge.fury.io/js/testmybot)
+[ ![Codeship Status for codeforequity-at/botium-bindings](https://app.codeship.com/projects/077a7140-3175-0135-cee8-5eb28f78bdf5/status?branch=master)](https://app.codeship.com/projects/225703)
+[![npm version](https://badge.fury.io/js/botium-bindings.svg)](https://badge.fury.io/js/botium-bindings)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
-TestMyBot is a test automation library for chatbots. Test cases are recorded by Capture & Replay tools and can be run against your chatbot implementation automatically over and over again. It is meant to be included in your continuous integration pipeline, just as with your unit tests.
+Botium is the Selenium for chatbots. Botium Bindings is the glue to bind Botium to test runners like Mocha, Jasmine and Jest.
 
 # How do I get help ?
 * Read the [Botium in a Nutshell](https://medium.com/@floriantreml/botium-in-a-nutshell-part-1-overview-f8d0ceaf8fb4) series
@@ -16,14 +16,29 @@ TestMyBot is a test automation library for chatbots. Test cases are recorded by 
 * For asking questions please use Stackoverflow - we are monitoring and answering questions there.
 * For our VIP users, there is also a Slack workspace available (coming soon).
 
+# Usage
 
-# Documentation
+__Did you read the [Botium in a Nutshell](https://medium.com/@floriantreml/botium-in-a-nutshell-part-1-overview-f8d0ceaf8fb4) articles ? Be warned, without prior knowledge of Botium you won't be able to properly use this library!__
 
-Please navigate to our [Wiki](https://github.com/codeforequity-at/testmybot/wiki) for documentation.
+You should already have a Node.js project set up with the test runner of your choice (Mocha, Jasmine, Jest supported out of the box).
+
+The following commands will install Botium Bindings and extend your Mocha specs with the Botium test case runner:
+
+```
+> npm install -g botium-bindings
+> botium-bindings init mocha
+```
+
+Here is what's happening:
+* Your _package.json_ file is extended with a "botium"-Section
+* A _botium.json_ file is created in the root directory of your project
+* A _botium.spec.js_ file is created in the "spec" folder to dynamically create test cases out of your Botium scripts
+
+Place your Botium scripts in the "spec/convo" folder and Mocha will find them on the next run.
 
 # Samples
 
-There are a couple of [samples](samples) available, showing possible scenarios to use TestMyBot. For all samples, you these commands to run them:
+There are a couple of [samples](samples) available, showing possible scenarios to use Botium Bindings. For all samples, use these commands to run them:
 
 ```
 > npm install
@@ -40,7 +55,7 @@ To run the console emulator (text input and output), run this command in the sam
 In case you want to see some more output, enable debug logging:
 
 ```
-> export DEBUG=testmybot*,botium*
+> export DEBUG=botium*
 ```
 
 ## Loading ready-to-use Chatbot Test Cases and Utterances from "Botium Utterances" library
@@ -58,12 +73,6 @@ In case you want to see some more output, enable debug logging:
 * Loads chatbot code from Github automatically
 * Uses "docker" mode to place chatbot in docker container
 
-## Chatbot developed with Botkit
-
-[Link](samples/botkit/jasmine)
-
-* Wires Botkit with TestMyBot
-
 ## Loading a Facebook chatbot from Git
 
 [Link](samples/calculator)
@@ -78,7 +87,7 @@ In case you want to see some more output, enable debug logging:
 
 [Link](samples/clojure)
 
-* Shows a chatbot developed in another programming language than TestMyBot
+* Shows a chatbot developed in another programming language than Javascript
 * Uses a chatbot developed with Clojure from the [Lemmings incubator](https://lemmings.io/)
 * Downloads a docker image ("clojure.lein") and placing the chatbot in a docker container
 
@@ -86,7 +95,7 @@ In case you want to see some more output, enable debug logging:
 {
   "botium": {
     "Capabilities": {
-      "PROJECTNAME": "testmybot-sample-clojure",
+      "PROJECTNAME": "botium-bindings-sample-clojure",
       "FACEBOOK_API": true,
       "FACEBOOK_WEBHOOK_PORT": 3000,
       "FACEBOOK_WEBHOOK_PATH": "webhook",
@@ -105,7 +114,7 @@ In case you want to see some more output, enable debug logging:
 
 [Link](samples/facebook)
 
-* Shows how to include TestMyBot into your build pipeline for continuous testing
+* Shows how to include Botium Bindings into your build pipeline for continuous testing
 * docker container
 
 ## Connecting to Chatbot running in Facebook Messenger
@@ -113,7 +122,7 @@ In case you want to see some more output, enable debug logging:
 [Link](samples/fbdirect)
 
 * Can be used to automate testing of a chatbot already running in facebook messenger
-* Usefull for regression testing, not for continous testing (takes to much time to run)
+* Usefull for regression testing, not for continuous testing (takes to much time to run)
 * See sample directory for instructions
 
 ## Using Mocha
@@ -158,36 +167,3 @@ In case you want to see some more output, enable debug logging:
 
 * Contacting a custom REST/HTTP interface, as usual for chatbots running on websites
 * Test cases are extracted from an Excel sheet instead of text files
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

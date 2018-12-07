@@ -1,30 +1,26 @@
 {
-  "name": "testmybot",
-  "version": "1.4.9",
+  "name": "botium-bindings",
+  "version": "2.0.0",
   "engines": {
     "node": ">=6.0"
   },
+  "bin": {
+    "botium-bindings": "./bin/botium-bindings.js"
+  },
   "scripts": {
     "build": "npm run eslint && rollup -c",
-    "eslint": "eslint \"./src/**/*.js\"",
-    "newpatch": "npm version patch"
+    "eslint": "eslint \"./bin/**/*.js\" \"./src/**/*.js\""
   },
-  "description": "Continuous Testing for your Chatbots",
+  "description": "Binding Botium, the Selenium for Chatbots, to test runners",
   "main": "index.js",
-  "author": "Florian Treml",
+  "author": "Botium GmbH",
   "license": "MIT",
   "dependencies": {
     "async": "^2.1.5",
-    "botium-core": "1.3.33",
-    "chai": "^4.1.2",
+    "botium-core": "1.3.38",
     "debug": "^3.1.0",
-    "exit-hook": "^1.1.1",
-    "is-json": "^2.0.1",
-    "jest": "^22.4.3",
     "lodash": "^4.17.4",
-    "mkdirp": "^0.5.1",
-    "mocha": "^5.0.0",
-    "mochawesome": "^3.0.2"
+    "yargs": "^12.0.5"
   },
   "devDependencies": {
     "eslint": "^4.15.0",
@@ -33,15 +29,15 @@
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
-    "rollup": "^0.53.0",
-    "rollup-plugin-buble": "^0.18.0",
-    "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-json": "^2.3.0",
-    "rollup-plugin-node-resolve": "^3.0.0"
+    "rollup": "^0.67.4",
+    "rollup-plugin-buble": "^0.19.4",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^3.4.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codeforequity-at/testmybot.git"
+    "url": "git+https://github.com/codeforequity-at/botium-bindings.git"
   },
   "keywords": [
     "continuous",
@@ -49,7 +45,7 @@
     "chatbot"
   ],
   "bugs": {
-    "url": "https://github.com/codeforequity-at/testmybot/issues"
+    "url": "https://github.com/codeforequity-at/botium-core/issues"
   },
-  "homepage": "https://github.com/codeforequity-at/testmybot#readme"
+  "homepage": "https://github.com/codeforequity-at/botium-bindings#readme"
 }

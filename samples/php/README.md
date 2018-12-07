@@ -1,4 +1,4 @@
-# TestMyBot Sample: PHP Chatbot
+# Botium Bindings Sample: PHP Chatbot
 
 The Chatbot used in this sample project is based on the [Chatbot PHP Boilerplate](https://github.com/christophrumpel/chatbot-php-boilerplate) project.
 
@@ -11,25 +11,19 @@ There are some minor changes in code required:
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
       curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 
-## The TestMyBot Configuration
+## The Botium Configuration
 
 The docker image used is "webdevops/php-nginx:7.1", with php and nginx. The command "composer install && supervisord" runs composer to install PHP dependencies and then starts the background processes (supervisord is included with the docker images from webdevops).
 
 The environment variable "WEB_DOCUMENT_ROOT" points to the web server document root.
 
-## Setting up TestMyBot
+## Setting up Botium Bindings
 
-Now you can just initialize your project directory with testmybot and run the [Capture & Replay tools](https://github.com/codeforequity-at/testmybot#capture--replay-tools). 
+Now you can just initialize your project directory with Botium.
 
     $ npm init
-    $ npm install testmybot --save-dev
+    $ npm install botium-bindings --save-dev
     $ npm install jasmine --save-dev
     $ ./node_modules/.bin/jasmine init
-    $ node node_modules/testmybot/emulator-console.js
+    $ ./node_modules/.bin/botium-bindings init jasmine
     $ ./node_modules/.bin/jasmine
-
-
-
-
-
-
