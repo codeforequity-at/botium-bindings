@@ -7,6 +7,8 @@ Botium Bindings
 [![npm version](https://badge.fury.io/js/botium-bindings.svg)](https://badge.fury.io/js/botium-bindings)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
+__This project was formerly known as "TestMyBot" - same scope, different name__
+
 Botium is the Selenium for chatbots. Botium Bindings is the glue to bind Botium to test runners like Mocha, Jasmine and Jest.
 
 # How do I get help ?
