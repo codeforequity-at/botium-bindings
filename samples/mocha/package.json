@@ -1,23 +1,27 @@
 {
-  "name": "testmybot-sample-mocha",
+  "name": "botium-bindings-sample-mocha",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo --config ./testmybot.json",
-    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo --config ./testmybot.json",
+    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo",
+    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo",
     "test": "mocha --reporter spec --exit spec"
   },
-  "author": "",
+  "author": "Botium GmbH",
   "license": "ISC",
   "devDependencies": {
-    "chai": "^4.0.2",
-    "mocha": "^4.0.1",
-    "testmybot": "../.."
+    "chai": "latest",
+    "mocha": "latest",
+    "botium-bindings": "../.."
   },
   "dependencies": {
-    "botium-cli": "0.0.13",
     "botkit": ">=0.5.4 <1.0.0"
+  },
+  "botium": {
+    "convodirs": [
+      "./spec/convo"
+    ],
+    "expandConvos": true,
+    "expandUtterancesToConvos": false
   }
 }

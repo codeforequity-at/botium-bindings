@@ -1,5 +1,5 @@
-# TestMyBot Sample Application
+# Botium Bindings Sample Application
 
 The Chatbot for this Sample was taken from here: https://github.com/jw84/messenger-bot-tutorial
 
-Please see the [main project](https://github.com/codeforequity-at/testmybot) for instructions.
+Please see the [main project](https://github.com/codeforequity-at/botium-bindings) for instructions.

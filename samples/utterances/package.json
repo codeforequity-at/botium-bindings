@@ -1,21 +1,16 @@
 {
-  "name": "testmybot-sample-utterances",
+  "name": "botium-bindings-sample-utterances",
   "version": "1.0.0",
-  "engines": {
-    "node": ">=4.0"
-  },
-  "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "jest",
-    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo --config ./testmybot.json",
-    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo --config ./testmybot.json"
+    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo",
+    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo"
   },
   "devDependencies": {
-    "jest": "^22.4.3",
-    "botium-connector-dialogflow": "*",
-    "testmybot": "../.."
+    "jest": "latest",
+    "botium-connector-dialogflow": "latest",
+    "botium-bindings": "../.."
   },
-  "author": "Florian Treml",
+  "author": "Botium GmbH",
   "license": "MIT"
 }

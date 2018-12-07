@@ -1,14 +1,13 @@
 /* global describe it beforeAll beforeEach afterAll afterEach fail */
 
-const TestMyBot = require('../testmybot')
-const moduleinfo = require('../util/moduleinfo')
+const BotiumBindings = require('../BotiumBindings')
 
 const defaultTimeout = 60000
 
-module.exports.setupJasmineTestCases = ({ timeout: timeout = defaultTimeout, testcaseSelector, tmb } = {}) => {
-  if (!tmb) tmb = new TestMyBot()
+const setupJasmineTestCases = ({ timeout = defaultTimeout, testcaseSelector, bb } = {}) => {
+  bb = bb || new BotiumBindings()
 
-  tmb.setupTestSuite(
+  bb.setupTestSuite(
     (testcase, testcaseFunction) => {
       if (testcaseSelector && !testcaseSelector(testcase)) return
 
@@ -29,45 +28,36 @@ module.exports.setupJasmineTestCases = ({ timeout: timeout = defaultTimeout, tes
   )
 }
 
-module.exports.setupJasmineTestSuite = ({ timeout: timeout = defaultTimeout, name, testcaseSelector, tmb } = {}) => {
-  if (!tmb) tmb = new TestMyBot()
+const setupJasmineTestSuite = ({ timeout = defaultTimeout, name, testcaseSelector, bb } = {}) => {
+  bb = bb || new BotiumBindings()
+
   if (!name) {
-    let packageJson = moduleinfo()
-    name = 'TestMyBot Test Suite for ' + packageJson.name
+    let packageJson = bb.getModuleInfo()
+    name = 'Botium Test Suite for ' + packageJson.name
   }
 
   describe(name, () => {
     beforeAll((done) => {
-      tmb.beforeAll().then(() => done()).catch(done.fail)
+      bb.beforeAll().then(() => done()).catch(done.fail)
     }, timeout)
 
     beforeEach((done) => {
-      tmb.beforeEach().then(() => done()).catch(done.fail)
+      bb.beforeEach().then(() => done()).catch(done.fail)
     }, timeout)
 
     afterEach((done) => {
-      tmb.afterEach().then(() => done()).catch(done.fail)
+      bb.afterEach().then(() => done()).catch(done.fail)
     }, timeout)
 
     afterAll((done) => {
-      tmb.afterAll().then(() => done()).catch(done.fail)
+      bb.afterAll().then(() => done()).catch(done.fail)
     }, timeout)
 
-    module.exports.setupJasmineTestCases({ timeout, testcaseSelector, tmb })
+    setupJasmineTestCases({ timeout, testcaseSelector, bb })
   })
 }
 
-module.exports.generateJUnit = () => {
-  const Jasmine = require.main.require('jasmine')
-  const JasmineReporters = require.main.require('jasmine-reporters')
-
-  var junitReporter = new JasmineReporters.JUnitXmlReporter({
-    savePath: process.cwd(),
-    consolidateAll: true
-  })
-
-  const jasmine = new Jasmine()
-  jasmine.addReporter(junitReporter)
-  jasmine.loadConfigFile(process.cwd() + '/spec/support/jasmine.json')
-  jasmine.execute()
+module.exports = {
+  setupJasmineTestCases,
+  setupJasmineTestSuite
 }

@@ -1,16 +1,18 @@
 {
-  "name": "testmybot-sample-watson",
+  "name": "botium-bindings-sample-watson",
   "version": "1.0.0",
   "scripts": {
     "test": "mocha --reporter mochawesome --reporter-options \"code=false,reportTitle=IBM Watson Conversation Sample\"  --exit spec",
-    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo --config ./testmybot.json",
-    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo --config ./testmybot.json"
+    "emulator": "npm install botium-cli && botium-cli emulator console --convos ./spec/convo",
+    "emulatorBrowser": "npm install botium-cli && botium-cli emulator browser --convos ./spec/convo"
   },
   "devDependencies": {
-    "mocha": "^5.0.4",
-    "mochawesome": "^3.0.2",
-    "testmybot": "../.."
+    "chai": "latest",
+    "mocha": "latest",
+    "mochawesome": "latest",
+    "botium-connector-watson": "latest",
+    "botium-bindings": "../.."
   },
-  "author": "Florian Treml",
+  "author": "Botium GmbH",
   "license": "ISC"
 }

@@ -1,12 +1,11 @@
 /* global describe test beforeAll beforeEach afterAll afterEach */
 
-const TestMyBot = require('../testmybot')
-const moduleinfo = require('../util/moduleinfo')
+const BotiumBindings = require('../BotiumBindings')
 
-module.exports.setupJestTestCases = ({ testcaseSelector, tmb } = {}) => {
-  if (!tmb) tmb = new TestMyBot()
+const setupJestTestCases = ({ testcaseSelector, bb } = {}) => {
+  bb = bb || new BotiumBindings()
 
-  tmb.setupTestSuite(
+  bb.setupTestSuite(
     (testcase, testcaseFunction) => {
       if (testcaseSelector && !testcaseSelector(testcase)) return
 
@@ -15,30 +14,36 @@ module.exports.setupJestTestCases = ({ testcaseSelector, tmb } = {}) => {
   )
 }
 
-module.exports.setupJestTestSuite = ({ name, testcaseSelector, tmb } = {}) => {
-  if (!tmb) tmb = new TestMyBot()
+const setupJestTestSuite = ({ name, testcaseSelector, bb } = {}) => {
+  bb = bb || new BotiumBindings()
+
   if (!name) {
-    let packageJson = moduleinfo()
-    name = 'TestMyBot Test Suite for ' + packageJson.name
+    let packageJson = bb.getModuleInfo()
+    name = 'Botium Test Suite for ' + packageJson.name
   }
 
   describe(name, () => {
     beforeAll((done) => {
-      tmb.beforeAll().then(() => done()).catch(done)
+      bb.beforeAll().then(() => done()).catch(done)
     })
 
     beforeEach((done) => {
-      tmb.beforeEach().then(() => done()).catch(done)
+      bb.beforeEach().then(() => done()).catch(done)
     })
 
     afterEach((done) => {
-      tmb.afterEach().then(() => done()).catch(done)
+      bb.afterEach().then(() => done()).catch(done)
     })
 
     afterAll((done) => {
-      tmb.afterAll().then(() => done()).catch(done)
+      bb.afterAll().then(() => done()).catch(done)
     })
 
-    module.exports.setupJestTestCases({ tmb, testcaseSelector })
+    setupJestTestCases({ bb, testcaseSelector })
   })
+}
+
+module.exports = {
+  setupJestTestCases,
+  setupJestTestSuite
 }
