@@ -1,6 +1,7 @@
 const util = require('util')
 const fs = require('fs')
 const path = require('path')
+const mkdirp = require('mkdirp')
 const debug = require('debug')('botium-bindings-cli')
 
 const testRunnerTypes = [
@@ -19,8 +20,11 @@ const handler = (argv) => {
   }
   const botiumSpecDir = path.resolve(process.cwd(), argv.specdir)
   if (!fs.existsSync(botiumSpecDir)) {
-    console.log(`No spec directory found at "${botiumSpecDir}", exiting.`)
-    process.exit(1)
+    mkdirp.sync(botiumSpecDir)
+  }
+  const botiumConvoDir = path.resolve(process.cwd(), argv.convodir)
+  if (!fs.existsSync(botiumConvoDir)) {
+    mkdirp.sync(botiumConvoDir)
   }
 
   const packageJson = require(path.resolve(process.cwd(), 'package.json'))
@@ -29,14 +33,28 @@ const handler = (argv) => {
   } else {
     packageJson.botium = {
       convodirs: [
-        './spec/convo'
+        argv.convodir
       ],
       expandConvos: true,
       expandUtterancesToConvos: false
     }
-    fs.writeFileSync(packageJsonFile, JSON.stringify(packageJson, null, 2))
     console.log(`Added Botium Section in File "${packageJsonFile}".`)
   }
+  packageJson.devDependencies = packageJson.devDependencies || {}
+  if (!packageJson.devDependencies[argv.testRunner]) {
+    packageJson.devDependencies[argv.testRunner] = 'latest'
+  }
+  if (!packageJson.devDependencies['botium-bindings']) {
+    packageJson.devDependencies['botium-bindings'] = 'latest'
+  }
+  if (!packageJson.devDependencies['botium-connector-echo']) {
+    packageJson.devDependencies['botium-connector-echo'] = 'latest'
+  }
+  packageJson.scripts = packageJson.scripts || {}
+  if (!packageJson.scripts['mocha']) {
+    packageJson.scripts['mocha'] = `mocha ${argv.specdir}`
+  }
+  fs.writeFileSync(packageJsonFile, JSON.stringify(packageJson, null, 2))
 
   const botiumJsonFile = path.resolve(process.cwd(), 'botium.json')
   if (fs.existsSync(botiumJsonFile)) {
@@ -46,7 +64,7 @@ const handler = (argv) => {
       botium: {
         Capabilities: {
           PROJECTNAME: packageJson.name,
-          CONTAINERMODE: ''
+          CONTAINERMODE: 'echo'
         },
         Sources: { },
         Envs: { }
@@ -80,6 +98,30 @@ bb.helper.jest().setupJestTestSuite()
     }
     console.log(`Botium Spec File written to "${botiumSpecFile}".`)
   }
+
+  const botiumEchoSample = path.resolve(botiumConvoDir, 'give_me_a_picture.convo.txt')
+  if (fs.existsSync(botiumEchoSample)) {
+    console.log(`Botium Convo File "${botiumEchoSample}" already present, skipping ...`)
+  } else {
+    fs.writeFileSync(botiumEchoSample,
+      `give me picture
+#me
+Hello, Bot!
+
+#bot
+You said: Hello, Bot!
+
+#me
+give me a picture
+
+#bot
+Here is a picture
+MEDIA http://www.botium.at/img/logo.png
+`
+    )
+    console.log(`Botium Convo File written to "${botiumEchoSample}".`)
+  }
+  console.log('Botium initialization nearly ready. You should now run "npm install" to complete, and "npm run mocha" to verify.')
 }
 
 module.exports = {
@@ -94,6 +136,10 @@ module.exports = {
     yargs.option('specdir', {
       describe: 'Project directory to place the test specs',
       default: 'spec'
+    })
+    yargs.option('convodir', {
+      describe: 'Project directory to place the convo files',
+      default: path.join('spec', 'convo')
     })
   },
   handler
