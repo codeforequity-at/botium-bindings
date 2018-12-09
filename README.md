@@ -24,19 +24,21 @@ __Did you read the [Botium in a Nutshell](https://medium.com/@floriantreml/botiu
 
 You should already have a Node.js project set up with the test runner of your choice (Mocha, Jasmine, Jest supported out of the box).
 
-The following commands will install Botium Bindings and extend your Mocha specs with the Botium test case runner:
+The following commands will install Botium Bindings, extend your Mocha specs with the Botium test case runner and run a sample Botium test:
 
 ```
 > npm install -g botium-bindings
 > botium-bindings init mocha
+> npm install && npm run mocha
 ```
 
 Here is what's happening:
-* Your _package.json_ file is extended with a "botium"-Section
+* Your _package.json_ file is extended with a "botium"-Section and some devDependencies
 * A _botium.json_ file is created in the root directory of your project
 * A _botium.spec.js_ file is created in the "spec" folder to dynamically create test cases out of your Botium scripts
+* A sample convo file is created in the "spec/convo" folder
 
-Place your Botium scripts in the "spec/convo" folder and Mocha will find them on the next run.
+Place your own Botium scripts in the "spec/convo" folder and Mocha will find them on the next run.
 
 # Samples
 
