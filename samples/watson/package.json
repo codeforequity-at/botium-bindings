@@ -11,7 +11,7 @@
     "mocha": "latest",
     "mochawesome": "latest",
     "botium-connector-watson": "latest",
-    "botium-bindings": "../.."
+    "botium-bindings": "latest"
   },
   "author": "Botium GmbH",
   "license": "ISC"

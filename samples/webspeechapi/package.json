@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "jasmine": "latest",
-    "botium-bindings": "../.."
+    "botium-bindings": "latest"
   },
   "author": "Botium GmbH",
   "license": "ISC"

@@ -69,24 +69,6 @@ In case you want to see some more output, enable debug logging:
 * Demonstrates usage of the free utterances and chatbot test cases library ["Botium Utterances"](https://github.com/codeforequity-at/botium-utterances)
 * Loads the typical "Tell me a Joke" test suite and runs it agains a Dialogflow chatbot
 
-## Chatbot developed with Microsoft Bot Framework
-
-[Link](samples/botframework)
-
-* Uses one of the sample chatbots included in the [Bot Framework Samples Repository](https://github.com/Microsoft/BotBuilder-Samples)
-* Loads chatbot code from Github automatically
-* Uses "docker" mode to place chatbot in docker container
-
-## Loading a Facebook chatbot from Git
-
-[Link](samples/calculator)
-
-* Uses a [calculator sample](https://github.com/codeforequity-at/testmybot-sample-calculator)
-* Loads chatbot code from Github automatically
-* Uses "docker" mode to place chatbot in docker container
-
-(no test cases contained in this sample)
-
 ## Chatbot developed in Clojure
 
 [Link](samples/clojure)
@@ -114,13 +96,6 @@ In case you want to see some more output, enable debug logging:
 }
 ```
 
-## Sample Facebook Chatbot (Node.js)
-
-[Link](samples/facebook)
-
-* Shows how to include Botium Bindings into your build pipeline for continuous testing
-* docker container
-
 ## Connecting to Chatbot running in Facebook Messenger
 
 [Link](samples/fbdirect)
@@ -129,26 +104,12 @@ In case you want to see some more output, enable debug logging:
 * Usefull for regression testing, not for continuous testing (takes to much time to run)
 * See sample directory for instructions
 
-## Using Mocha
-
-[Link](samples/mocha)
-
-* Mocha can be used instead of Jasmine as well
-* docker container
-
 ## Chatbot developed in PHP
 
 [Link](samples/php)
 
 * Chatbot developed in PHP
 * See sample directory for instructions
-
-
-## Slack Chatbot
-
-[Link](samples/slack)
-
-* Sample how to test a Slack chatbot
 
 ## IBM Watson Chatbot
 
@@ -164,10 +125,3 @@ In case you want to see some more output, enable debug logging:
 
 * Uses the Web speech api to run a conversation with Alexa
 * Requires a *real* browser supporting the [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)
-
-## Custom REST/HTTP interface and using Excel test cases
-
-[Link](samples/xlsx)
-
-* Contacting a custom REST/HTTP interface, as usual for chatbots running on websites
-* Test cases are extracted from an Excel sheet instead of text files
