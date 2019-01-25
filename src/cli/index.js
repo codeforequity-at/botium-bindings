@@ -105,6 +105,7 @@ bb.helper.jest().setupJestTestSuite()
   } else {
     fs.writeFileSync(botiumEchoSample,
       `give me picture
+
 #me
 Hello, Bot!
 
