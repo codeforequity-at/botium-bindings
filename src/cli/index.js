@@ -51,8 +51,10 @@ const handler = (argv) => {
     packageJson.devDependencies['botium-connector-echo'] = 'latest'
   }
   packageJson.scripts = packageJson.scripts || {}
-  if (!packageJson.scripts['mocha']) {
-    packageJson.scripts['mocha'] = `mocha ${argv.specdir}`
+  if (!packageJson.scripts[argv.testRunner]) {
+    packageJson.scripts[argv.testRunner] = `${argv.testRunner} ${argv.specdir}`
+  } else {
+    console.warn(`You already have an npm script called ${argv.testRunner}. In order to run botium tests, you'll need an npm script running "${argv.testRunner} ${argv.specdir}"`);
   }
   fs.writeFileSync(packageJsonFile, JSON.stringify(packageJson, null, 2))
 
@@ -122,7 +124,7 @@ MEDIA http://www.botium.at/img/logo.png
     )
     console.log(`Botium Convo File written to "${botiumEchoSample}".`)
   }
-  console.log('Botium initialization nearly ready. You should now run "npm install" to complete, and "npm run mocha" to verify.')
+  console.log(`Botium initialization nearly ready. You should now run "npm install" to complete, and "npm run ${argv.testRunner}" to verify.`)
 }
 
 module.exports = {
