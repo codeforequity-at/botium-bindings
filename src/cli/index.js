@@ -54,7 +54,7 @@ const handler = (argv) => {
   if (!packageJson.scripts[argv.testRunner]) {
     packageJson.scripts[argv.testRunner] = `${argv.testRunner} ${argv.specdir}`
   } else {
-    console.warn(`You already have an npm script called ${argv.testRunner}. In order to run botium tests, you'll need an npm script running "${argv.testRunner} ${argv.specdir}"`);
+    console.warn(`You already have an npm script called ${argv.testRunner}. In order to run botium tests, you'll need an npm script running "${argv.testRunner} ${argv.specdir}"`)
   }
   fs.writeFileSync(packageJsonFile, JSON.stringify(packageJson, null, 2))
 
