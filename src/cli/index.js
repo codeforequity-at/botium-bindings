@@ -36,7 +36,8 @@ const handler = (argv) => {
         argv.convodir
       ],
       expandConvos: true,
-      expandUtterancesToConvos: false
+      expandUtterancesToConvos: false,
+      expandScriptingMemoryToConvos: false
     }
     console.log(`Added Botium Section in File "${packageJsonFile}".`)
   }
