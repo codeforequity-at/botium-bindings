@@ -18,10 +18,7 @@ const setupMochaTestCases = ({ timeout = defaultTimeout, testcaseSelector, bb } 
 
 const setupMochaTestSuite = ({ timeout = defaultTimeout, name, testcaseSelector, bb } = {}) => {
   bb = bb || new BotiumBindings()
-  if (!name) {
-    let packageJson = bb.getModuleInfo()
-    name = 'Botium Test Suite for ' + packageJson.name
-  }
+  name = name || bb.getTestSuiteName()
 
   describe(name, () => {
     before(function (done) {

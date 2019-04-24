@@ -6,10 +6,7 @@ const BotDriver = require('botium-core').BotDriver
 
 module.exports = class BotiumBindings {
   constructor ({ botiumConfig, ...args } = {}) {
-    const packageJson = this.getModuleInfo()
-    if (packageJson.botium) {
-      args = Object.assign({}, packageJson.botium, args)
-    }
+    args = Object.assign({}, this.getPackageJsonBotiumSection(), args)
     debug(`Botium Bindings args: ${util.inspect(args)}`)
 
     this.convodirs = args.convodirs || [ './spec/convo' ]
@@ -21,25 +18,27 @@ module.exports = class BotiumBindings {
     this.container = null
   }
 
-  getModuleInfo () {
+  getPackageJsonBotiumSection () {
+    try {
+      return require(path.resolve(process.cwd(), 'package.json')).botium || {}
+    } catch (e) {
+    }
+    return {}
+  }
+
+  getTestSuiteName () {
+    try {
+      const botiumJson = require(process.env.BOTIUM_CONFIG || path.resolve(process.cwd(), 'botium.json'))
+      return botiumJson.botium.Capabilities.PROJECTNAME
+    } catch (e) {
+    }
     let packageJson = null
     try {
       packageJson = require(path.resolve(process.cwd(), 'package.json'))
+      return 'Botium Test Suite for ' + packageJson.name
     } catch (e) {
     }
-    if (!packageJson) {
-      try {
-        const botiumJson = require(path.resolve(process.cwd(), 'botium.json'))
-        packageJson = {
-          name: botiumJson.botium.Capabilities.PROJECTNAME
-        }
-      } catch (e) {
-      }
-    }
-    if (!packageJson) packageJson = {}
-    if (!packageJson.name) packageJson.name = '<Unknown Module>'
-    if (!packageJson.version) packageJson.version = 'unknown'
-    return packageJson
+    return 'Botium Test Suite'
   }
 
   beforeAll () {
