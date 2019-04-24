@@ -78,9 +78,6 @@ module.exports = class BotiumBindings {
         this.compiler.ReadScriptsFromDirectory(convodir)
       })
     }
-    if (this.expandConvos) {
-      this.compiler.ExpandConvos()
-    }
     if (this.expandUtterancesToConvos) {
       this.compiler.ExpandUtterancesToConvos()
     }
