@@ -15,6 +15,7 @@ module.exports = class BotiumBindings {
     this.convodirs = args.convodirs || [ './spec/convo' ]
     this.expandConvos = args.hasOwnProperty('expandConvos') ? args.expandConvos : true
     this.expandUtterancesToConvos = args.hasOwnProperty('expandUtterancesToConvos') ? args.expandUtterancesToConvos : false
+    this.expandScriptingMemoryToConvos = args.hasOwnProperty('expandScriptingMemoryToConvos') ? args.expandScriptingMemoryToConvos : false
 
     this.driver = new BotDriver(botiumConfig && botiumConfig.Capabilities, botiumConfig && botiumConfig.Sources, botiumConfig && botiumConfig.Envs)
     this.compiler = this.driver.BuildCompiler()
@@ -77,13 +78,16 @@ module.exports = class BotiumBindings {
         this.compiler.ReadScriptsFromDirectory(convodir)
       })
     }
-    if (this.expandConvos) {
-      this.compiler.ExpandConvos()
-    }
     if (this.expandUtterancesToConvos) {
       this.compiler.ExpandUtterancesToConvos()
+    }
+    if (this.expandScriptingMemoryToConvos) {
+      this.compiler.ExpandScriptingMemoryToConvos()
+    }
+    if (this.expandConvos || this.expandUtterancesToConvos || this.expandScriptingMemoryToConvos) {
       this.compiler.ExpandConvos()
     }
+
     debug(`ready reading convos and utterances, number of test cases: (${this.compiler.convos.length}).`)
 
     if (assertCb) {
