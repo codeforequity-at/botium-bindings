@@ -9,9 +9,10 @@ const setupMochaTestCases = ({ timeout = defaultTimeout, testcaseSelector, bb } 
 
   bb.setupTestSuite(
     (testcase, testcaseFunction) => {
-      if (testcaseSelector && !testcaseSelector(testcase)) return
+      if (testcaseSelector && !testcaseSelector(testcase)) return false
 
       it(testcase.header.name, testcaseFunction).timeout(timeout)
+      return true
     }
   )
 }
