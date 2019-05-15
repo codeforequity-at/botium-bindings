@@ -7,9 +7,10 @@ const setupJestTestCases = ({ testcaseSelector, bb } = {}) => {
 
   bb.setupTestSuite(
     (testcase, testcaseFunction) => {
-      if (testcaseSelector && !testcaseSelector(testcase)) return
+      if (testcaseSelector && !testcaseSelector(testcase)) return false
 
       test(testcase.header.name, testcaseFunction)
+      return true
     }
   )
 }
