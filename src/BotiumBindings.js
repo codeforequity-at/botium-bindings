@@ -96,9 +96,10 @@ module.exports = class BotiumBindings {
       this.compiler.scriptingEvents.fail = failCb
     }
 
+    let testCount = 0
     this.compiler.convos.forEach((convo) => {
       debug(`adding test case ${convo.header.toString()}`)
-      testcaseCb(convo, (testcaseDone) => {
+      const included = testcaseCb(convo, (testcaseDone) => {
         if (this.container) {
           debug(`running testcase${convo.header.toString()}`)
 
@@ -115,7 +116,13 @@ module.exports = class BotiumBindings {
           testcaseDone(new Error('Botium Initialization failed. Please see error messages above (enable debug logging).'))
         }
       })
+      if (included) {
+        testCount++
+      }
     })
+    if (testCount == 0) {
+      it.skip('skip empty test suite', () => {})
+    }
   }
 
   UserSaysText (...args) {

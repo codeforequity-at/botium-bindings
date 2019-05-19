@@ -9,7 +9,7 @@ const setupJasmineTestCases = ({ timeout = defaultTimeout, testcaseSelector, bb 
 
   bb.setupTestSuite(
     (testcase, testcaseFunction) => {
-      if (testcaseSelector && !testcaseSelector(testcase)) return
+      if (testcaseSelector && !testcaseSelector(testcase)) return false
 
       it(
         testcase.header.name,
@@ -22,6 +22,7 @@ const setupJasmineTestCases = ({ timeout = defaultTimeout, testcaseSelector, bb 
           })
         },
         timeout)
+      return true
     },
     null,
     (err) => fail(err)
