@@ -17,7 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "async": "^2.1.5",
-    "botium-core": "1.5.0",
+    "botium-core": "1.5.1",
     "debug": "^3.1.0",
     "lodash": "^4.17.11",
     "mkdirp": "^0.5.1",
