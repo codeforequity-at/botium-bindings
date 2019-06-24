@@ -1,6 +1,6 @@
 {
   "name": "botium-bindings",
-  "version": "2.0.14",
+  "version": "2.0.15",
   "engines": {
     "node": ">=6.0"
   },
