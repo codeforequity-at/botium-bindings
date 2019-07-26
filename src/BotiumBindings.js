@@ -9,10 +9,10 @@ module.exports = class BotiumBindings {
     args = Object.assign({}, this.getPackageJsonBotiumSection(), args)
     debug(`Botium Bindings args: ${util.inspect(args)}`)
 
-    this.convodirs = args.convodirs || [ './spec/convo' ]
-    this.expandConvos = args.hasOwnProperty('expandConvos') ? args.expandConvos : true
-    this.expandUtterancesToConvos = args.hasOwnProperty('expandUtterancesToConvos') ? args.expandUtterancesToConvos : false
-    this.expandScriptingMemoryToConvos = args.hasOwnProperty('expandScriptingMemoryToConvos') ? args.expandScriptingMemoryToConvos : false
+    this.convodirs = args.convodirs || ['./spec/convo']
+    this.expandConvos = Object.prototype.hasOwnProperty.call(args, 'expandConvos') ? args.expandConvos : true
+    this.expandUtterancesToConvos = Object.prototype.hasOwnProperty.call(args, 'expandUtterancesToConvos') ? args.expandUtterancesToConvos : false
+    this.expandScriptingMemoryToConvos = Object.prototype.hasOwnProperty.call(args, 'expandScriptingMemoryToConvos') ? args.expandScriptingMemoryToConvos : false
 
     this.driver = new BotDriver(botiumConfig && botiumConfig.Capabilities, botiumConfig && botiumConfig.Sources, botiumConfig && botiumConfig.Envs)
     this.compiler = this.driver.BuildCompiler()
@@ -125,6 +125,7 @@ module.exports = class BotiumBindings {
       return Promise.reject(new Error('Botium Initialization failed. Please see error messages above (enable debug logging).'))
     }
   }
+
   UserSays (...args) {
     if (this.container) {
       return this.container.UserSays(...args)
@@ -132,6 +133,7 @@ module.exports = class BotiumBindings {
       return Promise.reject(new Error('Botium Initialization failed. Please see error messages above (enable debug logging).'))
     }
   }
+
   WaitBotSays (...args) {
     if (this.container) {
       return this.container.WaitBotSays(...args)
@@ -139,6 +141,7 @@ module.exports = class BotiumBindings {
       return Promise.reject(new Error('Botium Initialization failed. Please see error messages above (enable debug logging).'))
     }
   }
+
   WaitBotSaysText (...args) {
     if (this.container) {
       return this.container.WaitBotSaysText(...args)
