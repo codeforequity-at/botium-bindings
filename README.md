@@ -22,13 +22,20 @@ Botium is the Selenium for chatbots. Botium Bindings is the glue to bind Botium 
 
 __Did you read the [Botium in a Nutshell](https://medium.com/@floriantreml/botium-in-a-nutshell-part-1-overview-f8d0ceaf8fb4) articles ? Be warned, without prior knowledge of Botium you won't be able to properly use this library!__
 
-You should already have a Node.js project set up with the test runner of your choice (Mocha, Jasmine, Jest supported out of the box).
+You should already have a Node.js project set up with the test runner of your choice (Mocha, Jasmine, Jest supported out of the box). For mocha, you can do it like this:
+
+```
+> cd my-project-dir
+> npm init -y
+> npm install --save-dev mocha
+```
 
 The following commands will install Botium Bindings, extend your Mocha specs with the Botium test case runner and run a sample Botium test:
 
 ```
-> npm install -g botium-bindings
-> botium-bindings init mocha
+> cd my-project-dir
+> npm install --save-dev botium-bindings
+> npx botium-bindings init mocha
 > npm install && npm run mocha
 ```
 
