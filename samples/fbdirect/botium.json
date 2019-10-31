@@ -1,9 +1,0 @@
-{
-  "botium": {
-    "Capabilities": {
-      "PROJECTNAME": "botium-bindings-sample-monitoring",
-      "CONTAINERMODE": "fbdirect",
-      "FB_PAGEID": "YOUR_FACEBOOK_PAGE_ID"
-    }
-  }
-}
