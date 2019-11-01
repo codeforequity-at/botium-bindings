@@ -1,6 +1,6 @@
 {
   "name": "botium-bindings",
-  "version": "2.0.20",
+  "version": "2.0.21",
   "engines": {
     "node": ">=8.10.0"
   },
@@ -17,7 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "async": "^3.1.0",
-    "botium-core": "1.7.0",
+    "botium-core": "1.7.1",
     "debug": "^4.1.1",
     "lodash": "^4.17.15",
     "mkdirp": "^0.5.1",
