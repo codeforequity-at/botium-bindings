@@ -1,0 +1,10 @@
+{
+  "botium": {
+    "Capabilities": {
+      "PROJECTNAME": "hello",
+      "CONTAINERMODE": "echo"
+    },
+    "Sources": {},
+    "Envs": {}
+  }
+}

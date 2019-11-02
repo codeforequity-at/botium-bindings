@@ -1,0 +1,14 @@
+give me picture
+
+#me
+Hello, Bot!
+
+#bot
+You said: Hello, Bot!
+
+#me
+give me a picture
+
+#bot
+Here is a picture
+MEDIA http://www.botium.at/img/logo.png

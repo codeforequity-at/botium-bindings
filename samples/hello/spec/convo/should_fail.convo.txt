@@ -1,0 +1,8 @@
+should fail because weak intent
+
+#me
+weak intent
+
+#bot
+INTENT weak
+INTENT_CONFIDENCE 50

@@ -1,0 +1,25 @@
+shopping cart
+
+#me
+add to cart bananas
+
+#bot
+INTENT addtocart
+INTENT_CONFIDENCE 50
+ENTITIES product|..
+ENTITY_VALUES bananas|..
+
+#me
+show cart
+
+#bot
+In your cart: bananas
+INTENT showcart
+INTENT_CONFIDENCE 50
+
+#me
+clear cart
+
+#bot
+INTENT clearcart
+INTENT_CONFIDENCE 50
