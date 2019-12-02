@@ -53,7 +53,11 @@ const handler = (argv) => {
   }
   packageJson.scripts = packageJson.scripts || {}
   if (!packageJson.scripts[argv.testRunner]) {
-    packageJson.scripts[argv.testRunner] = `${argv.testRunner} ${argv.specdir}`
+    if (argv.testRunner === 'jest') {
+      packageJson.scripts[argv.testRunner] = `jest --env node ${argv.specdir}`
+    } else {
+      packageJson.scripts[argv.testRunner] = `${argv.testRunner} ${argv.specdir}`
+    }
   } else {
     console.warn(`You already have an npm script called ${argv.testRunner}. In order to run botium tests, you'll need an npm script running "${argv.testRunner} ${argv.specdir}"`)
   }
