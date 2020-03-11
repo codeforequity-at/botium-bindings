@@ -1,6 +1,5 @@
 const util = require('util')
 const path = require('path')
-const _ = require('lodash')
 const debug = require('debug')('botium-bindings-main')
 
 const { BotDriver } = require('botium-core')
