@@ -1,6 +1,6 @@
 {
   "name": "botium-bindings",
-  "version": "2.0.29",
+  "version": "2.0.30",
   "engines": {
     "node": ">=8.13.0"
   },
@@ -18,7 +18,7 @@
   "dependencies": {
     "@babel/runtime": "^7.8.7",
     "async": "^3.2.0",
-    "botium-core": "1.9.0",
+    "botium-core": "1.9.1",
     "debug": "^4.1.1",
     "lodash": "^4.17.15",
     "mkdirp": "^1.0.3",
@@ -30,7 +30,7 @@
     "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.8.7",
     "eslint": "^6.8.0",
-    "eslint-config-standard": "^14.1.0",
+    "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
