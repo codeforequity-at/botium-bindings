@@ -1,6 +1,5 @@
 const util = require('util')
 const path = require('path')
-const _ = require('lodash')
 const debug = require('debug')('botium-bindings-main')
 
 const { BotDriver } = require('botium-core')
@@ -73,29 +72,11 @@ module.exports = class BotiumBindings {
   }
 
   wrapBotiumError (err) {
-    const lines = []
-    lines.push(err.message)
-    if (err.cause && err.cause.context) {
-      const errArr = _.isArray(err.cause.context) ? err.cause.context : [err.cause.context]
-      errArr.forEach(errDetail => {
-        lines.push('########################################')
-        if (errDetail.type === 'asserter') {
-          const segments = []
-          segments.push(`ASSERTION FAILED in ${errDetail.source}${errDetail.subtype ? ` (${errDetail.subtype})` : ''}`)
-          errDetail.cause && errDetail.cause.expected && !errDetail.cause.not && segments.push(` - Expected: "${errDetail.cause.expected}" `)
-          errDetail.cause && errDetail.cause.expected && errDetail.cause.not && segments.push(` - NOT Expected: "${errDetail.cause.expected}" `)
-          errDetail.cause && errDetail.cause.actual && segments.push(` - Actual: "${errDetail.cause.actual}"`)
-          errDetail.cause && !errDetail.cause.actual && segments.push(' - Actual: empty')
-          lines.push(segments.join(''))
-          errDetail.input && errDetail.input.messageText && lines.push(`INPUT: ${errDetail.input.messageText}`)
-        } else if (errDetail.message) {
-          lines.push(`${errDetail.message}`)
-        }
-        lines.push('----------------------------------------')
-        lines.push(JSON.stringify(errDetail))
-      })
+    if (err.cause && err.cause.prettify) {
+      return new Error(err.message + '\r\n' + err.cause.prettify())
+    } else {
+      return new Error(err.message)
     }
-    return new Error(lines.join('\r\n'))
   }
 
   setupTestSuite (testcaseCb, assertCb, failCb) {
