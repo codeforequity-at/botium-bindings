@@ -1,6 +1,7 @@
 const util = require('util')
 const path = require('path')
 const debug = require('debug')('botium-bindings-main')
+const { reportUsage } = require('./metrics')
 
 const { BotDriver } = require('botium-core')
 
@@ -94,6 +95,19 @@ module.exports = class BotiumBindings {
     if (this.expandConvos || this.expandUtterancesToConvos || this.expandScriptingMemoryToConvos) {
       this.compiler.ExpandConvos()
     }
+
+    const usageMetrics = {
+      metric: 'testexecution',
+      connector: `${this.compiler.caps.CONTAINERMODE}`,
+      projectname: `${this.compiler.caps.PROJECTNAME}`,
+      convoCount: this.compiler.convos.length,
+      convoStepCount: this.compiler.convos.reduce((sum, convo) => sum + convo.conversation.length, 0),
+      partialConvoCount: Object.keys(this.compiler.partialConvos).length,
+      utterancesRefCount: Object.keys(this.compiler.utterances).length,
+      utterancesCount: Object.keys(this.compiler.utterances).reduce((sum, uttName) => sum + this.compiler.utterances[uttName].utterances.length, 0),
+      scriptingMemoriesCount: this.compiler.scriptingMemories.length
+    }
+    reportUsage(usageMetrics)
 
     debug(`ready reading convos and utterances, number of test cases: (${this.compiler.convos.length}).`)
 

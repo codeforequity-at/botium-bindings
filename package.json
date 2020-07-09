@@ -1,6 +1,6 @@
 {
   "name": "botium-bindings",
-  "version": "2.0.34",
+  "version": "2.0.35",
   "engines": {
     "node": ">=8.13.0"
   },
@@ -8,8 +8,10 @@
     "botium-bindings": "./bin/botium-bindings.js"
   },
   "scripts": {
+    "postinstall": "node ./report.js",
     "build": "npm run eslint && rollup -c",
     "eslint": "eslint \"./bin/**/*.js\" \"./src/**/*.js\"",
+    "eslint:fix": "eslint --fix \"./bin/**/*.js\" \"./src/**/*.js\"",
     "update-dependencies": "npm-check-updates -u"
   },
   "description": "Binding Botium, the Selenium for Chatbots, to test runners",
