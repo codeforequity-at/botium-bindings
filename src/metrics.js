@@ -46,12 +46,12 @@ async function reportUsage (metrics) {
 
     req.on('error', error => {
       logIfVerbose(error, console.error)
-      reject(error)
+      resolve()
     })
 
     req.on('timeout', error => {
       logIfVerbose(error, console.error)
-      reject(error)
+      resolve()
     })
 
     req.write(data)
