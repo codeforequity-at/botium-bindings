@@ -1,6 +1,6 @@
 {
   "name": "botium-bindings",
-  "version": "2.0.35",
+  "version": "2.0.36",
   "engines": {
     "node": ">=8.13.0"
   },
@@ -19,28 +19,28 @@
   "author": "Botium GmbH",
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "^7.10.3",
+    "@babel/runtime": "^7.11.2",
     "async": "^3.2.0",
-    "botium-core": "1.9.8",
+    "botium-core": "1.9.10",
     "debug": "^4.1.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "mkdirp": "^1.0.4",
-    "yargs": "^15.3.1"
+    "yargs": "^15.4.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.3",
-    "@babel/node": "^7.10.3",
-    "@babel/plugin-transform-runtime": "^7.10.3",
-    "@babel/preset-env": "^7.10.3",
-    "eslint": "^7.3.1",
+    "@babel/core": "^7.11.1",
+    "@babel/node": "^7.10.5",
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "eslint": "^7.6.0",
     "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "license-checker": "^25.0.1",
-    "npm-check-updates": "^7.0.1",
-    "rollup": "^2.18.0",
+    "npm-check-updates": "^7.1.0",
+    "rollup": "^2.23.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
