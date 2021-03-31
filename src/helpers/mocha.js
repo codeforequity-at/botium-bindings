@@ -2,7 +2,7 @@
 
 const BotiumBindings = require('../BotiumBindings')
 
-const defaultTimeout = 60000
+const defaultTimeout = process.env.BOTIUM_MOCHA_TIMEOUT || 60000
 
 const setupMochaTestCases = ({ timeout = defaultTimeout, testcaseSelector, bb } = {}) => {
   bb = bb || new BotiumBindings()
