@@ -2,7 +2,7 @@
 
 const BotiumBindings = require('../BotiumBindings')
 
-const defaultTimeout = 60000
+const defaultTimeout = process.env.BOTIUM_JASMINE_TIMEOUT || 60000
 
 const setupJasmineTestCases = ({ timeout = defaultTimeout, testcaseSelector, bb } = {}) => {
   bb = bb || new BotiumBindings()
