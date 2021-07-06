@@ -1,6 +1,6 @@
 {
   "name": "botium-bindings",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "engines": {
     "node": ">=8.13.0"
   },
@@ -21,7 +21,7 @@
   "dependencies": {
     "@babel/runtime": "^7.14.6",
     "async": "^3.2.0",
-    "botium-core": "1.11.8",
+    "botium-core": "1.11.9",
     "debug": "^4.3.2",
     "lodash": "^4.17.21",
     "mkdirp": "^1.0.4",
