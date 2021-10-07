@@ -19,7 +19,3 @@ Botium is the Selenium for chatbots. Botium Bindings is the glue to bind Botium 
 # Documentation
 
 See [here](https://botium-docs.readthedocs.io/) for Botium documentation.
-
-# Samples
-
-You can find samples in the repositories for the various [Botium Connectors](https://botium.atlassian.net/wiki/spaces/BOTIUM/pages/360553/Botium+Connectors)
