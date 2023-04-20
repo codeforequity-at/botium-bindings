@@ -1,7 +1,7 @@
 const util = require('util')
 const fs = require('fs')
 const path = require('path')
-const mkdirp = require('mkdirp')
+const { mkdirpSync } = require('mkdirp')
 const debug = require('debug')('botium-bindings-cli')
 
 const testRunnerTypes = [
@@ -20,11 +20,11 @@ const handler = (argv) => {
   }
   const botiumSpecDir = path.resolve(process.cwd(), argv.specdir)
   if (!fs.existsSync(botiumSpecDir)) {
-    mkdirp.sync(botiumSpecDir)
+    mkdirpSync(botiumSpecDir)
   }
   const botiumConvoDir = path.resolve(process.cwd(), argv.convodir)
   if (!fs.existsSync(botiumConvoDir)) {
-    mkdirp.sync(botiumConvoDir)
+    mkdirpSync(botiumConvoDir)
   }
 
   const packageJson = require(path.resolve(process.cwd(), 'package.json'))

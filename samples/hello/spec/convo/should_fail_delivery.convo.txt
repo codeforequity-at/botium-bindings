@@ -1,0 +1,6 @@
+should fail because delivery failure
+
+#me
+fail
+
+#bot

@@ -2,7 +2,9 @@
   "botium": {
     "Capabilities": {
       "PROJECTNAME": "hello",
-      "CONTAINERMODE": "echo"
+      "CONTAINERMODE": "echo",
+      "RETRY_CONVO_ONERROR_REGEXP": [ "delivery failure" ],
+      "RETRY_CONVO_NUMRETRIES": 2
     },
     "Sources": {},
     "Envs": {}

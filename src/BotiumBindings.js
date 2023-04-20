@@ -1,9 +1,10 @@
 const util = require('util')
 const path = require('path')
+const promiseRetry = require('promise-retry')
 const debug = require('debug')('botium-bindings-main')
 const { reportUsage } = require('./metrics')
 
-const { BotDriver } = require('botium-core')
+const { BotDriver, RetryHelper } = require('botium-core')
 
 module.exports = class BotiumBindings {
   constructor ({ botiumConfig, ...args } = {}) {
@@ -43,32 +44,28 @@ module.exports = class BotiumBindings {
     return 'Botium Test Suite'
   }
 
-  beforeAll () {
-    return this.driver.Build()
-      .then((c) => {
-        this.container = c
-      })
+  async beforeAll () {
+    this.container = await this.driver.Build()
   }
 
-  afterAll () {
-    const result = (this.container && this.container.Clean()) || Promise.resolve()
-    this.container = null
-    return result
-  }
-
-  beforeEach () {
+  async afterAll () {
     if (this.container) {
-      return this.container.Start()
+      await this.container.Clean()
+    }
+    this.container = null
+  }
+
+  async beforeEach () {
+    if (this.container) {
+      await this.container.Start()
     } else {
-      return Promise.reject(new Error('Botium Initialization failed. Please see error messages above (enable debug logging).'))
+      throw new Error('Botium Initialization failed. Please see error messages above (enable debug logging).')
     }
   }
 
-  afterEach () {
+  async afterEach () {
     if (this.container) {
-      return this.container.Stop()
-    } else {
-      return Promise.resolve()
+      await this.container.Stop()
     }
   }
 
@@ -124,7 +121,23 @@ module.exports = class BotiumBindings {
         if (this.container) {
           debug(`running testcase${convo.header.toString()}`)
 
-          convo.Run(this.container)
+          const retryHelper = new RetryHelper(this.container.caps, 'CONVO')
+          promiseRetry(async (retry, number) => {
+            try {
+              await convo.Run(this.container)
+            } catch (err) {
+              if (retryHelper.shouldRetry(err)) {
+                debug(`Running Convo "${convo.header.name}" trial #${number} failed, retry activated`)
+                await this.container.Stop()
+                await this.container.Start()
+                debug(`Restarting container for Convo "${convo.header.name}" trial #${number} completed successfully.`)
+                retry(err)
+              } else {
+                debug(`Running Convo "${convo.header.name}" trial #${number} failed finally`)
+                throw err
+              }
+            }
+          }, retryHelper.retrySettings)
             .then(() => {
               debug(`Test Case "${convo.header.name}" ready, calling done function.`)
               testcaseDone()

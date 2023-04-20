@@ -2,7 +2,7 @@
   "name": "botium-bindings",
   "version": "2.1.14",
   "engines": {
-    "node": ">=8.13.0"
+    "node": ">=14"
   },
   "bin": {
     "botium-bindings": "./bin/botium-bindings.js"
@@ -19,28 +19,29 @@
   "author": "Botium GmbH",
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "^7.16.3",
-    "async": "^3.2.2",
-    "botium-core": "1.13.15",
-    "debug": "^4.3.2",
+    "@babel/runtime": "^7.21.0",
+    "async": "^3.2.4",
+    "botium-core": "1.13.16",
+    "debug": "^4.3.4",
     "lodash": "^4.17.21",
-    "mkdirp": "^1.0.4",
-    "yargs": "^17.2.1"
+    "mkdirp": "^3.0.0",
+    "promise-retry": "^2.0.1",
+    "yargs": "^17.7.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.0",
-    "@babel/node": "^7.16.0",
-    "@babel/plugin-transform-runtime": "^7.16.0",
-    "@babel/preset-env": "^7.16.0",
-    "eslint": "^8.2.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.3",
+    "@babel/core": "^7.21.4",
+    "@babel/node": "^7.20.7",
+    "@babel/plugin-transform-runtime": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "eslint": "^8.38.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.1",
+    "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-standard": "^5.0.0",
     "license-checker": "^25.0.1",
-    "npm-check-updates": "^12.0.2",
-    "rollup": "^2.60.0",
+    "npm-check-updates": "^16.10.8",
+    "rollup": "^3.20.6",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",

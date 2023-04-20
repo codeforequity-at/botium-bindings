@@ -2,6 +2,7 @@
   "name": "hello",
   "version": "1.0.0",
   "scripts": {
+    "postinstall": "cd ../../ && npm install --no-save botium-connector-echo && cd samples/hello",
     "test": "mocha spec"
   },
   "botium": {
