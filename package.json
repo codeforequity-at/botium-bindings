@@ -13,7 +13,7 @@
     "eslint": "eslint \"./bin/**/*.js\" \"./src/**/*.js\"",
     "eslint:fix": "eslint --fix \"./bin/**/*.js\" \"./src/**/*.js\"",
     "test": "echo \"no tests specified\" && exit 0",
-    "update-dependencies": "npm-check-updates -u"
+    "update-dependencies": "npm-check-updates --reject rollup -u --timeout 120000"
   },
   "description": "Binding Botium, the Selenium for Chatbots, to test runners",
   "main": "index.js",
