@@ -77,7 +77,7 @@ module.exports = class BotiumBindings {
     }
   }
 
-  setupTestSuite (testcaseCb, assertCb, failCb) {
+  setupTestSuite (testcaseCb, onTranscriptReady = () => {}, assertCb, failCb) {
     if (this.convodirs && this.convodirs.length) {
       this.convodirs.forEach((convodir) => {
         this.compiler.ReadScriptsFromDirectory(convodir)
@@ -124,7 +124,7 @@ module.exports = class BotiumBindings {
           const retryHelper = new RetryHelper(this.container.caps, 'CONVO')
           promiseRetry(async (retry, number) => {
             try {
-              await convo.Run(this.container)
+              return await convo.Run(this.container)
             } catch (err) {
               if (retryHelper.shouldRetry(err)) {
                 debug(`Running Convo "${convo.header.name}" trial #${number} failed, retry activated`)
@@ -138,12 +138,14 @@ module.exports = class BotiumBindings {
               }
             }
           }, retryHelper.retrySettings)
-            .then(() => {
+            .then((transcript) => {
               debug(`Test Case "${convo.header.name}" ready, calling done function.`)
+              onTranscriptReady(transcript)
               testcaseDone()
             })
             .catch((err) => {
               debug(`Test Case "${convo.header.name}" failed: ${util.inspect(err)}`)
+              onTranscriptReady(err.transcript)
               testcaseDone(this.wrapBotiumError(err))
             })
         } else {

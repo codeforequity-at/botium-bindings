@@ -2,7 +2,7 @@
 
 const BotiumBindings = require('../BotiumBindings')
 
-const setupJestTestCases = ({ testcaseSelector, bb } = {}) => {
+const setupJestTestCases = ({ testcaseSelector, onTranscriptReady, bb } = {}) => {
   bb = bb || new BotiumBindings()
 
   let testCount = 0
@@ -13,14 +13,15 @@ const setupJestTestCases = ({ testcaseSelector, bb } = {}) => {
       testCount++
       test(testcase.header.name, testcaseFunction)
       return true
-    }
+    },
+    onTranscriptReady
   )
   if (testCount === 0) {
     it.skip('skip empty test suite', () => {})
   }
 }
 
-const setupJestTestSuite = ({ name, testcaseSelector, bb } = {}) => {
+const setupJestTestSuite = ({ name, testcaseSelector, onTranscriptReady, bb } = {}) => {
   bb = bb || new BotiumBindings()
   name = name || bb.getTestSuiteName()
 
@@ -41,7 +42,7 @@ const setupJestTestSuite = ({ name, testcaseSelector, bb } = {}) => {
       bb.afterAll().then(() => done()).catch(done)
     })
 
-    setupJestTestCases({ bb, testcaseSelector })
+    setupJestTestCases({ bb, testcaseSelector, onTranscriptReady })
   })
 }
 
