@@ -3,7 +3,6 @@ Botium Bindings
 
 [![NPM](https://nodei.co/npm/botium-bindings.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/botium-bindings/)
 
-[ ![Codeship Status for codeforequity-at/botium-bindings](https://app.codeship.com/projects/077a7140-3175-0135-cee8-5eb28f78bdf5/status?branch=master)](https://app.codeship.com/projects/225703)
 [![npm version](https://badge.fury.io/js/botium-bindings.svg)](https://badge.fury.io/js/botium-bindings)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 [![docs](https://readthedocs.org/projects/botium-docs/badge/)](https://botium-docs.readthedocs.io/)
