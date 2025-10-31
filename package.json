@@ -22,7 +22,7 @@
   "dependencies": {
     "@babel/runtime": "^7.21.0",
     "async": "^3.2.4",
-    "botium-core": "1.13.16",
+    "botium-core": "1.14.9",
     "debug": "^4.3.4",
     "lodash": "^4.17.21",
     "mkdirp": "^3.0.0",
