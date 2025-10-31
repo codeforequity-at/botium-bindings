@@ -4,7 +4,7 @@ const BotiumBindings = require('../BotiumBindings')
 
 const defaultTimeout = process.env.BOTIUM_MOCHA_TIMEOUT || 60000
 
-const setupMochaTestCases = ({ timeout = defaultTimeout, testcaseSelector, bb } = {}) => {
+const setupMochaTestCases = ({ timeout = defaultTimeout, testcaseSelector, onTranscriptReady, bb } = {}) => {
   bb = bb || new BotiumBindings()
 
   bb.setupTestSuite(
@@ -13,11 +13,12 @@ const setupMochaTestCases = ({ timeout = defaultTimeout, testcaseSelector, bb } 
 
       it(testcase.header.name, testcaseFunction).timeout(timeout)
       return true
-    }
+    },
+    onTranscriptReady
   )
 }
 
-const setupMochaTestSuite = ({ timeout = defaultTimeout, name, testcaseSelector, bb } = {}) => {
+const setupMochaTestSuite = ({ timeout = defaultTimeout, name, testcaseSelector, onTranscriptReady, bb } = {}) => {
   bb = bb || new BotiumBindings()
   name = name || bb.getTestSuiteName()
 
@@ -39,7 +40,7 @@ const setupMochaTestSuite = ({ timeout = defaultTimeout, name, testcaseSelector,
       bb.afterAll().then(() => done()).catch(done)
     })
 
-    setupMochaTestCases({ timeout, testcaseSelector, bb })
+    setupMochaTestCases({ timeout, testcaseSelector, onTranscriptReady, bb })
   })
 }
 

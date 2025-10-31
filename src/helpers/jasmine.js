@@ -4,7 +4,7 @@ const BotiumBindings = require('../BotiumBindings')
 
 const defaultTimeout = process.env.BOTIUM_JASMINE_TIMEOUT || 60000
 
-const setupJasmineTestCases = ({ timeout = defaultTimeout, testcaseSelector, bb } = {}) => {
+const setupJasmineTestCases = ({ timeout = defaultTimeout, testcaseSelector, onTranscriptReady, bb } = {}) => {
   bb = bb || new BotiumBindings()
 
   bb.setupTestSuite(
@@ -24,12 +24,13 @@ const setupJasmineTestCases = ({ timeout = defaultTimeout, testcaseSelector, bb 
         timeout)
       return true
     },
+    onTranscriptReady,
     null,
     (err) => fail(err)
   )
 }
 
-const setupJasmineTestSuite = ({ timeout = defaultTimeout, name, testcaseSelector, bb } = {}) => {
+const setupJasmineTestSuite = ({ timeout = defaultTimeout, name, testcaseSelector, onTranscriptReady, bb } = {}) => {
   bb = bb || new BotiumBindings()
   name = name || bb.getTestSuiteName()
 
@@ -50,7 +51,7 @@ const setupJasmineTestSuite = ({ timeout = defaultTimeout, name, testcaseSelecto
       bb.afterAll().then(() => done()).catch(done.fail)
     }, timeout)
 
-    setupJasmineTestCases({ timeout, testcaseSelector, bb })
+    setupJasmineTestCases({ timeout, testcaseSelector, onTranscriptReady, bb })
   })
 }
 
